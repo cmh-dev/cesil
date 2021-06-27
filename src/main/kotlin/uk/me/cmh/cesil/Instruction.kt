@@ -1,5 +1,7 @@
 package uk.me.cmh.cesil
 
+data class Program(val instructions: List<Instruction>, val data: List<Int>)
+
 data class Instruction(val label: String, val operator: Operator, val operand: String)
 
 enum class Operator() {

@@ -2,7 +2,7 @@ package uk.me.cmh.cesil
 
 class Parser {
 
-    fun parse(program: String): ParserResult {
+    fun parse(sourceCode: String): ParserResult {
         TODO("NOT IMPLEMENTED")
     }
 
@@ -10,5 +10,5 @@ class Parser {
 
 sealed class ParserResult
 class ParserErrors(val errorMessages: List<String>) : ParserResult()
-class ParsedInstructions(val instructions: List<Instruction>) : ParserResult()
+class ParsedProgram(val program: Program) : ParserResult()
 

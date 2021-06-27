@@ -47,21 +47,26 @@ class InterpreterTest {
     fun `when a program is executed without parsing errors then the results should be returned`() {
 
         val sourceCode = """
-            PRINT "HELLO"
-            LINE
-            PRINT "WORLD"
+               PRINT "HELLO"
+               LINE
+               PRINT "WORLD"
+            %
+            1
+            2
+            *
         """.trimIndent()
-        val instructions = listOf(
-                Instruction("", Operator.PRINT, "HELLO"),
-                Instruction("", Operator.PRINT, "WORLD")
-            )
-        whenever(mockParser.parse(sourceCode)).thenReturn(ParsedInstructions(instructions))
-        whenever(mockExecutor.execute(instructions)).thenReturn(listOf("HELLO", "WORLD"))
+        val program = Program(listOf(
+            Instruction("", Operator.PRINT, "HELLO"),
+            Instruction("", Operator.PRINT, "WORLD")
+        ), listOf(1, 2))
+
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
+        whenever(mockExecutor.execute(program)).thenReturn(listOf("HELLO", "WORLD"))
 
         val results = interpreter.executeProgram(sourceCode)
 
         verify(mockParser, times(1)).parse(sourceCode)
-        verify(mockExecutor, times(1)).execute(instructions)
+        verify(mockExecutor, times(1)).execute(program)
         assertEquals(listOf("HELLO", "WORLD"), results)
 
     }
