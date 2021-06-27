@@ -14,15 +14,15 @@ class InterpreterTest {
     fun `when a program is executed with one parsing error it should be returned`() {
 
         val sourceCode = """
-            BAD PROGAM LINE 1
+            BAD PRORGAM LINE 1
         """.trimIndent()
         whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID")))
 
-        val results = interpreter.executeProgram(sourceCode)
+        val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(0)).execute(any())
-        assertEquals(listOf("LINE 1 IS INVALID"), results)
+        assertEquals(listOf("LINE 1 IS INVALID"), executionResult.output)
 
     }
 
@@ -30,16 +30,16 @@ class InterpreterTest {
     fun `when a program is executed with multiple parsing errors they should be returned`() {
 
         val sourceCode = """
-            BAD PROGAM LINE 1
-            BAD PROGAM LINE 2
+            BAD PROGRAM LINE 1
+            BAD PROGRAM LINE 2
         """.trimIndent()
         whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID")))
 
-        val results = interpreter.executeProgram(sourceCode)
+        val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(0)).execute(any())
-        assertEquals(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID"), results)
+        assertEquals(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID"), executionResult.output)
 
     }
 
@@ -59,15 +59,14 @@ class InterpreterTest {
             Instruction("", Operator.PRINT, "HELLO"),
             Instruction("", Operator.PRINT, "WORLD")
         ), listOf(1, 2))
-
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
-        whenever(mockExecutor.execute(program)).thenReturn(listOf("HELLO", "WORLD"))
+        whenever(mockExecutor.execute(program)).thenReturn(ExecutionSuccess(listOf("HELLO", "WORLD")))
 
-        val results = interpreter.executeProgram(sourceCode)
+        val executionResult = interpreter.executeProgram(sourceCode) as ExecutionSuccess
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(1)).execute(program)
-        assertEquals(listOf("HELLO", "WORLD"), results)
+        assertEquals(listOf("HELLO", "WORLD"), executionResult.output)
 
     }
 
