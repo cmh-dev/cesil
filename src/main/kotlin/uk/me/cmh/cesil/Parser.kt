@@ -9,4 +9,6 @@ class Parser {
 }
 
 sealed class ParserResult
-class ParserError(val errorMessages: List<String>) : ParserResult()
+class Errors(val errorMessages: List<String>) : ParserResult()
+class Instructions(val instructions: List<Instruction>) : ParserResult()
+
