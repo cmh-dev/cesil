@@ -21,6 +21,7 @@ class InterpreterTest {
         val results = interpreter.executeProgram(sourceCode)
 
         verify(mockParser, times(1)).parse(sourceCode)
+        verify(mockExecutor, times(0)).execute(any())
         assertEquals(listOf("LINE 1 IS INVALID"), results)
 
     }
@@ -37,10 +38,10 @@ class InterpreterTest {
         val results = interpreter.executeProgram(sourceCode)
 
         verify(mockParser, times(1)).parse(sourceCode)
+        verify(mockExecutor, times(0)).execute(any())
         assertEquals(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID"), results)
 
     }
-
 
     @Test
     fun `when a program is executed without parsing errors then the results should be returned`() {
@@ -52,7 +53,7 @@ class InterpreterTest {
         """.trimIndent()
         val instructions = listOf(
                 Instruction("", Operator.PRINT, "HELLO"),
-                Instruction("", Operator.PRINT, "HELLO")
+                Instruction("", Operator.PRINT, "WORLD")
             )
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedInstructions(instructions))
         whenever(mockExecutor.execute(instructions)).thenReturn(listOf("HELLO", "WORLD"))
