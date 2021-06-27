@@ -7,7 +7,7 @@ class Interpreter(private val parser: Parser = Parser(), private val executor: E
         val parserResult = parser.parse(program)
 
         if (parserResult is ParserError) {
-            return listOf(parserResult.errorMessage)
+            return parserResult.errorMessages
         }
 
         return emptyList()

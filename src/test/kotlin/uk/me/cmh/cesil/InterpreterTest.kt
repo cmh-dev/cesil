@@ -11,14 +11,33 @@ class InterpreterTest {
     private val interpreter = Interpreter(mockParser, mockExecutor)
 
     @Test
-    fun `when a program which cannot be parsed is executed an error should be returned`() {
+    fun `when a program is executed with one parsing error it should be returned`() {
 
-        whenever(mockParser.parse("BAD COMMAND")).thenReturn(ParserError("LINE 1 IS INVALID"))
+        val sourceCode = """
+            BAD PROGAM LINE 1
+        """.trimIndent()
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserError(listOf("LINE 1 IS INVALID")))
 
-        val results = interpreter.executeProgram("BAD COMMAND")
+        val results = interpreter.executeProgram(sourceCode)
 
-        verify(mockParser, times(1)).parse("BAD COMMAND")
+        verify(mockParser, times(1)).parse(sourceCode)
         assertEquals(listOf("LINE 1 IS INVALID"),results)
+
+    }
+
+    @Test
+    fun `when a program is executed with multiple parsing errors they should be returned`() {
+
+        val sourceCode = """
+            BAD PROGAM LINE 1
+            BAD PROGAM LINE 2
+        """.trimIndent()
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserError(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID")))
+
+        val results = interpreter.executeProgram(sourceCode)
+
+        verify(mockParser, times(1)).parse(sourceCode)
+        assertEquals(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID"),results)
 
     }
 

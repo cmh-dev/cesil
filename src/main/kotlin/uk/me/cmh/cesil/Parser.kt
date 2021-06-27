@@ -3,10 +3,10 @@ package uk.me.cmh.cesil
 class Parser {
 
     fun parse(program: String): ParserResult {
-        return ParserError("NOT IMPLEMENTED")
+        TODO("NOT IMPLEMENTED")
     }
 
 }
 
 sealed class ParserResult
-class ParserError(val errorMessage: String) : ParserResult()
+class ParserError(val errorMessages: List<String>) : ParserResult()
