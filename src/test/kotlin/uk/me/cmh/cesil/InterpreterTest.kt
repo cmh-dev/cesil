@@ -16,7 +16,7 @@ class InterpreterTest {
         val sourceCode = """
             BAD PROGAM LINE 1
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(Errors(listOf("LINE 1 IS INVALID")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID")))
 
         val results = interpreter.executeProgram(sourceCode)
 
@@ -32,7 +32,7 @@ class InterpreterTest {
             BAD PROGAM LINE 1
             BAD PROGAM LINE 2
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(Errors(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID")))
 
         val results = interpreter.executeProgram(sourceCode)
 
@@ -54,7 +54,7 @@ class InterpreterTest {
                 Instruction("", Operator.PRINT, "HELLO"),
                 Instruction("", Operator.PRINT, "HELLO")
             )
-        whenever(mockParser.parse(sourceCode)).thenReturn(Instructions(instructions))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParsedInstructions(instructions))
         whenever(mockExecutor.execute(instructions)).thenReturn(listOf("HELLO", "WORLD"))
 
         val results = interpreter.executeProgram(sourceCode)
