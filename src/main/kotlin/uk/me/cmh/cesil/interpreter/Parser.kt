@@ -1,4 +1,4 @@
-package uk.me.cmh.cesil
+package uk.me.cmh.cesil.interpreter
 
 class Parser {
 

@@ -1,4 +1,4 @@
-package uk.me.cmh.cesil
+package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
