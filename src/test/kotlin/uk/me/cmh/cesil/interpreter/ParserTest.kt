@@ -11,7 +11,7 @@ class ParserTest {
     fun `when a PRINT statement with no label is parsed the correct instruction should be returned`() =
         assertThatOneStatementCanBeCorrectlyParsed(
             "    PRINT \"Hello World\"",
-            Instruction("", Operator.PRINT, "Hello World")
+            Instruction("", Operator.PRINT, "\"Hello World\"")
         )
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(sourceCode: String, expectedInstruction: Instruction) {
