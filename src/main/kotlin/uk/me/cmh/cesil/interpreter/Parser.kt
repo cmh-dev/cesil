@@ -4,7 +4,10 @@ class Parser {
 
     fun parse(sourceCode: String): ParserResult {
 
-        val elements = sourceCode.trim().split(Regex("\\s")).filterNot { it == "" }
+        val trimmedSource = sourceCode.trim()
+        if (trimmedSource.startsWith("(")) return ParsedProgram(Program(listOf(), listOf()))
+
+        val elements = trimmedSource.split(Regex("\\s")).filterNot { it == "" }
 
         val indexedOperator = when (val operator = Operator.findOperator(elements[0])) {
             Operator.INVALID_OPERATOR -> IndexedOperator(Operator.findOperator(elements[1]), 1)
