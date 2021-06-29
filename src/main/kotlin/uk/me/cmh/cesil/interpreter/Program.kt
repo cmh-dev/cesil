@@ -18,7 +18,7 @@ enum class Operator {
     DIVIDE,
     JUMP,
     JIZERO,
-    JNEG,
+    JINEG,
     LINE,
     PRINT,
     HALT,
