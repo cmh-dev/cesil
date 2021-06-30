@@ -3,7 +3,7 @@ package uk.me.cmh.cesil.interpreter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class ParserTest {
+class ParseSingleInstructionsTest {
 
     private val parser = Parser()
 
@@ -98,13 +98,6 @@ class ParserTest {
     // MATHEMATICAL
 
     @Test
-    fun `when a HALT statement without a label is parsed the correct instruction should be returned`() =
-        assertThatOneStatementCanBeCorrectlyParsed(
-            "HALT",
-            Instruction("", Operator.HALT, "")
-        )
-
-    @Test
     fun `when a ADD statement without a label is parsed the correct instruction should be returned`() =
         assertThatOneStatementCanBeCorrectlyParsed(
             "ADD   VAR",
@@ -161,6 +154,13 @@ class ParserTest {
         )
 
     // PROGRAM CONTROL
+
+    @Test
+    fun `when a HALT statement without a label is parsed the correct instruction should be returned`() =
+        assertThatOneStatementCanBeCorrectlyParsed(
+            "HALT",
+            Instruction("", Operator.HALT, "")
+        )
 
     @Test
     fun `when a HALT statement with a label is parsed the correct instruction should be returned`() =
@@ -224,6 +224,5 @@ class ParserTest {
         assertEquals(1, program.instructions.size)
         assertEquals(expectedInstruction, program.instructions[0])
     }
-
 
 }
