@@ -50,6 +50,7 @@ class InterpreterTest {
                PRINT "HELLO"
                LINE
                PRINT "WORLD"
+               HALT
             %
             1
             2
@@ -57,7 +58,8 @@ class InterpreterTest {
         """.trimIndent()
         val program = Program(listOf(
             Instruction("", Operator.PRINT, "HELLO"),
-            Instruction("", Operator.PRINT, "WORLD")
+            Instruction("", Operator.PRINT, "WORLD"),
+            Instruction("", Operator.HALT, "")
         ), listOf(1, 2))
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
         whenever(mockExecutor.execute(program)).thenReturn(ExecutionSuccess(listOf("HELLO", "WORLD")))
@@ -67,6 +69,35 @@ class InterpreterTest {
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(1)).execute(program)
         assertEquals(listOf("HELLO", "WORLD"), executionResult.output)
+
+    }
+
+    @Test
+    fun `when a program is executed with execution errors then they should be returned`() {
+
+        val sourceCode = """
+               IN
+               DIVIDE   0
+               OUT
+               HALT
+            %
+            0
+            *
+        """.trimIndent()
+        val program = Program(listOf(
+            Instruction("", Operator.IN, "HELLO"),
+            Instruction("", Operator.DIVIDE, "0"),
+            Instruction("", Operator.OUT, ""),
+            Instruction("", Operator.HALT, "")
+        ), listOf(0))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
+        whenever(mockExecutor.execute(program)).thenReturn(ExecutionFailure(listOf("ERROR - DIVIDE BY ZERO")))
+
+        val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
+
+        verify(mockParser, times(1)).parse(sourceCode)
+        verify(mockExecutor, times(1)).execute(program)
+        assertEquals(listOf("ERROR - DIVIDE BY ZERO"), executionResult.output)
 
     }
 
