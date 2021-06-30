@@ -4,10 +4,33 @@ class Parser {
 
     fun parse(sourceCode: String): ParserResult {
 
-        val trimmedSource = sourceCode.trim()
-        if (trimmedSource.startsWith("(")) return ParsedProgram(Program(listOf(), listOf()))
+        var instructions = listOf<Instruction>()
+        var data = listOf<Int>()
+        var inData = false
 
-        val elements = trimmedSource.split(Regex("\\s")).filterNot { it == "" }
+        val lines = sourceCode.lines()
+            .map { line -> line.trim() }
+            .filterNot { line -> line.startsWith("(") || line.isBlank() }
+
+        lines.forEach {
+            line ->
+                when {
+                    line.startsWith("%") -> inData = true
+                    line.startsWith("*") -> return@forEach
+                    inData -> data = data + parseData(line)
+                    else -> instructions = instructions + parseInstruction(line)
+                }
+        }
+
+        val program = Program(instructions, data)
+
+        return ParsedProgram(program)
+
+    }
+
+    private fun parseInstruction(line: String): Instruction {
+
+        val elements = line.split(Regex("\\s")).filterNot { it == "" }
 
         val indexedOperator = when (val operator = Operator.findOperator(elements[0])) {
             Operator.INVALID_OPERATOR -> IndexedOperator(Operator.findOperator(elements[1]), 1)
@@ -16,18 +39,15 @@ class Parser {
 
         val label = if (indexedOperator.index == 0) "" else elements[0]
         val operand = elements.filterIndexed { index, s -> index > indexedOperator.index }.joinToString(separator = " ")
-        val instruction = Instruction(label, indexedOperator.operator, operand)
-        val program = Program(listOf(instruction), listOf())
-
-        return ParsedProgram(program)
+        return Instruction(label, indexedOperator.operator, operand)
 
     }
+
+    private fun parseData(line: String): List<Int> = line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() }
 
     private data class IndexedOperator(val operator: Operator, val index: Int)
 
 }
-
-
 
 sealed class ParserResult
 class ParserErrors(val errorMessages: List<String>) : ParserResult()

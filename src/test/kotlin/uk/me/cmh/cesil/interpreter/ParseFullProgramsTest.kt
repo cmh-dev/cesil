@@ -8,7 +8,6 @@ class ParseFullProgramsTest {
 
     private val parser = Parser()
 
-    @Disabled
     @Test
     fun `when valid source code is parsed without data the program structure will be returned`() {
         val sourceCode = """
@@ -21,7 +20,7 @@ class ParseFullProgramsTest {
         val program = (parser.parse(sourceCode) as ParsedProgram).program
         assertEquals(
             listOf(
-                Instruction("", Operator.PRINT, "\"HELLO \"WORLD"),
+                Instruction("", Operator.PRINT, "\"HELLO WORLD\""),
                 Instruction("", Operator.JUMP, "LABEL"),
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
