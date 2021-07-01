@@ -67,8 +67,8 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "INSTRUCTION LINE INVALID [FIRST INVALID LINE]",
-                "INSTRUCTION LINE INVALID [SECOND INVALID LINE]"
+                "*** INSTRUCTION LINE INVALID [FIRST INVALID LINE] ***",
+                "*** INSTRUCTION LINE INVALID [SECOND INVALID LINE] ***"
             ), errorMessages
         )
     }

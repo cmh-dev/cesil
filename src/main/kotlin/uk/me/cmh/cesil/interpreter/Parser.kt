@@ -42,7 +42,7 @@ class Parser {
             else -> IndexedOperator(operator, 0)
         }
 
-        if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("INSTRUCTION LINE INVALID [$line]")
+        if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("*** INSTRUCTION LINE INVALID [$line] ***")
 
         val label = if (indexedOperator.index == 0) "" else elements[0]
         val operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
