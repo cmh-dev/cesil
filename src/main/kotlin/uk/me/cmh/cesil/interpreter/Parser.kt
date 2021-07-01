@@ -38,7 +38,7 @@ class Parser {
         }
 
         val label = if (indexedOperator.index == 0) "" else elements[0]
-        val operand = elements.filterIndexed { index, s -> index > indexedOperator.index }.joinToString(separator = " ")
+        val operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
         return Instruction(label, indexedOperator.operator, operand)
 
     }
