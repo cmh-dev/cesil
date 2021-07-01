@@ -7,24 +7,29 @@ class Parser {
         var instructions = listOf<Instruction>()
         var data = listOf<Int>()
         var inData = false
+        var parseErrors = listOf<String>()
 
         val lines = sourceCode.lines()
             .map { line -> line.trim() }
             .filterNot { line -> line.startsWith("(") || line.isBlank() }
 
-        lines.forEach {
-            line ->
+        lines.forEach { line ->
+            try {
                 when {
                     line.startsWith("%") -> inData = true
                     line.startsWith("*") -> return@forEach
                     inData -> data = data + parseData(line)
                     else -> instructions = instructions + parseInstruction(line)
                 }
+            } catch (parserException: ParserException) {
+                parseErrors = parseErrors + (parserException.message ?: "")
+            }
         }
 
-        val program = Program(instructions, data)
-
-        return ParsedProgram(program)
+        return when {
+            parseErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
+            else -> ParserErrors(parseErrors)
+        }
 
     }
 
@@ -37,6 +42,8 @@ class Parser {
             else -> IndexedOperator(operator, 0)
         }
 
+        if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("INSTRUCTION LINE INVALID [$line]")
+
         val label = if (indexedOperator.index == 0) "" else elements[0]
         val operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
         return Instruction(label, indexedOperator.operator, operand)
@@ -46,6 +53,9 @@ class Parser {
     private fun parseData(line: String): List<Int> = line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() }
 
     private data class IndexedOperator(val operator: Operator, val index: Int)
+    private class ParserException(message: String) : Exception(message)
+
+
 
 }
 
