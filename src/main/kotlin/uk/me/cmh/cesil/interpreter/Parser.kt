@@ -10,6 +10,7 @@ class Parser {
         var data = listOf<Int>()
         var inData = false
         var parseErrors = listOf<String>()
+        var dataTermination = false
 
         sourceCode.lines()
             .map { line -> line.trim() }
@@ -17,7 +18,10 @@ class Parser {
                 try {
                     when {
                         line.startsWith("%") -> inData = true
-                        line.startsWith("*") -> return@forEach
+                        line.startsWith("*") -> {
+                            dataTermination = true
+                            return@forEach
+                        }
                         inData -> data = data + parseDataLine(line)
                         else -> instructions = instructions + parseInstructionLine(line)
                     }
@@ -26,6 +30,10 @@ class Parser {
                 }
             }
 
+        if (!dataTermination) {
+            parseErrors = parseErrors + "*** NO DATA TERMINATION ***"
+        }
+
         return when {
             parseErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
             else -> ParserErrors(parseErrors)
@@ -33,7 +41,7 @@ class Parser {
 
     }
 
-    private fun parseInstructionLine(line: String): Instruction {
+    fun parseInstructionLine(line: String): Instruction {
 
         val elements = line.split(Regex("\\s")).filterNot { it == "" }
 

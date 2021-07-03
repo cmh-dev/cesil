@@ -211,18 +211,7 @@ class ParseSingleInstructionsTest {
             Instruction("LABEL", Operator.JIZERO, "LABEL2")
         )
 
-    // COMMENT
-
-    @Test
-    fun `when a comment is parsed it should be ignored`() {
-        val program = (parser.parse("( A COMMENT") as ParsedProgram).program
-        assertEquals(0, program.instructions.size)
-    }
-
-    private fun assertThatOneStatementCanBeCorrectlyParsed(sourceCode: String, expectedInstruction: Instruction) {
-        val program = (parser.parse(sourceCode) as ParsedProgram).program
-        assertEquals(1, program.instructions.size)
-        assertEquals(expectedInstruction, program.instructions[0])
-    }
+    private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =
+        assertEquals(expectedInstruction, parser.parseInstructionLine(instructionLine))
 
 }
