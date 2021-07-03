@@ -1,5 +1,7 @@
 package uk.me.cmh.cesil.interpreter
 
+import java.lang.NumberFormatException
+
 class Parser {
 
     fun parse(sourceCode: String): ParserResult {
@@ -9,22 +11,20 @@ class Parser {
         var inData = false
         var parseErrors = listOf<String>()
 
-        val lines = sourceCode.lines()
+        sourceCode.lines()
             .map { line -> line.trim() }
-            .filterNot { line -> line.startsWith("(") || line.isBlank() }
-
-        lines.forEach { line ->
-            try {
-                when {
-                    line.startsWith("%") -> inData = true
-                    line.startsWith("*") -> return@forEach
-                    inData -> data = data + parseData(line)
-                    else -> instructions = instructions + parseInstruction(line)
+            .filterNot { line -> line.startsWith("(") || line.isBlank() }.forEach { line ->
+                try {
+                    when {
+                        line.startsWith("%") -> inData = true
+                        line.startsWith("*") -> return@forEach
+                        inData -> data = data + parseDataLine(line)
+                        else -> instructions = instructions + parseInstructionLine(line)
+                    }
+                } catch (parserException: ParserException) {
+                    parseErrors = parseErrors + (parserException.message ?: "")
                 }
-            } catch (parserException: ParserException) {
-                parseErrors = parseErrors + (parserException.message ?: "")
             }
-        }
 
         return when {
             parseErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
@@ -33,7 +33,7 @@ class Parser {
 
     }
 
-    private fun parseInstruction(line: String): Instruction {
+    private fun parseInstructionLine(line: String): Instruction {
 
         val elements = line.split(Regex("\\s")).filterNot { it == "" }
 
@@ -50,12 +50,14 @@ class Parser {
 
     }
 
-    private fun parseData(line: String): List<Int> = line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() }
+    private fun parseDataLine(line: String): List<Int> = try {
+        line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() }
+    } catch (e: NumberFormatException) {
+        throw ParserException("*** DATA LINE INVALID [$line] ***")
+    }
 
     private data class IndexedOperator(val operator: Operator, val index: Int)
     private class ParserException(message: String) : Exception(message)
-
-
 
 }
 
