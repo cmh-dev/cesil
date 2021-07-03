@@ -158,4 +158,24 @@ class ParseFullProgramsTest {
         )
     }
 
+    @Test
+    fun `when source code with a missing instruction set terminator is parsed errors are returned`() {
+        val sourceCode = """
+                          PRINT    "HELLO WORLD"
+                          JUMP     LABEL
+                LABEL     HALT
+                1 2
+                3
+                *
+        """
+        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        assertEquals(
+            listOf(
+                "*** INSTRUCTION LINE INVALID [1 2] ***",
+                "*** INSTRUCTION LINE INVALID [3] ***",
+                "*** NO INSTRUCTION SET TERMINATION ***"
+            ), errorMessages
+        )
+    }
+
 }

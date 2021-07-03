@@ -1,6 +1,7 @@
 package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 class ParseSingleInstructionsTest {
@@ -210,6 +211,13 @@ class ParseSingleInstructionsTest {
             "LABEL   JIZERO   LABEL2",
             Instruction("LABEL", Operator.JIZERO, "LABEL2")
         )
+
+    // ERROR SITUATIONS
+    @Test
+    fun `when a single numeric instruction line is parsed an exception should be thrown`() {
+        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("3")}
+        assertEquals("*** INSTRUCTION LINE INVALID [3] ***", exception.message)
+    }
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =
         assertEquals(expectedInstruction, parser.parseInstructionLine(instructionLine))

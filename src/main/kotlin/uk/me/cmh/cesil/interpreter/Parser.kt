@@ -30,6 +30,9 @@ class Parser {
                 }
             }
 
+        if (!inData) {
+            parseErrors = parseErrors + "*** NO INSTRUCTION SET TERMINATION ***"
+        }
         if (!dataTermination) {
             parseErrors = parseErrors + "*** NO DATA TERMINATION ***"
         }
@@ -45,8 +48,9 @@ class Parser {
 
         val elements = line.split(Regex("\\s")).filterNot { it == "" }
 
-        val indexedOperator = when (val operator = Operator.findOperator(elements[0])) {
-            Operator.INVALID_OPERATOR -> IndexedOperator(Operator.findOperator(elements[1]), 1)
+        val operator = Operator.findOperator(elements[0])
+        val indexedOperator = when {
+            operator == Operator.INVALID_OPERATOR && elements.size > 1 -> IndexedOperator(Operator.findOperator(elements[1]), 1)
             else -> IndexedOperator(operator, 0)
         }
 
@@ -65,7 +69,7 @@ class Parser {
     }
 
     private data class IndexedOperator(val operator: Operator, val index: Int)
-    private class ParserException(message: String) : Exception(message)
+    class ParserException(message: String) : Exception(message)
 
 }
 
