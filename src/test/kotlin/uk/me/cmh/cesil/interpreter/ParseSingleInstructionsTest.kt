@@ -213,10 +213,11 @@ class ParseSingleInstructionsTest {
         )
 
     // ERROR SITUATIONS
+
     @Test
     fun `when a single numeric instruction line is parsed an exception should be thrown`() {
         val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("3")}
-        assertEquals("*** INSTRUCTION LINE INVALID [3] ***", exception.message)
+        assertEquals("INSTRUCTION LINE INVALID [3]", exception.message)
     }
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =

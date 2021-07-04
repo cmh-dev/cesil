@@ -88,8 +88,8 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** INSTRUCTION LINE INVALID [FIRST INVALID LINE] ***",
-                "*** INSTRUCTION LINE INVALID [SECOND INVALID LINE] ***"
+                "INSTRUCTION LINE INVALID [FIRST INVALID LINE]",
+                "INSTRUCTION LINE INVALID [SECOND INVALID LINE]"
             ), errorMessages
         )
     }
@@ -109,8 +109,8 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** DATA LINE INVALID [1 2a] ***",
-                "*** DATA LINE INVALID [x] ***"
+                "DATA LINE INVALID [1 2a]",
+                "DATA LINE INVALID [x]"
             ), errorMessages
         )
     }
@@ -132,10 +132,10 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** INSTRUCTION LINE INVALID [FIRST INVALID LINE] ***",
-                "*** INSTRUCTION LINE INVALID [SECOND INVALID LINE] ***",
-                "*** DATA LINE INVALID [1 2a] ***",
-                "*** DATA LINE INVALID [x] ***"
+                "INSTRUCTION LINE INVALID [FIRST INVALID LINE]",
+                "INSTRUCTION LINE INVALID [SECOND INVALID LINE]",
+                "DATA LINE INVALID [1 2a]",
+                "DATA LINE INVALID [x]"
             ), errorMessages
         )
     }
@@ -153,7 +153,7 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** NO DATA TERMINATION ***"
+                "NO DATA TERMINATION"
             ), errorMessages
         )
     }
@@ -171,9 +171,9 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** INSTRUCTION LINE INVALID [1 2] ***",
-                "*** INSTRUCTION LINE INVALID [3] ***",
-                "*** NO INSTRUCTION SET TERMINATION ***"
+                "INSTRUCTION LINE INVALID [1 2]",
+                "INSTRUCTION LINE INVALID [3]",
+                "NO INSTRUCTION SET TERMINATION"
             ), errorMessages
         )
     }
@@ -188,8 +188,8 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "*** NO INSTRUCTION SET TERMINATION ***",
-                "*** NO DATA TERMINATION ***"
+                "NO INSTRUCTION SET TERMINATION",
+                "NO DATA TERMINATION"
             ), errorMessages
         )
     }

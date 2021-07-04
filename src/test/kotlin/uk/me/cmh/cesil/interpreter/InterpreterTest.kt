@@ -16,13 +16,13 @@ class InterpreterTest {
         val sourceCode = """
             BAD PRORGAM LINE 1
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]")))
 
         val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(0)).execute(any())
-        assertEquals(listOf("LINE 1 IS INVALID"), executionResult.output)
+        assertEquals(listOf("*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1] ***"), executionResult.output)
 
     }
 
@@ -33,13 +33,13 @@ class InterpreterTest {
             BAD PROGRAM LINE 1
             BAD PROGRAM LINE 2
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]", "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2]")))
 
         val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(0)).execute(any())
-        assertEquals(listOf("LINE 1 IS INVALID", "LINE 2 IS INVALID"), executionResult.output)
+        assertEquals(listOf("*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1] ***", "*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2] ***"), executionResult.output)
 
     }
 
@@ -97,7 +97,7 @@ class InterpreterTest {
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(1)).execute(program)
-        assertEquals(listOf("ERROR - DIVIDE BY ZERO"), executionResult.output)
+        assertEquals(listOf("*** ERROR - DIVIDE BY ZERO ***"), executionResult.output)
 
     }
 

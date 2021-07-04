@@ -31,10 +31,10 @@ class Parser {
             }
 
         if (!inData) {
-            parseErrors = parseErrors + "*** NO INSTRUCTION SET TERMINATION ***"
+            parseErrors = parseErrors + "NO INSTRUCTION SET TERMINATION"
         }
         if (!dataTermination) {
-            parseErrors = parseErrors + "*** NO DATA TERMINATION ***"
+            parseErrors = parseErrors + "NO DATA TERMINATION"
         }
 
         return when {
@@ -54,7 +54,7 @@ class Parser {
             else -> IndexedOperator(operator, 0)
         }
 
-        if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("*** INSTRUCTION LINE INVALID [$line] ***")
+        if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("INSTRUCTION LINE INVALID [$line]")
 
         val label = if (indexedOperator.index == 0) "" else elements[0]
         val operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
@@ -65,7 +65,7 @@ class Parser {
     private fun parseDataLine(line: String): List<Int> = try {
         line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() }
     } catch (e: NumberFormatException) {
-        throw ParserException("*** DATA LINE INVALID [$line] ***")
+        throw ParserException("DATA LINE INVALID [$line]")
     }
 
     private data class IndexedOperator(val operator: Operator, val index: Int)
