@@ -66,7 +66,15 @@ class Parser {
         if (indexedOperator.operator == Operator.INVALID_OPERATOR) throw ParserException("INSTRUCTION LINE INVALID [$line]")
 
         val label = if (indexedOperator.index == 0) "" else elements[0]
-        val operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
+        var operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
+        if (indexedOperator.operator == Operator.PRINT) {
+            if (!operand.matches(Regex("\\\".*\\\""))) {
+                throw ParserException("INSTRUCTION LINE OPERAND INVALID [$line]")
+            } else {
+                operand = operand.removeSurrounding("\"")
+            }
+        }
+
         return Instruction(label, indexedOperator.operator, operand)
 
     }

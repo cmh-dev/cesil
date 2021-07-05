@@ -19,7 +19,7 @@ class ParseFullProgramsTest {
         val program = (parser.parse(sourceCode) as ParsedProgram).program
         assertEquals(
             listOf(
-                Instruction("", Operator.PRINT, "\"HELLO WORLD\""),
+                Instruction("", Operator.PRINT, "HELLO WORLD"),
                 Instruction("", Operator.JUMP, "LABEL"),
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
@@ -42,7 +42,7 @@ class ParseFullProgramsTest {
         val program = (parser.parse(sourceCode) as ParsedProgram).program
         assertEquals(
             listOf(
-                Instruction("", Operator.PRINT, "\"HELLO WORLD\""),
+                Instruction("", Operator.PRINT, "HELLO WORLD"),
                 Instruction("", Operator.JUMP, "LABEL"),
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
@@ -65,7 +65,7 @@ class ParseFullProgramsTest {
         val program = (parser.parse(sourceCode) as ParsedProgram).program
         assertEquals(
             listOf(
-                Instruction("", Operator.PRINT, "\"HELLO WORLD\""),
+                Instruction("", Operator.PRINT, "HELLO WORLD"),
                 Instruction("", Operator.JUMP, "LABEL"),
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions

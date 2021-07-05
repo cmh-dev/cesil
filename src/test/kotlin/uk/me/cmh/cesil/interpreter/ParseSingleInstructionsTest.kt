@@ -41,15 +41,15 @@ class ParseSingleInstructionsTest {
     @Test
     fun `when a PRINT statement with no label is parsed the correct instruction should be returned`() =
         assertThatOneStatementCanBeCorrectlyParsed(
-            "    PRINT \"Hello World\"",
-            Instruction("", Operator.PRINT, "\"Hello World\"")
+            "    PRINT \"HELLO WORLD\"",
+            Instruction("", Operator.PRINT, "HELLO WORLD")
         )
 
     @Test
     fun `when a PRINT statement with a label is parsed the correct instruction should be returned`() =
         assertThatOneStatementCanBeCorrectlyParsed(
-            "LABEL  PRINT \"Hello World\"",
-            Instruction("LABEL", Operator.PRINT, "\"Hello World\"")
+            "LABEL  PRINT \"HELLO WORLD\"",
+            Instruction("LABEL", Operator.PRINT, "HELLO WORLD")
         )
 
     @Test
@@ -218,6 +218,22 @@ class ParseSingleInstructionsTest {
     fun `when a single numeric instruction line is parsed an exception should be thrown`() {
         val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("3")}
         assertEquals("INSTRUCTION LINE INVALID [3]", exception.message)
+    }
+
+    @Test
+    fun `when a print instruction line operand with no quotes is parsed an exception should be thrown`() {
+        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT HELLO")}
+        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT HELLO]", exception.message)
+    }
+    @Test
+    fun `when a print instruction line operand with no ending quote is parsed an exception should be thrown`() {
+        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT \"HELLO")}
+        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT \"HELLO]", exception.message)
+    }
+    @Test
+    fun `when a print instruction line operand with no starting quote is parsed an exception should be thrown`() {
+        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT HELLO\"")}
+        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT HELLO\"]", exception.message)
     }
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =
