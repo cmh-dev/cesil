@@ -1,7 +1,6 @@
 package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ParseFullProgramsTest {
@@ -25,6 +24,7 @@ class ParseFullProgramsTest {
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
         )
+        assertEquals(mapOf("LABEL" to 2), program.labeledInstructionIndexes)
         assertEquals(listOf<Int>(), program.data)
     }
 
@@ -47,6 +47,7 @@ class ParseFullProgramsTest {
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
         )
+        assertEquals(mapOf("LABEL" to 2), program.labeledInstructionIndexes)
         assertEquals(listOf<Int>(), program.data)
     }
 
@@ -69,6 +70,7 @@ class ParseFullProgramsTest {
                 Instruction("LABEL", Operator.HALT, "")
             ), program.instructions
         )
+        assertEquals(mapOf("LABEL" to 2), program.labeledInstructionIndexes)
         assertEquals(listOf<Int>(1, 2, 3), program.data)
     }
 

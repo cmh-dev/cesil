@@ -7,10 +7,13 @@ class Parser {
     fun parse(sourceCode: String): ParserResult {
 
         var instructions = listOf<Instruction>()
+        var labeledInstructionIndexes = mapOf<String, Int>()
         var data = listOf<Int>()
         var inData = false
         var parseErrors = listOf<String>()
+
         var dataTermination = false
+
 
         sourceCode.lines()
             .map { line -> line.trim() }
@@ -23,7 +26,13 @@ class Parser {
                             return@forEach
                         }
                         inData -> data = data + parseDataLine(line)
-                        else -> instructions = instructions + parseInstructionLine(line)
+                        else -> {
+                            val instruction = parseInstructionLine(line)
+                            instructions = instructions + instruction
+                            if (instruction.label != "") {
+                                labeledInstructionIndexes = labeledInstructionIndexes + (instruction.label to instructions.lastIndex)
+                            }
+                        }
                     }
                 } catch (parserException: ParserException) {
                     parseErrors = parseErrors + (parserException.message ?: "")
@@ -38,7 +47,7 @@ class Parser {
         }
 
         return when {
-            parseErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
+            parseErrors.isEmpty() -> ParsedProgram(Program(instructions, labeledInstructionIndexes, data))
             else -> ParserErrors(parseErrors)
         }
 

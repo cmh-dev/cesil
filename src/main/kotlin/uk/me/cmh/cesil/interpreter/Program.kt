@@ -2,9 +2,9 @@ package uk.me.cmh.cesil.interpreter
 
 import java.lang.IllegalArgumentException
 
-data class Program(val instructions: List<Instruction>, val data: List<Int>)
+data class Program(val instructions: List<Instruction>, val labeledInstructionIndexes: Map<String, Int>, val data: List<Int>)
 
-data class Instruction(val label: String, val operator: Operator, val operand: String)
+data class Instruction(val label: String = "", val operator: Operator, val operand: String = "")
 
 enum class Operator {
 
