@@ -215,28 +215,31 @@ class ParseSingleInstructionsTest {
     // ERROR SITUATIONS
 
     @Test
-    fun `when a single numeric instruction line is parsed an exception should be thrown`() {
-        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("3")}
-        assertEquals("INSTRUCTION LINE INVALID [3]", exception.message)
-    }
+    fun `when a single numeric instruction line is parsed an exception should be thrown`() =
+        assertThatOneInvalidStatementCannotBeParsed("3", "INSTRUCTION LINE INVALID [3]")
 
     @Test
-    fun `when a print instruction line operand with no quotes is parsed an exception should be thrown`() {
-        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT HELLO")}
-        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT HELLO]", exception.message)
-    }
+    fun `when a print instruction line operand with no quotes is parsed an exception should be thrown`() =
+        assertThatOneInvalidStatementCannotBeParsed("PRINT HELLO",
+            "INSTRUCTION LINE OPERAND INVALID [PRINT HELLO]")
+
     @Test
-    fun `when a print instruction line operand with no ending quote is parsed an exception should be thrown`() {
-        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT \"HELLO")}
-        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT \"HELLO]", exception.message)
-    }
+    fun `when a print instruction line operand with no ending quote is parsed an exception should be thrown`() =
+        assertThatOneInvalidStatementCannotBeParsed("PRINT \"HELLO",
+            "INSTRUCTION LINE OPERAND INVALID [PRINT \"HELLO]")
+
     @Test
-    fun `when a print instruction line operand with no starting quote is parsed an exception should be thrown`() {
-        val exception = assertThrows(Parser.ParserException::class.java) {parser.parseInstructionLine("PRINT HELLO\"")}
-        assertEquals("INSTRUCTION LINE OPERAND INVALID [PRINT HELLO\"]", exception.message)
-    }
+    fun `when a print instruction line operand with no starting quote is parsed an exception should be thrown`() =
+        assertThatOneInvalidStatementCannotBeParsed("PRINT HELLO\"",
+            "INSTRUCTION LINE OPERAND INVALID [PRINT HELLO\"]")
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =
         assertEquals(expectedInstruction, parser.parseInstructionLine(instructionLine))
+
+    private fun assertThatOneInvalidStatementCannotBeParsed(instructionLine: String, expectedErrorMessage: String) {
+        val exception =
+            assertThrows(Parser.ParserException::class.java) { parser.parseInstructionLine(instructionLine) }
+        assertEquals(expectedErrorMessage, exception.message)
+    }
 
 }

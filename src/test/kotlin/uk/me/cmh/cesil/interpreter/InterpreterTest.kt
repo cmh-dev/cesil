@@ -33,13 +33,25 @@ class InterpreterTest {
             BAD PROGRAM LINE 1
             BAD PROGRAM LINE 2
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]", "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2]")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(
+            ParserErrors(
+                listOf(
+                    "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]",
+                    "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2]"
+                )
+            )
+        )
 
         val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
         verify(mockParser, times(1)).parse(sourceCode)
         verify(mockExecutor, times(0)).execute(any())
-        assertEquals(listOf("*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1] ***", "*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2] ***"), executionResult.output)
+        assertEquals(
+            listOf(
+                "*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1] ***",
+                "*** INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2] ***"
+            ), executionResult.output
+        )
 
     }
 
@@ -56,11 +68,13 @@ class InterpreterTest {
             2
             *
         """.trimIndent()
-        val program = Program(listOf(
-            Instruction("", Operator.PRINT, "HELLO"),
-            Instruction("", Operator.PRINT, "WORLD"),
-            Instruction("", Operator.HALT, "")
-        ), mapOf(), listOf(1, 2))
+        val program = Program(
+            listOf(
+                Instruction("", Operator.PRINT, "HELLO"),
+                Instruction("", Operator.PRINT, "WORLD"),
+                Instruction("", Operator.HALT, "")
+            ), mapOf(), listOf(1, 2)
+        )
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
         whenever(mockExecutor.execute(program)).thenReturn(ExecutionSuccess(listOf("HELLO", "WORLD")))
 
@@ -84,12 +98,14 @@ class InterpreterTest {
             0
             *
         """.trimIndent()
-        val program = Program(listOf(
-            Instruction("", Operator.IN, "HELLO"),
-            Instruction("", Operator.DIVIDE, "0"),
-            Instruction("", Operator.OUT, ""),
-            Instruction("", Operator.HALT, "")
-        ), mapOf(), listOf(0))
+        val program = Program(
+            listOf(
+                Instruction("", Operator.IN, "HELLO"),
+                Instruction("", Operator.DIVIDE, "0"),
+                Instruction("", Operator.OUT, ""),
+                Instruction("", Operator.HALT, "")
+            ), mapOf(), listOf(0)
+        )
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
         whenever(mockExecutor.execute(program)).thenReturn(ExecutionFailure(listOf("ERROR - DIVIDE BY ZERO")))
 

@@ -30,7 +30,8 @@ class Parser {
                             val instruction = parseInstructionLine(line)
                             instructions = instructions + instruction
                             if (instruction.label != "") {
-                                labeledInstructionIndexes = labeledInstructionIndexes + (instruction.label to instructions.lastIndex)
+                                labeledInstructionIndexes =
+                                    labeledInstructionIndexes + (instruction.label to instructions.lastIndex)
                             }
                         }
                     }
@@ -59,7 +60,10 @@ class Parser {
 
         val operator = Operator.findOperator(elements[0])
         val indexedOperator = when {
-            operator == Operator.INVALID_OPERATOR && elements.size > 1 -> IndexedOperator(Operator.findOperator(elements[1]), 1)
+            operator == Operator.INVALID_OPERATOR && elements.size > 1 -> IndexedOperator(
+                Operator.findOperator(elements[1]),
+                1
+            )
             else -> IndexedOperator(operator, 0)
         }
 
