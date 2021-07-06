@@ -8,7 +8,7 @@ class ExecutorTest {
     private val executor = Executor()
 
     @Test
-    fun `when a simple program is executed the correct output should be returned`() =
+    fun `when a simple program is executed the output is returned`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -21,7 +21,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with basic text output is executed the correct output should be returned`() =
+    fun `when a program with basic text output is executed the output is returned`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -35,6 +35,8 @@ class ExecutorTest {
                 listOf()
             ), listOf("HELLO WORLD", "GOOD BYE")
         )
+
+
 
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =
         assertEquals(expectedOutput, (executor.execute(program) as ExecutionSuccess).output)

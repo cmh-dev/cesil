@@ -11,7 +11,7 @@ class InterpreterTest {
     private val interpreter = Interpreter(mockParser, mockExecutor)
 
     @Test
-    fun `when a program is executed with one parsing error it should be returned`() {
+    fun `when a program is executed with one parsing error it is returned`() {
 
         val sourceCode = """
             BAD PRORGAM LINE 1
@@ -56,7 +56,7 @@ class InterpreterTest {
     }
 
     @Test
-    fun `when a program is executed without parsing errors then the results should be returned`() {
+    fun `when a program is executed without parsing errors results are returned`() {
 
         val sourceCode = """
                PRINT "HELLO"
@@ -87,7 +87,7 @@ class InterpreterTest {
     }
 
     @Test
-    fun `when a program is executed with execution errors then they should be returned`() {
+    fun `when a program is executed with execution errors then they are returned`() {
 
         val sourceCode = """
                IN

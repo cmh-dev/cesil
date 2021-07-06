@@ -8,7 +8,7 @@ class ParseFullProgramsTest {
     private val parser = Parser()
 
     @Test
-    fun `when valid source code is parsed without data the correct program structure will be returned`() {
+    fun `when valid source code is parsed without data a program is returned`() {
         val sourceCode = """
                           PRINT    "HELLO WORLD"
                           JUMP     LABEL
@@ -29,7 +29,7 @@ class ParseFullProgramsTest {
     }
 
     @Test
-    fun `when valid source code is parsed with comments correct program structure will be returned`() {
+    fun `when valid source code is parsed with comments a program is returned`() {
         val sourceCode = """
                 ( PRINT HELLO WORLD OUT
                           PRINT    "HELLO WORLD"
@@ -52,7 +52,7 @@ class ParseFullProgramsTest {
     }
 
     @Test
-    fun `when valid source code is parsed with data the correct program structure will be returned`() {
+    fun `when valid source code is parsed with data a program is returned`() {
         val sourceCode = """
                           PRINT    "HELLO WORLD"
                           JUMP     LABEL
