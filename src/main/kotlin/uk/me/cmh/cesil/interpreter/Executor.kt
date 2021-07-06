@@ -3,12 +3,18 @@ package uk.me.cmh.cesil.interpreter
 class Executor {
 
     fun execute(program: Program): ExecutionResult {
-        var output = listOf<String>()
+        val output = mutableListOf<String>()
+        var outputBuffer = ""
         program.instructions.forEach {
             if (it.operator == Operator.PRINT) {
-                output = output + it.operand
+                outputBuffer += it.operand
+            }
+            if (it.operator == Operator.LINE) {
+                output.add(outputBuffer)
+                outputBuffer = ""
             }
         }
+        output.add(outputBuffer)
         return ExecutionSuccess(output)
     }
 
