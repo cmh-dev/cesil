@@ -13,6 +13,10 @@ class Executor {
                 Operator.LINE -> outputBuffer.appendLine()
                 Operator.OUT -> outputBuffer.append(accumulator)
                 Operator.IN -> accumulator = it.operand.toInt()
+                Operator.ADD -> accumulator += it.operand.toInt()
+                Operator.SUBTRACT -> accumulator -= it.operand.toInt()
+                Operator.MULTIPLY -> accumulator *= it.operand.toInt()
+                Operator.DIVIDE -> accumulator /= it.operand.toInt()
             }
         }
 
