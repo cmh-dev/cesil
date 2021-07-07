@@ -4,23 +4,20 @@ class Executor {
 
     fun execute(program: Program): ExecutionResult {
 
-        val output = mutableListOf<String>()
         val outputBuffer = StringBuilder()
         var accumulator = 0
 
         program.instructions.forEach {
             when(it.operator) {
                 Operator.PRINT -> outputBuffer.append(it.operand)
-                Operator.LINE -> {
-                    output.add(outputBuffer.toString())
-                    outputBuffer.clear()
-                }
+                Operator.LINE -> outputBuffer.appendLine()
                 Operator.OUT -> outputBuffer.append(accumulator)
                 Operator.IN -> accumulator = it.operand.toInt()
             }
         }
-        output.add(outputBuffer.toString())
-        return ExecutionSuccess(output)
+
+        return ExecutionSuccess(outputBuffer.lines())
+
     }
 
 }
