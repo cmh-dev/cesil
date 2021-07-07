@@ -36,6 +36,20 @@ class ExecutorTest {
             ), listOf("HELLO WORLD", "GOOD BYE")
         )
 
+    @Test
+    fun `when a program puts a value in the accumulator executed the correct value is output`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.IN, "42"),
+                    Instruction("", Operator.PRINT, "ACCUMULATOR VALUE: "),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("", Operator.HALT, "")
+                ),
+                mapOf(),
+                listOf()
+            ), listOf("ACCUMULATOR VALUE: 42")
+        )
 
 
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =
