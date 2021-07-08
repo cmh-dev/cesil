@@ -105,7 +105,22 @@ class ExecutorTest {
             ), listOf("ACCUMULATOR VALUE AFTER SET UP: 0", "ACCUMULATOR VALUE AFTER ARITHMETIC: 42")
         )
 
-    // TODO: mathematical operations using a variable
+    @Test
+    fun `when a program jumps lines between the jump and labled statements will be skipped`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.PRINT, "HELLO"),
+                    Instruction("", Operator.JUMP, "LABEL"),
+                    Instruction("", Operator.PRINT, " SKIPPED"),
+                    Instruction("LABEL", Operator.PRINT, " WORLD"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 3),
+                listOf()
+            ), listOf("HELLO WORLD")
+        )
+
     // TODO: jump
     // TODO: jump if zero
     // TODO: jump if negative
