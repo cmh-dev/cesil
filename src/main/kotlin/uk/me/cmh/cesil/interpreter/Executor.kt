@@ -31,6 +31,7 @@ class Executor {
                     if (accumulator < 0) {
                         instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
                     }
+                Operator.HALT -> break
             }
         }
 

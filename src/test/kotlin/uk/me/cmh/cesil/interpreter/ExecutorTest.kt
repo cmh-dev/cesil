@@ -158,10 +158,20 @@ class ExecutorTest {
             ), listOf("2 1 0 ")
         )
 
+    @Test
+    fun `when a program has a halt instruction in the middle following instructions should not be executed`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.PRINT, "HELLO"),
+                    Instruction(operator = Operator.HALT),
+                    Instruction("", Operator.PRINT, " WORLD")
+                ),
+                mapOf(),
+                listOf()
+            ), listOf("HELLO")
+        )
 
-    // TODO: jump if zero
-    // TODO: jump if negative
-    // TODO: exit program on a halt middle of program
     // TODO: loading data
     // TODO: out does not print a cr
 
