@@ -2,6 +2,7 @@ package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class ExecutorTest {
 
@@ -106,7 +107,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program jumps lines between the jump and labled statements will be skipped`() =
+    fun `when a program jumps, lines between the jump and labled statements will be skipped`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -121,7 +122,43 @@ class ExecutorTest {
             ), listOf("HELLO WORLD")
         )
 
-    // TODO: jump
+    @Test
+    fun `when a program with a jizero statement is excuted it will jump if the accumulator is zero`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.ADD, "2"),
+                    Instruction("LOOP", Operator.OUT,""),
+                    Instruction("", Operator.PRINT, " "),
+                    Instruction("", Operator.SUBTRACT, "1"),
+                    Instruction("", Operator.JIZERO, "EXIT"),
+                    Instruction("", Operator.JUMP, "LOOP"),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf("LOOP" to 1, "EXIT" to 6),
+                listOf()
+            ), listOf("2 1 ")
+        )
+
+    @Test
+    fun `when a program with a jineg statement is excuted it will jump if the accumulator is negatize`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.ADD, "2"),
+                    Instruction("LOOP", Operator.OUT,""),
+                    Instruction("", Operator.PRINT, " "),
+                    Instruction("", Operator.SUBTRACT, "1"),
+                    Instruction("", Operator.JINEG, "EXIT"),
+                    Instruction("", Operator.JUMP, "LOOP"),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf("LOOP" to 1, "EXIT" to 6),
+                listOf()
+            ), listOf("2 1 0 ")
+        )
+
+
     // TODO: jump if zero
     // TODO: jump if negative
     // TODO: exit program on a halt middle of program

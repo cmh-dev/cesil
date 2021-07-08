@@ -23,6 +23,14 @@ class Executor {
                 Operator.STORE -> variables[instruction.operand] = accumulator
                 Operator.LOAD -> accumulator = variables[instruction.operand] ?: 0
                 Operator.JUMP -> instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                Operator.JIZERO ->
+                    if (accumulator == 0) {
+                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                    }
+                Operator.JINEG ->
+                    if (accumulator < 0) {
+                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                    }
             }
         }
 
