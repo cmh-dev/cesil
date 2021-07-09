@@ -209,6 +209,47 @@ class ExecutorTest {
             ), listOf("DIVISION BY ZERO")
         )
 
+    @Test
+    fun `when a program attempts to jump to a label that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.JUMP, "ELABEL"),
+                    Instruction("LABEL", Operator.HALT,"" )
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
+        )
+
+    @Test
+    fun `when a program attempts to jump if zero to a label that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.JIZERO, "ELABEL"),
+                    Instruction("LABEL", Operator.HALT,"" )
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
+        )
+
+    @Test
+    fun `when a program attempts to jump if negative to a label that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.SUBTRACT, "1"),
+                    Instruction("", Operator.JINEG, "ELABEL"),
+                    Instruction("LABEL", Operator.HALT,"" )
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
+        )
+
+
     // TODO: jumping to a label which does not exist
     // TODO: infinite loop
     // TODO: performing an action using a variable which does not exist

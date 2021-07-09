@@ -32,14 +32,28 @@ class Executor {
                 }
                 Operator.STORE -> variables[instruction.operand] = accumulator
                 Operator.LOAD -> accumulator = variables[instruction.operand] ?: 0
-                Operator.JUMP -> instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                Operator.JUMP -> {
+                    instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: -1
+                    if (instructionIndex == -1) {
+                        errors.add("JUMP TO NON EXISTENT LABEL (${instruction.operand})")
+                        break
+                    }
+                }
                 Operator.JIZERO ->
                     if (accumulator == 0) {
-                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: -1
+                        if (instructionIndex == -1) {
+                            errors.add("JUMP TO NON EXISTENT LABEL (${instruction.operand})")
+                            break
+                        }
                     }
                 Operator.JINEG ->
                     if (accumulator < 0) {
-                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
+                        instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: -1
+                        if (instructionIndex == -1) {
+                            errors.add("JUMP TO NON EXISTENT LABEL (${instruction.operand})")
+                            break
+                        }
                     }
                 Operator.IN -> accumulator = data.removeFirst()
                 Operator.HALT -> break
