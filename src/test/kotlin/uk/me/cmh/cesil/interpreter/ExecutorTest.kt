@@ -2,7 +2,6 @@ package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.util.*
 
 class ExecutorTest {
 
@@ -56,6 +55,22 @@ class ExecutorTest {
                 listOf()
             ), listOf("ACCUMULATOR VALUE: 42")
         )
+
+    @Test
+    fun `when a program loads a literal value the accumulator should contain that value`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD, "42"),
+                    Instruction("", Operator.PRINT, "ACCUMULATOR VALUE: "),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("", Operator.HALT, "")
+                ),
+                mapOf(),
+                listOf()
+            ), listOf("ACCUMULATOR VALUE: 42")
+        )
+
 
     @Test
     fun `when a program stores and retrieves a value from a variable the correct value is retrieved`() =

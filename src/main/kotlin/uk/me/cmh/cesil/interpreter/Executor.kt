@@ -28,7 +28,7 @@ class Executor {
                 Operator.MULTIPLY -> executeInstructionUsingVariable(instruction)
                 Operator.DIVIDE -> executeInstructionUsingVariable(instruction)
                 Operator.STORE -> variables[instruction.operand] = accumulator
-                Operator.LOAD -> executeInstructionUsingVariable(instruction, false)
+                Operator.LOAD -> executeInstructionUsingVariable(instruction)
                 Operator.JUMP -> executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes)
                 Operator.JIZERO ->  if (accumulator == 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
                 Operator.JINEG -> if (accumulator < 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
@@ -45,9 +45,9 @@ class Executor {
 
     }
 
-    private fun executeInstructionUsingVariable(instruction: Instruction, operandCanContainLiteral: Boolean = true) {
+    private fun executeInstructionUsingVariable(instruction: Instruction) {
         val value = when {
-            instruction.operand.matches(Regex("^\\d*\$")) && operandCanContainLiteral -> instruction.operand.toInt()
+            instruction.operand.matches(Regex("^\\d*\$")) -> instruction.operand.toInt()
             else -> variables[instruction.operand]
         }
         if (value != null) {
