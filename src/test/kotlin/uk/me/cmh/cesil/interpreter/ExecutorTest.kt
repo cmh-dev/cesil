@@ -250,9 +250,75 @@ class ExecutorTest {
         )
 
 
-    // TODO: jumping to a label which does not exist
+// TODO: performing an action using a variable which does not exist
+
+
+    @Test
+    fun `when a program attempts to load a variable that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD, "EVAR"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("NON EXISTENT VARIABLE (EVAR)")
+        )
+
+    @Test
+    fun `when a program attempts to add a variable that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.ADD, "EVAR"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("NON EXISTENT VARIABLE (EVAR)")
+        )
+
+    @Test
+    fun `when a program attempts to subtract a variable that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.SUBTRACT, "EVAR"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("NON EXISTENT VARIABLE (EVAR)")
+        )
+
+    @Test
+    fun `when a program attempts to multiply by a variable that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.MULTIPLY, "EVAR"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("NON EXISTENT VARIABLE (EVAR)")
+        )
+
+    @Test
+    fun `when a program attempts to divide by a variable that does not exist an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.DIVIDE, "EVAR"),
+                    Instruction(operator = Operator.HALT)
+                ),
+                mapOf("LABEL" to 1),
+                listOf(1)
+            ), listOf("NON EXISTENT VARIABLE (EVAR)")
+        )
+
     // TODO: infinite loop
-    // TODO: performing an action using a variable which does not exist
     // TODO: running out of data
 
     private fun assertThatAnInvalidProgramWillReturnTheCorrectError(program: Program, expectedErrors: List<String>) =

@@ -23,19 +23,12 @@ class Executor() {
                 Operator.PRINT -> outputBuffer.append(instruction.operand)
                 Operator.LINE -> outputBuffer.appendLine()
                 Operator.OUT -> outputBuffer.append(accumulator)
-                Operator.ADD -> accumulator += getValue(instruction.operand, variables)
-                Operator.SUBTRACT -> accumulator -= getValue(instruction.operand, variables)
-                Operator.MULTIPLY -> accumulator *= getValue(instruction.operand, variables)
-                Operator.DIVIDE -> {
-                    val divisor = getValue(instruction.operand, variables)
-                    if (divisor == 0) {
-                        error = "DIVISION BY ZERO"
-                    } else {
-                        accumulator /= divisor
-                    }
-                }
+                Operator.ADD -> executeInstructionUsingVariable(instruction)
+                Operator.SUBTRACT -> executeInstructionUsingVariable(instruction)
+                Operator.MULTIPLY -> executeInstructionUsingVariable(instruction)
+                Operator.DIVIDE -> executeInstructionUsingVariable(instruction)
                 Operator.STORE -> variables[instruction.operand] = accumulator
-                Operator.LOAD -> accumulator = variables[instruction.operand] ?: 0
+                Operator.LOAD -> executeInstructionUsingVariable(instruction, false)
                 Operator.JUMP -> executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes)
                 Operator.JIZERO ->  if (accumulator == 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
                 Operator.JINEG -> if (accumulator < 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
@@ -50,19 +43,39 @@ class Executor() {
             else -> ExecutionFailure(listOf(error))
         }
 
+
     }
+
+    private fun executeInstructionUsingVariable(instruction: Instruction, operandCanContainLiteral: Boolean = true) {
+        val value = when {
+            instruction.operand.matches(Regex("^\\d*\$")) && operandCanContainLiteral -> instruction.operand.toInt()
+            else -> variables[instruction.operand]
+        }
+        if (value != null) {
+            when(instruction.operator) {
+                Operator.ADD -> accumulator += value
+                Operator.SUBTRACT -> accumulator -= value
+                Operator.MULTIPLY -> accumulator *= value
+                Operator.DIVIDE -> {
+                    if (value == 0) {
+                        error = "DIVISION BY ZERO"
+                    } else {
+                        accumulator /= value
+                    }
+                }
+                Operator.LOAD -> accumulator = value
+            }
+        } else {
+            error = buildNonExistentVariableMessage(instruction.operand)
+        }
+    }
+
+    private fun buildNonExistentVariableMessage(variableName: String) = "NON EXISTENT VARIABLE ($variableName)"
 
     private fun executeJumpInstruction(label: String, labeledInstructionIndexes: Map<String, Int>) {
         currentInstructionIndex = labeledInstructionIndexes[label] ?: -1
         if (currentInstructionIndex == -1) {
             error = "JUMP TO NON EXISTENT LABEL ($label)"
-        }
-    }
-
-    private fun getValue(operand: String, variables: Map<String, Int>) : Int {
-        return when {
-            operand.matches(Regex("^\\d*\$")) -> operand.toInt()
-            else -> variables[operand] ?: 0
         }
     }
 
