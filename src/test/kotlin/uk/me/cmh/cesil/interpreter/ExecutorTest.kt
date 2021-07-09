@@ -249,10 +249,6 @@ class ExecutorTest {
             ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
         )
 
-
-// TODO: performing an action using a variable which does not exist
-
-
     @Test
     fun `when a program attempts to load a variable that does not exist an error will be returned`() =
         assertThatAnInvalidProgramWillReturnTheCorrectError(
@@ -318,8 +314,20 @@ class ExecutorTest {
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
 
-    // TODO: infinite loop
-    // TODO: running out of data
+    @Test
+    fun `when a program with not enough data is executed the an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.IN,""),
+                    Instruction("", Operator.IN,""),
+                    Instruction("", Operator.IN,""),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf("LOOP" to 0, "EXIT" to 5),
+                listOf(1, 0)
+            ), listOf("PROGRAM REQUIRES MORE DATA")
+        )
 
     private fun assertThatAnInvalidProgramWillReturnTheCorrectError(program: Program, expectedErrors: List<String>) =
         assertEquals(expectedErrors, (executor.execute(program) as ExecutionFailure).output)

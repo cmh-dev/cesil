@@ -32,7 +32,7 @@ class Executor() {
                 Operator.JUMP -> executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes)
                 Operator.JIZERO ->  if (accumulator == 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
                 Operator.JINEG -> if (accumulator < 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
-                Operator.IN -> accumulator = data.removeFirst()
+                Operator.IN -> if (data.isNotEmpty()) { accumulator = data.removeFirst() } else error = "PROGRAM REQUIRES MORE DATA"
                 Operator.HALT -> break
             }
             if (error.isNotBlank()) break
