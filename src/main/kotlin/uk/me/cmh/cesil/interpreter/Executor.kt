@@ -1,6 +1,6 @@
 package uk.me.cmh.cesil.interpreter
 
-class Executor() {
+class Executor {
 
     private val outputBuffer = StringBuilder()
     private var error = ""
@@ -43,7 +43,6 @@ class Executor() {
             else -> ExecutionFailure(listOf(error))
         }
 
-
     }
 
     private fun executeInstructionUsingVariable(instruction: Instruction, operandCanContainLiteral: Boolean = true) {
@@ -52,7 +51,7 @@ class Executor() {
             else -> variables[instruction.operand]
         }
         if (value != null) {
-            when(instruction.operator) {
+            when (instruction.operator) {
                 Operator.ADD -> accumulator += value
                 Operator.SUBTRACT -> accumulator -= value
                 Operator.MULTIPLY -> accumulator *= value

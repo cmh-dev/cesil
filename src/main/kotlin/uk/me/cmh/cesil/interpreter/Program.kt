@@ -30,7 +30,7 @@ enum class Operator {
 
     companion object {
         fun findOperator(value: String): Operator = try {
-            Operator.valueOf(value)
+            valueOf(value)
         } catch (e: IllegalArgumentException) {
             INVALID_OPERATOR
         }

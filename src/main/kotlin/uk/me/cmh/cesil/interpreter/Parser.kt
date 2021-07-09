@@ -72,7 +72,7 @@ class Parser {
         val label = if (indexedOperator.index == 0) "" else elements[0]
         var operand = elements.filterIndexed { index, _ -> index > indexedOperator.index }.joinToString(separator = " ")
         if (indexedOperator.operator == Operator.PRINT) {
-            if (!operand.matches(Regex("\\\".*\\\""))) {
+            if (!operand.matches(Regex("\".*\""))) {
                 throw ParserException("INSTRUCTION LINE OPERAND INVALID [$line]")
             } else {
                 operand = operand.removeSurrounding("\"")

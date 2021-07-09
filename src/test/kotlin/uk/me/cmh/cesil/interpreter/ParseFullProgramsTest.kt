@@ -71,7 +71,7 @@ class ParseFullProgramsTest {
             ), program.instructions
         )
         assertEquals(mapOf("LABEL" to 2), program.labeledInstructionIndexes)
-        assertEquals(listOf<Int>(1, 2, 3), program.data)
+        assertEquals(listOf(1, 2, 3), program.data)
     }
 
     @Test
