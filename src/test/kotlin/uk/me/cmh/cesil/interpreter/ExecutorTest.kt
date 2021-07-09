@@ -11,7 +11,7 @@ class ExecutorTest {
     // SUCCESSFUL EXECUTION
 
     @Test
-    fun `when a simple program is executed the output is returned`() =
+    fun `when a simple program is executed the correct output is given`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -24,7 +24,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with basic text output is executed the output is returned`() =
+    fun `when a program with basic text printing is executed the output is given`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -40,7 +40,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program performs arithmetic with literal values correct value is returned`() =
+    fun `when a program performs arithmetic with literal values the correct value is calculated`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -58,7 +58,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program performs arithmetic with variables correct value is returned`() =
+    fun `when a program stores and retrieves a value from a variable the correct value is retrieved`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -79,7 +79,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program stores a value in a variable and loads it back the correct value is returned`() =
+    fun `when a program performs arithmetic with values from variables the correct value is calculated`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -107,7 +107,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program jumps, lines between the jump and labled statements will be skipped`() =
+    fun `when a jump intsruction is executed lines between the jump and labled statements will be skipped`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -123,7 +123,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with a jizero statement is excuted it will jump if the accumulator is zero`() =
+    fun `when a program with a jizero instruction is executed it will jump if the accumulator is zero`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -141,7 +141,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with a jineg statement is excuted it will jump if the accumulator is negatize`() =
+    fun `when a program with a jineg instruction is excuted it will jump if the accumulator is negative`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -173,7 +173,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with data is excuted the data is read and acted upon`() =
+    fun `when a program with data is executed the data is read and acted upon`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
