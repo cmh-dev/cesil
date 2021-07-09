@@ -172,8 +172,22 @@ class ExecutorTest {
             ), listOf("HELLO")
         )
 
-    // TODO: loading data
-    // TODO: out does not print a cr
+    @Test
+    fun `when a program with data is excuted the data is read and acted upon`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("LOOP", Operator.IN,""),
+                    Instruction("", Operator.JINEG, "EXIT"),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("", Operator.PRINT, " "),
+                    Instruction("", Operator.JUMP, "LOOP"),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf("LOOP" to 0, "EXIT" to 5),
+                listOf(3, 2, 1, 0, -1)
+            ), listOf("3 2 1 0 ")
+        )
 
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =
         assertEquals(expectedOutput, (executor.execute(program) as ExecutionSuccess).output)

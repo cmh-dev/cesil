@@ -7,6 +7,7 @@ class Executor {
         val outputBuffer = StringBuilder()
         var accumulator = 0
         val variables = mutableMapOf<String, Int>()
+        val data = program.data.toMutableList()
 
         var instructionIndex = 0
         while (instructionIndex <= program.instructions.lastIndex) {
@@ -31,6 +32,7 @@ class Executor {
                     if (accumulator < 0) {
                         instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
                     }
+                Operator.IN -> accumulator = data.removeFirst()
                 Operator.HALT -> break
             }
         }
