@@ -194,10 +194,28 @@ class ExecutorTest {
 
     // ERROR SCENARIOS
 
-    // TODO: divide by zero
+    @Test
+    fun `when a program attempts to divide by zero an error will be returned`() =
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction(operator = Operator.IN),
+                    Instruction("", Operator.DIVIDE, "0"),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf(),
+                listOf(1)
+            ), listOf("DIVISION BY ZERO")
+        )
+
     // TODO: jumping to a label which does not exist
     // TODO: infinite loop
     // TODO: performing an action using a variable which does not exist
     // TODO: running out of data
+
+    private fun assertThatAnInvalidProgramWillReturnTheCorrectError(program: Program, expectedErrors: List<String>) =
+        assertEquals(expectedErrors, (executor.execute(program) as ExecutionFailure).output)
+
 
 }

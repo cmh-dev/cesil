@@ -5,6 +5,7 @@ class Executor {
     fun execute(program: Program): ExecutionResult {
 
         val outputBuffer = StringBuilder()
+        val errors = mutableListOf<String>()
         var accumulator = 0
         val variables = mutableMapOf<String, Int>()
         val data = program.data.toMutableList()
@@ -20,7 +21,15 @@ class Executor {
                 Operator.ADD -> accumulator += getValue(instruction.operand, variables)
                 Operator.SUBTRACT -> accumulator -= getValue(instruction.operand, variables)
                 Operator.MULTIPLY -> accumulator *= getValue(instruction.operand, variables)
-                Operator.DIVIDE -> accumulator /= getValue(instruction.operand, variables)
+                Operator.DIVIDE -> {
+                    val divisor = getValue(instruction.operand, variables)
+                    if (divisor == 0) {
+                        errors.add("DIVISION BY ZERO")
+                        break
+                    } else {
+                        accumulator /= divisor
+                    }
+                }
                 Operator.STORE -> variables[instruction.operand] = accumulator
                 Operator.LOAD -> accumulator = variables[instruction.operand] ?: 0
                 Operator.JUMP -> instructionIndex = program.labeledInstructionIndexes[instruction.operand] ?: 0
@@ -37,7 +46,10 @@ class Executor {
             }
         }
 
-        return ExecutionSuccess(outputBuffer.lines())
+        return when {
+            errors.isEmpty() -> ExecutionSuccess(outputBuffer.lines())
+            else -> ExecutionFailure(errors)
+        }
 
     }
 
