@@ -38,13 +38,13 @@ class Parser {
             }
 
         if (!inData) {
-            parseErrors.add("NO INSTRUCTION SET TERMINATION")
+            parseErrors.add("MISSING INSTRUCTION SET TERMINATOR")
         }
         if (!dataTermination) {
-            parseErrors.add("NO DATA TERMINATION")
+            parseErrors.add("MISSING DATA SET TERMINATOR")
         }
         if (instructions.filter { it.operator == Operator.HALT }.count() == 0) {
-            parseErrors.add("NO HALT INSTRUCTION")
+            parseErrors.add("MISSING HALT INSTRUCTION")
         }
 
         return when {

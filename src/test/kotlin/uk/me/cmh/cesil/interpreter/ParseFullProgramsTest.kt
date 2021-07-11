@@ -155,7 +155,7 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "NO DATA TERMINATION"
+                "MISSING DATA SET TERMINATOR"
             ), errorMessages
         )
     }
@@ -175,7 +175,7 @@ class ParseFullProgramsTest {
             listOf(
                 "INSTRUCTION LINE INVALID [1 2]",
                 "INSTRUCTION LINE INVALID [3]",
-                "NO INSTRUCTION SET TERMINATION"
+                "MISSING INSTRUCTION SET TERMINATOR"
             ), errorMessages
         )
     }
@@ -190,8 +190,8 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "NO INSTRUCTION SET TERMINATION",
-                "NO DATA TERMINATION"
+                "MISSING INSTRUCTION SET TERMINATOR",
+                "MISSING DATA SET TERMINATOR"
             ), errorMessages
         )
     }
@@ -206,7 +206,7 @@ class ParseFullProgramsTest {
         val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
         assertEquals(
             listOf(
-                "NO HALT INSTRUCTION"
+                "MISSING HALT INSTRUCTION"
             ), errorMessages
         )
     }
