@@ -196,5 +196,19 @@ class ParseFullProgramsTest {
         )
     }
 
+    @Test
+    fun `when source code without a halt instruction is parsed errors are returned`() {
+        val sourceCode = """
+                          PRINT    "HELLO WORLD"
+                %
+                *
+        """
+        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        assertEquals(
+            listOf(
+                "NO HALT INSTRUCTION"
+            ), errorMessages
+        )
+    }
 
 }

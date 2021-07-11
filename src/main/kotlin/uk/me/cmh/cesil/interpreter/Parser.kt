@@ -11,7 +11,6 @@ class Parser {
         var data = listOf<Int>()
         var inData = false
         var parseErrors = listOf<String>()
-
         var dataTermination = false
 
 
@@ -45,6 +44,9 @@ class Parser {
         }
         if (!dataTermination) {
             parseErrors = parseErrors + "NO DATA TERMINATION"
+        }
+        if (instructions.filter { it.operator == Operator.HALT }.count() == 0) {
+            parseErrors = parseErrors + "NO HALT INSTRUCTION"
         }
 
         return when {
