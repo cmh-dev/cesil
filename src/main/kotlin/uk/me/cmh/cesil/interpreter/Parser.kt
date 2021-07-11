@@ -6,13 +6,12 @@ class Parser {
 
     fun parse(sourceCode: String): ParserResult {
 
-        var instructions = listOf<Instruction>()
-        var labeledInstructionIndexes = mapOf<String, Int>()
-        var data = listOf<Int>()
+        val instructions = mutableListOf<Instruction>()
+        val labeledInstructionIndexes = mutableMapOf<String, Int>()
+        val data = mutableListOf<Int>()
         var inData = false
-        var parseErrors = listOf<String>()
+        val parseErrors = mutableListOf<String>()
         var dataTermination = false
-
 
         sourceCode.lines()
             .map { line -> line.trim() }
@@ -24,29 +23,28 @@ class Parser {
                             dataTermination = true
                             return@forEach
                         }
-                        inData -> data = data + parseDataLine(line)
+                        inData -> data.addAll(parseDataLine(line))
                         else -> {
                             val instruction = parseInstructionLine(line)
-                            instructions = instructions + instruction
+                            instructions.add(instruction)
                             if (instruction.label != "") {
-                                labeledInstructionIndexes =
-                                    labeledInstructionIndexes + (instruction.label to instructions.lastIndex)
+                                labeledInstructionIndexes.put(instruction.label, instructions.lastIndex)
                             }
                         }
                     }
                 } catch (parserException: ParserException) {
-                    parseErrors = parseErrors + (parserException.message ?: "")
+                    parseErrors.add(parserException.message ?: "")
                 }
             }
 
         if (!inData) {
-            parseErrors = parseErrors + "NO INSTRUCTION SET TERMINATION"
+            parseErrors.add("NO INSTRUCTION SET TERMINATION")
         }
         if (!dataTermination) {
-            parseErrors = parseErrors + "NO DATA TERMINATION"
+            parseErrors.add("NO DATA TERMINATION")
         }
         if (instructions.filter { it.operator == Operator.HALT }.count() == 0) {
-            parseErrors = parseErrors + "NO HALT INSTRUCTION"
+            parseErrors.add("NO HALT INSTRUCTION")
         }
 
         return when {
