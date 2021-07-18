@@ -20,7 +20,6 @@ class CesilServerTest {
         cesilServer = cesilServer().start()
         webClient = WebClient()
         webClient.options.isThrowExceptionOnScriptError = false
-        webClient.options.isJavaScriptEnabled = false
     }
 
     @AfterEach

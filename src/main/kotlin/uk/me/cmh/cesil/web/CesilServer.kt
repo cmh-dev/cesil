@@ -2,9 +2,11 @@ package uk.me.cmh.cesil.web
 
 import com.natpryce.konfig.*
 import org.http4k.core.*
+import org.http4k.routing.ResourceLoader.Companion.Classpath
 
 import org.http4k.routing.bind
 import org.http4k.routing.routes
+import org.http4k.routing.static
 import org.http4k.server.Http4kServer
 import org.http4k.server.Jetty
 import org.http4k.server.asServer
@@ -31,7 +33,8 @@ fun cesilServerHander(): HttpHandler {
     val renderer = ThymeleafTemplates().CachingClasspath()
 
     return routes(
-       "/" bind Method.GET to {
+        "/static" bind static(Classpath("/static")),
+        "/" bind Method.GET to {
             Response(Status.OK)
                 .body(
                     renderer.invoke(
