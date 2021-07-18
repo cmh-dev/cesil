@@ -8,7 +8,11 @@
         .navbar {
             margin-bottom: 20px;
         }
-        #editor { font-family: Monospace; font-size: 20px}
+        #listing { font-family: Monospace; font-size: 20px}
+        .table-striped>tbody>tr:nth-child(odd)>td,
+        .table-striped>tbody>tr:nth-child(odd)>th {
+           background-color: #ccffcc;
+         }
     </style>
 </head>
 <body>
@@ -31,12 +35,11 @@
         </div>
     </nav>
     <main class="container">
-        <form action="run-program" method="post" name="program">
-            <div class="mb-3">
-                <textarea class="form-control" id="editor" rows="20" name="sourcecode"></textarea>
-            </div>
-            <button type="submit" id="button-run" class="btn btn-primary">Run</button>
-        </form>
+        <table class="table table-striped" id="table-results">
+            <tr th:each="result : ${model.results}">
+                <td th:text="${result}"></td>
+            </tr>
+        </table>
     </main>
     <script src="static/js/bootstrap.bundle.min.js"></script>
 </body>
