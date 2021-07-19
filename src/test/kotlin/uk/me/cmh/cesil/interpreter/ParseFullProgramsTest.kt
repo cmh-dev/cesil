@@ -211,4 +211,15 @@ class ParseFullProgramsTest {
         )
     }
 
+    @Test
+    fun `when empty source codeis parsed errors are returned`() {
+        val sourceCode = ""
+        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        assertEquals(
+            listOf(
+                "NO SOURCE CODE"
+            ), errorMessages
+        )
+    }
+
 }

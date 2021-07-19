@@ -13,6 +13,8 @@ class Parser {
         val parseErrors = mutableListOf<String>()
         var dataTermination = false
 
+        if (sourceCode.isBlank()) return ParserErrors(listOf("NO SOURCE CODE"))
+
         sourceCode.lines()
             .map { line -> line.trim() }
             .filterNot { line -> line.startsWith("(") || line.isBlank() }.forEach { line ->
