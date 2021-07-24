@@ -30,7 +30,7 @@ class Parser {
                             val instruction = parseInstructionLine(line)
                             instructions.add(instruction)
                             if (instruction.label != "") {
-                                labeledInstructionIndexes.put(instruction.label, instructions.lastIndex)
+                                labeledInstructionIndexes[instruction.label] = instructions.lastIndex
                             }
                         }
                     }

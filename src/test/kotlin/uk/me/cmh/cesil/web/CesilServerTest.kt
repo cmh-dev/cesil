@@ -1,8 +1,10 @@
 package uk.me.cmh.cesil.web
 
 import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.*
-import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLTextAreaElement
+import com.gargoylesoftware.htmlunit.html.HtmlButton
+import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.html.HtmlTable
+import com.gargoylesoftware.htmlunit.html.HtmlTextArea
 import org.http4k.server.Http4kServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -12,8 +14,8 @@ import org.junit.jupiter.api.Test
 
 class CesilServerTest {
 
-    lateinit var webClient: WebClient
-    lateinit var cesilServer: Http4kServer
+    private lateinit var webClient: WebClient
+    private lateinit var cesilServer: Http4kServer
 
     @BeforeEach
     fun setUp() {

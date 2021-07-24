@@ -2,10 +2,8 @@ package uk.me.cmh.cesil.web
 
 import com.natpryce.konfig.*
 import org.http4k.core.*
-import org.http4k.core.body.form
 import org.http4k.core.body.formAsMap
 import org.http4k.routing.ResourceLoader.Companion.Classpath
-
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.routing.static
@@ -33,10 +31,10 @@ data class RunResultsViewModel(val results: List<String>) : ViewModel {
 
 fun cesilServer(): Http4kServer {
     val serverPort = config[portKey]
-    return cesilServerHander().asServer(Jetty(serverPort))
+    return cesilServerHandler().asServer(Jetty(serverPort))
 }
 
-fun cesilServerHander(): HttpHandler {
+fun cesilServerHandler(): HttpHandler {
 
     val renderer = ThymeleafTemplates().CachingClasspath()
 
@@ -54,7 +52,7 @@ fun cesilServerHander(): HttpHandler {
         "/run-program" bind Method.POST to { request ->
             val interpreter = Interpreter()
             val parameters: Map<String, List<String?>> = request.formAsMap()
-            val sourceCode = parameters.get("sourcecode")?.get(0) ?: ""
+            val sourceCode = parameters["sourcecode"]?.get(0) ?: ""
             val executionResult = interpreter.executeProgram(sourceCode)
             val results = sourceCode.lines() + listOf("", "RESULTS:") + executionResult.output
             Response(Status.OK)
