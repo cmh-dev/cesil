@@ -60,7 +60,12 @@ fun cesilServerHander(): HttpHandler {
             Response(Status.OK)
                 .body(
                     renderer.invoke(
-                        RunResultsViewModel(results)
+                        RunResultsViewModel(results.map {
+                            when {
+                                it.isBlank() -> " "
+                                else -> it
+                            }
+                        })
                     )
                 )
                 .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())

@@ -61,4 +61,28 @@ class CesilServerTest {
         assertEquals("HELLO WORLD", results[6].trim())
     }
 
+    @Test
+    fun `when code is run and html page is returned with the results and all blank lines having a space`() {
+        val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
+        val editor = editorPage.getElementById("editor") as HtmlTextArea
+        editor.text = buildProgram(
+            "     PRINT \"HELLO WORLD\"",
+            "     HALT", " ", "%", "*"
+        )
+        val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
+        val resultsTable = resultsPage.getElementById("table-results") as HtmlTable
+        val results = resultsTable.rows.map { row -> row.getCell(0).textContent }
+        assertEquals("PRINT \"HELLO WORLD\"", results[0].trim())
+        assertEquals("HALT", results[1].trim())
+        assertEquals(" ", results[2])
+        assertEquals("%", results[3].trim())
+        assertEquals("*", results[4].trim())
+        assertEquals(" ", results[5])
+        assertEquals("RESULTS:", results[6].trim())
+        assertEquals("HELLO WORLD", results[7].trim())
+    }
+
+    private fun buildProgram(vararg lines : String) : String = lines.joinToString(separator = System.lineSeparator())
+
+
 }
