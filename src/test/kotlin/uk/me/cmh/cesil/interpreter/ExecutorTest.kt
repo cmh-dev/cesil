@@ -1,6 +1,7 @@
 package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 
 class ExecutorTest {
@@ -71,6 +72,36 @@ class ExecutorTest {
             ), listOf("ACCUMULATOR VALUE: 42")
         )
 
+    @Test
+    fun `when a program loads a literal positive signed value the accumulator should contain that value`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD, "+1"),
+                    Instruction("", Operator.PRINT, "ACCUMULATOR VALUE: "),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("", Operator.HALT, "")
+                ),
+                mapOf(),
+                listOf()
+            ), listOf("ACCUMULATOR VALUE: 1")
+        )
+
+    @Test
+    fun `when a program loads a literal negative signed value the accumulator should contain that value`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD, "-1"),
+                    Instruction("", Operator.PRINT, "ACCUMULATOR VALUE: "),
+                    Instruction(operator = Operator.OUT),
+                    Instruction("", Operator.HALT, "")
+                ),
+                mapOf(),
+                listOf()
+            ), listOf("ACCUMULATOR VALUE: -1")
+        )
+
 
     @Test
     fun `when a program stores and retrieves a value from a variable the correct value is retrieved`() =
@@ -122,7 +153,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a jump intsruction is executed lines between the jump and labled statements will be skipped`() =
+    fun `when a jump instruction is executed lines between the jump and labled statements will be skipped`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -156,7 +187,7 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with a jineg instruction is excuted it will jump if the accumulator is negative`() =
+    fun `when a program with a jineg instruction is executed it will jump if the accumulator is negative`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
                 listOf(
@@ -205,7 +236,11 @@ class ExecutorTest {
         )
 
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =
-        assertEquals(expectedOutput, (executor.execute(program) as ExecutionSuccess).output)
+        when(val executionResult = executor.execute(program)) {
+            is ExecutionSuccess -> assertEquals(expectedOutput, executionResult.output)
+            is ExecutionFailure -> fail(executionResult.output.joinToString())
+        }
+
 
     // ERROR SCENARIOS
 

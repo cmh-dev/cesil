@@ -23,12 +23,12 @@ class Executor {
                 Operator.PRINT -> outputBuffer.append(instruction.operand)
                 Operator.LINE -> outputBuffer.appendLine()
                 Operator.OUT -> outputBuffer.append(accumulator)
-                Operator.ADD -> executeInstructionUsingVariable(instruction)
-                Operator.SUBTRACT -> executeInstructionUsingVariable(instruction)
-                Operator.MULTIPLY -> executeInstructionUsingVariable(instruction)
-                Operator.DIVIDE -> executeInstructionUsingVariable(instruction)
+                Operator.ADD -> executeInstructionUsingValue(instruction)
+                Operator.SUBTRACT -> executeInstructionUsingValue(instruction)
+                Operator.MULTIPLY -> executeInstructionUsingValue(instruction)
+                Operator.DIVIDE -> executeInstructionUsingValue(instruction)
                 Operator.STORE -> variables[instruction.operand] = accumulator
-                Operator.LOAD -> executeInstructionUsingVariable(instruction)
+                Operator.LOAD -> executeInstructionUsingValue(instruction)
                 Operator.JUMP -> executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes)
                 Operator.JIZERO ->  if (accumulator == 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
                 Operator.JINEG -> if (accumulator < 0) { executeJumpInstruction(instruction.operand, program.labeledInstructionIndexes) }
@@ -45,9 +45,9 @@ class Executor {
 
     }
 
-    private fun executeInstructionUsingVariable(instruction: Instruction) {
+    private fun executeInstructionUsingValue(instruction: Instruction) {
         val value = when {
-            instruction.operand.matches(Regex("^\\d*\$")) -> instruction.operand.toInt()
+            instruction.operand.matches(Regex("^(\\+|-)*\\d*\$")) -> instruction.operand.toInt()
             else -> variables[instruction.operand]
         }
         if (value != null) {
