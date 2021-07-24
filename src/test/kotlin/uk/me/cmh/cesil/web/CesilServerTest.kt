@@ -1,10 +1,7 @@
 package uk.me.cmh.cesil.web
 
 import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.HtmlButton
-import com.gargoylesoftware.htmlunit.html.HtmlPage
-import com.gargoylesoftware.htmlunit.html.HtmlTable
-import com.gargoylesoftware.htmlunit.html.HtmlTextArea
+import com.gargoylesoftware.htmlunit.html.*
 import org.http4k.server.Http4kServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -40,6 +37,20 @@ class CesilServerTest {
     fun `when root page is requested and html page is returned with an empty editor`() {
         val page = webClient.getPage<HtmlPage>("http://localhost:8080/")
         val editor = page.getElementById("editor") as HtmlTextArea
+        assertEquals("", editor.text)
+    }
+
+    @Test
+    fun `when the editor menu item is clicked on from the results page the an html page is returned with an empty editor`() {
+        val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
+        var editor = editorPage.getElementById("editor") as HtmlTextArea
+        editor.text = """PRINT "HELLO WORLD"
+                      HALT
+                      %
+                      *"""
+        val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
+        val newEditorPage = (resultsPage.getElementById("menu-item-editor") as HtmlAnchor).click<HtmlPage>()
+        editor = newEditorPage.getElementById("editor") as HtmlTextArea
         assertEquals("", editor.text)
     }
 
