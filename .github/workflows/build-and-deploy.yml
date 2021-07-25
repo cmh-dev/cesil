@@ -1,7 +1,7 @@
 name: build-and-deploy
 on: [push]
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,4 +15,9 @@ jobs:
         run: chmod +x gradlew
       - name: Build
         run: ./gradlew clean build shadowJar
+      - name: Store JAR
+      - uses: actions/upload-artifact@v2
+        with:
+          name: cesil-emulator
+          path: build/lib/cesil-emulator.jar
 
