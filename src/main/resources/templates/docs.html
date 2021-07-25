@@ -46,11 +46,10 @@
     <pre class="code" style="font-size: 1.1em">
         ( EXAMPLE PROGRAM
                  LOAD     0
-                 STORE    TOTAL
-        LOOP     IN
+        LOOP     STORE    TOTAL
+                 IN
                  JINEG    END
                  ADD      TOTAL
-                 STORE    TOTAL
                  JUMP     LOOP
         END      PRINT    "THE ANSWER IS "
                  LOAD     TOTAL
