@@ -31,7 +31,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cesil-emulator
-      - run: ll /home/runner/work/cesil/cesil/
+      - run: ls /home/runner/work/cesil/cesil/
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
