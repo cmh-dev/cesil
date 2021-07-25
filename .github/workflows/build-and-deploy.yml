@@ -21,4 +21,17 @@ jobs:
           name: cesil-emulator
           path: build/libs/cesil-emulator.jar
           if-no-files-found: error
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set-up Heroku Java plugin
+        run: heroku plugins:install java
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: cesil-emulator
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku deploy:jar build/libs/cesil-emulator.jar --app cesil-emulator
 
