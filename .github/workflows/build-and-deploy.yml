@@ -22,6 +22,7 @@ jobs:
           path: build/libs/cesil-emulator.jar
           if-no-files-found: error
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Set-up Heroku Java plugin
