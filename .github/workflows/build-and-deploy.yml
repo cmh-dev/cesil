@@ -19,6 +19,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cesil-emulator
-          path: build/lib/cesil-emulator.jar
+          path: build/libs/cesil-emulator.jar
           if-no-files-found: error
 
