@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.5.20'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group 'uk.me.cmh'
@@ -11,6 +12,14 @@ repositories {
 
 test {
     useJUnitPlatform()
+}
+
+shadowJar {
+    archiveFileName = "cesil-emulator.jar"
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': "uk.me.cmh.cesil.web.CesilServerKt"
+    }
 }
 
 dependencies {
