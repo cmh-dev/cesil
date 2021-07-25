@@ -27,7 +27,7 @@ jobs:
       - name: Set-up Heroku Java plugin
         run: heroku plugins:install java
       - name: Download artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v2
         with:
           name: cesil-emulator
       - name: Deploy to Heroku
