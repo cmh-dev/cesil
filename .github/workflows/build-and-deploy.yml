@@ -35,5 +35,5 @@ jobs:
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku deploy:jar cesil-emulator.jar --app cesil-emulator
+        run: heroku deploy:jar -/home/runner/work/cesil/cesil/cesil-emulator.jar --app cesil-emulator --jdk 11
 
