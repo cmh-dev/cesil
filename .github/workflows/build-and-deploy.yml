@@ -31,8 +31,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cesil-emulator
+          path: cesil-emulator.jar
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku deploy:jar build/libs/cesil-emulator.jar --app cesil-emulator
+        run: heroku deploy:jar cesil-emulator.jar --app cesil-emulator
 
