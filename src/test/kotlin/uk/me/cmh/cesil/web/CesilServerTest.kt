@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.html.*
 import org.http4k.server.Http4kServer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -41,6 +42,14 @@ class CesilServerTest {
     }
 
     @Test
+    fun `when the docs page is requested and html page is returned with the documentation`() {
+        val page = webClient.getPage<HtmlPage>("http://localhost:8080/docs")
+        val pageText = page.asNormalizedText()
+        assertTrue(pageText.contains("Program structure"), "Program structure not in page text")
+        assertTrue(pageText.contains("Instruction reference"), "Instruction reference not in page text")
+    }
+
+    @Test
     fun `when the editor menu item is clicked on from the results page the an html page is returned with an empty editor`() {
         val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
         var editor = editorPage.getElementById("editor") as HtmlTextArea
@@ -49,7 +58,7 @@ class CesilServerTest {
                       %
                       *"""
         val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
-        val newEditorPage = (resultsPage.getElementById("menu-item-editor") as HtmlAnchor).click<HtmlPage>()
+        val newEditorPage = (resultsPage.getElementById("menu-item-emulator") as HtmlAnchor).click<HtmlPage>()
         editor = newEditorPage.getElementById("editor") as HtmlTextArea
         assertEquals("", editor.text)
     }

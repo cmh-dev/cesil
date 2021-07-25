@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CESIL</title>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .code {
+            font-family: Courier New; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-brand">CESIL (Computer Education In Schools Instruction Language)</span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/" id="menu-item-emulator">Emulator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Docs</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main class="container">
+    <h4>Program structure</h4>
+    <p>
+        A CESIL program is split into two parts, instructions and data.
+    </p>
+    <p>
+        Instruction lines are split into three columns, a label (optional), the operator and an operand (dependent on the operator).
+        Each column is separated by white space.  Comment lines can be added to the instruction set and are started with a <span class="code">(</span>.
+    </p>
+    <p>
+        The data section consists of a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
+        The data section is terminated with a <span class="code">*</span> character.
+    </p>
+    <p>
+        An example program is as follows:
+    </p>
+    <pre class="code" style="font-size: 1.1em">
+        ( EXAMPLE PROGRAM
+                 LOAD     0
+                 STORE    TOTAL
+        LOOP     IN
+                 JINEG    END
+                 ADD      TOTAL
+                 STORE    TOTAL
+                 JUMP     LOOP
+        END      PRINT    "THE ANSWER IS "
+                 LOAD     TOTAL
+                 OUT
+                 HALT
+        %
+        40 2 -1
+        *</pre>
+    <h4>Instruction reference</h4>
+    <table class="table">
+        <tr>
+            <th>Operator</th>
+            <th>Operand</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td><span class="code">IN</span></td>
+            <td><span class="code"></span></td>
+            <td>Input the next available item of data into the accumulator.</td>
+        </tr>
+        <tr>
+            <td><span class="code">OUT</span></td>
+            <td><span class="code"></span></td>
+            <td>Output the value of the accumulator.</td>
+        </tr>
+        <tr>
+            <td><span class="code">PRINT</span></td>
+            <td><span class="code">"<i>text</i>"</span></td>
+            <td>Output the text in quotes.</td>
+        </tr>
+        <tr>
+            <td><span class="code">LINE</span></td>
+            <td><span class="code"></span></td>
+            <td>Output a new line.</td>
+        </tr>
+        <tr>
+            <td><span class="code">STORE</span></td>
+            <td><span class="code"><i>variable</i></span></td>
+            <td>Store the value of the accumulator into the given variable.</td>
+        </tr>
+        <tr>
+            <td><span class="code">LOAD</span></td>
+            <td><span class="code"><i>variable</i></span> / <span class="code"><i>literal</i></span></td>
+            <td>Load either the value of a variable or a given literal integer into the accumulator.</td>
+        </tr>
+        <tr>
+            <td><span class="code">ADD</span></td>
+            <td><span class="code"><i>variable</i></span> / <span class="code"><i>literal</i></span></td>
+            <td>Add either the value of a variable or a given literal integer to the accumulator and overwrite the accumulator with the result.</td>
+        </tr>
+        <tr>
+            <td><span class="code">SUBTRACT</span></td>
+            <td><span class="code"><i>variable</i></span> / <span class="code"><i>literal</i></span></td>
+            <td>Subtract either the value of a variable or a given literal integer from the accumulator and overwrite the accumulator with the result.</td>
+        </tr>
+        <tr>
+            <td><span class="code">MULTIPLY</span></td>
+            <td><span class="code"><i>variable</i></span> / <span class="code"><i>literal</i></span></td>
+            <td>Multiply the accumulator by either the value of a variable or a given literal integer and overwrite the accumulator with the result.</td>
+        </tr>
+        <tr>
+            <td><span class="code">DIVIDE</span></td>
+            <td><span class="code"><i>variable</i></span> / <span class="code"><i>literal</i></span></td>
+            <td>Divide the accumulator by either the value of a variable or a given literal integer and overwrite the accumulator with the result.</td>
+        </tr>
+        <tr>
+            <td><span class="code">JUMP</span></td>
+            <td><span class="code"><i>label</i></span></td>
+            <td>Jump to an instruction line labeled with the given label.</td>
+        </tr>
+        <tr>
+            <td><span class="code">JIZERO</span></td>
+            <td><span class="code"><i>label</i></span></td>
+            <td>Jump to an instruction line labeled with the given label if the accumulator is zero.</td>
+        </tr>
+        <tr>
+            <td><span class="code">JINEG</span></td>
+            <td><span class="code"><i>label</i></span></td>
+            <td>Jump to an instruction line labeled with the given label if the accumulator is negative.</td>
+        </tr>
+        <tr>
+            <td><span class="code">HALT</span></td>
+            <td><span class="code"></span></td>
+            <td>Stop execution</td>
+        </tr>
+    </table>
+</main>
+<script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -19,13 +19,19 @@ val config = EnvironmentVariables() overriding ConfigurationProperties.fromResou
 
 data class MainViewModel(val sourceCode: String = "") : ViewModel {
     override fun template(): String {
-        return "templates/main.html"
+        return "templates/emulator-editor.html"
+    }
+}
+
+data class DocsViewModel(val sourceCode: String = "") : ViewModel {
+    override fun template(): String {
+        return "templates/docs.html"
     }
 }
 
 data class RunResultsViewModel(val results: List<String>) : ViewModel {
     override fun template(): String {
-        return "templates/run-results.html"
+        return "templates/emulator-results.html"
     }
 }
 
@@ -49,7 +55,7 @@ fun cesilServerHandler(): HttpHandler {
                 )
                 .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())
         },
-        "/run-program" bind Method.POST to { request ->
+        "/emulator-run" bind Method.POST to { request ->
             val interpreter = Interpreter()
             val parameters: Map<String, List<String?>> = request.formAsMap()
             val sourceCode = parameters["sourcecode"]?.get(0) ?: ""
@@ -67,7 +73,16 @@ fun cesilServerHandler(): HttpHandler {
                     )
                 )
                 .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())
-        }
+        },
+        "/docs" bind Method.GET to {
+            Response(Status.OK)
+                .body(
+                    renderer.invoke(
+                        DocsViewModel()
+                    )
+                )
+                .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())
+        },
     )
 
 }
