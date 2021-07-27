@@ -67,31 +67,31 @@ class Executor {
 
     private fun executeInstructionUsingValue(instruction: Instruction, currentProgramState: ProgramState): ProgramState {
         val value = when {
-            instruction.operand.matches(Regex("^(\\+|-)*\\d*\$")) -> instruction.operand.toInt()
+            instruction.operand.matches(Regex("^[+-]*\\d*\$")) -> instruction.operand.toInt()
             else -> currentProgramState.variables[instruction.operand]
         }
         return if (value != null) {
-            return when {
-                instruction.operator == Operator.ADD -> getNextProgramStateWithNewAccumulatorValue(
+            return when (instruction.operator) {
+                Operator.ADD -> getNextProgramStateWithNewAccumulatorValue(
                     currentProgramState.accumulator + value,
                     currentProgramState
                 )
-                instruction.operator == Operator.SUBTRACT -> getNextProgramStateWithNewAccumulatorValue(
+                Operator.SUBTRACT -> getNextProgramStateWithNewAccumulatorValue(
                     currentProgramState.accumulator - value,
                     currentProgramState
                 )
-                instruction.operator == Operator.MULTIPLY -> getNextProgramStateWithNewAccumulatorValue(
+                Operator.MULTIPLY -> getNextProgramStateWithNewAccumulatorValue(
                     currentProgramState.accumulator * value,
                     currentProgramState
                 )
-                instruction.operator == Operator.DIVIDE -> {
+                Operator.DIVIDE -> {
                     if (value == 0) {
                         getNextProgramStateWithError("DIVISION BY ZERO", currentProgramState)
                     } else {
                         getNextProgramStateWithNewAccumulatorValue(currentProgramState.accumulator / value, currentProgramState)
                     }
                 }
-                instruction.operator == Operator.LOAD -> getNextProgramStateWithNewAccumulatorValue(value, currentProgramState)
+                Operator.LOAD -> getNextProgramStateWithNewAccumulatorValue(value, currentProgramState)
                 else -> currentProgramState
             }
         } else {
@@ -104,8 +104,7 @@ class Executor {
         labeledInstructionIndexes: Map<String, Int>,
         currentProgramState: ProgramState
     ): ProgramState {
-        val instructionIndex = labeledInstructionIndexes[label] ?: -1
-        return when (instructionIndex) {
+        return when (val instructionIndex = labeledInstructionIndexes[label] ?: -1) {
             -1 -> getNextProgramStateWithError("JUMP TO NON EXISTENT LABEL ($label)", currentProgramState)
             else -> currentProgramState.copy(currentInstructionIndex = instructionIndex)
         }
