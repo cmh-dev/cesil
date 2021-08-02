@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>CESIL</title>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+        #editor { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
+                #table-results { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
+        .table-striped>tbody>tr:nth-child(odd)>td,
+        .table-striped>tbody>tr:nth-child(odd)>th {
+           background-color: #ccffcc;
+         }
+                  .row {
+  display: flex; /* equal height of the children */
+}
+
+.col {
+  flex: 1; /* additionally, equal width */
+  margin: 1em;
+  padding: 1em;
+}
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-brand">CESIL (Computer Education In Schools Instruction Language)</span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="/" id="menu-item-emulator">Emulator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/docs">Docs</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main class="container">
+
+    <div class="parent-container d-flex">
+        <div class="container">
+            <div class="row">
+                <div class="col border border-secondary rounded">
+                    <h6>Source code</h6>
+                    <form action="/emulator-run" method="post" name="program">
+                        <div class="mb-3">
+                            <textarea class="form-control" id="editor" rows="20" name="sourcecode"></textarea>
+                        </div>
+                        <button type="submit" id="button-run" class="btn btn-primary">&gt; RUN</button>
+                    </form>
+                </div>
+                <div class="col border border-secondary rounded">
+                    <h6>Output</h6>
+                    <table class="table table-striped" id="table-results">
+                        <tr>
+                            <td>      PRINT     "HELLO WORLD"</td>
+                        </tr>
+                        <tr>
+                            <td>      HALT</td>
+                        </tr>
+                        <tr>
+                            <td>%</td>
+                        </tr>
+                        <tr>
+                            <td>*</td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <td>RESULTS:</td>
+                        </tr>
+                        <tr>
+                            <td>HELLO WORLD</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</main>
+<script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

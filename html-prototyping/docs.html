@@ -19,7 +19,7 @@
         <span class="navbar-brand">CESIL (Computer Education In Schools Instruction Language)</span>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/editor.hrml">Emulator</a>
+                <a class="nav-link" href="/" id="menu-item-emulator">Emulator</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#">Docs</a>
@@ -33,11 +33,11 @@
         A CESIL program is split into two parts, instructions and data.
     </p>
     <p>
-        Instruction lines are split into three columns, a label (optional), the operator and an operand (dependent on the operator).
+        Instruction lines are split into three columns, a label (optional), the operator and the operand (dependent on the operator).
         Each column is separated by white space.  Comment lines can be added to the instruction set and are started with a <span class="code">(</span>.
     </p>
     <p>
-        The data section consists of a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
+        The instructions section is terminated with a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
         The data section is terminated with a <span class="code">*</span> character.
     </p>
     <p>
@@ -46,13 +46,13 @@
     <pre class="code" style="font-size: 1.1em">
         ( EXAMPLE PROGRAM
                  LOAD     0
-                 STORE    TOTAL
-        LOOP     IN
+        LOOP     STORE    TOTAL
+                 IN
                  JINEG    END
                  ADD      TOTAL
-                 STORE    TOTAL
                  JUMP     LOOP
         END      PRINT    "THE ANSWER IS "
+                 LOAD     TOTAL
                  OUT
                  HALT
         %
@@ -135,7 +135,7 @@
             <td><span class="code"></span></td>
             <td>Stop execution</td>
         </tr>
-     </table>
+    </table>
 </main>
 <script src="static/js/bootstrap.bundle.min.js"></script>
 </body>
