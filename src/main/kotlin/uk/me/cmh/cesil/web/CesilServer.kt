@@ -17,23 +17,19 @@ import uk.me.cmh.cesil.interpreter.Interpreter
 val portKey = Key("port", intType)
 val config = EnvironmentVariables() overriding ConfigurationProperties.fromResource("default.properties")
 
-data class MainViewModel(val sourceCode: String = "") : ViewModel {
-    override fun template(): String {
-        return "templates/emulator-editor.html"
-    }
-}
-
 data class DocsViewModel(val sourceCode: String = "") : ViewModel {
     override fun template(): String {
         return "templates/docs.html"
     }
 }
 
-data class RunResultsViewModel(val results: List<String>) : ViewModel {
+data class EmulatorViewModel(val emulatorModel: EmulatorModel) : ViewModel {
     override fun template(): String {
-        return "templates/emulator-results.html"
+        return "templates/emulator.html"
     }
 }
+
+data class EmulatorModel(val sourceCode: String = "", val results: List<String> = listOf())
 
 fun cesilServer(): Http4kServer {
     val serverPort = config[portKey]
@@ -50,12 +46,12 @@ fun cesilServerHandler(): HttpHandler {
             Response(Status.OK)
                 .body(
                     renderer.invoke(
-                       MainViewModel()
+                       EmulatorViewModel(EmulatorModel())
                     )
                 )
                 .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())
         },
-        "/emulator-run" bind Method.POST to { request ->
+        "/" bind Method.POST to { request ->
             val interpreter = Interpreter()
             val parameters: Map<String, List<String?>> = request.formAsMap()
             val sourceCode = parameters["sourcecode"]?.get(0) ?: ""
@@ -64,12 +60,17 @@ fun cesilServerHandler(): HttpHandler {
             Response(Status.OK)
                 .body(
                     renderer.invoke(
-                        RunResultsViewModel(results.map {
-                            when {
-                                it.isBlank() -> " "
-                                else -> it
-                            }
-                        })
+                        EmulatorViewModel(
+                            EmulatorModel(
+                                sourceCode,
+                                results.map {
+                                    when {
+                                        it.isBlank() -> " "
+                                        else -> it
+                                    }
+                                }
+                            )
+                        )
                     )
                 )
                 .header("Content-Type", ContentType.TEXT_HTML.toHeaderValue())

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-
 class CesilServerTest {
 
     private lateinit var webClient: WebClient
@@ -35,9 +34,9 @@ class CesilServerTest {
     }
 
     @Test
-    fun `when root page is requested and html page is returned with an empty editor`() {
+    fun `when emulator page is requested and html page is returned with an empty editor`() {
         val page = webClient.getPage<HtmlPage>("http://localhost:8080/")
-        val editor = page.getElementById("editor") as HtmlTextArea
+        val editor = page.getElementById("text-editor") as HtmlTextArea
         assertEquals("", editor.text)
     }
 
@@ -50,27 +49,14 @@ class CesilServerTest {
     }
 
     @Test
-    fun `when the editor menu item is clicked on from the results page the an html page is returned with an empty editor`() {
+    fun `when code is run the emulator page is returned with the results and the editor containing the code`() {
         val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
-        var editor = editorPage.getElementById("editor") as HtmlTextArea
-        editor.text = """PRINT "HELLO WORLD"
+        val editor = editorPage.getElementById("text-editor") as HtmlTextArea
+        val code = """PRINT "HELLO WORLD"
                       HALT
                       %
                       *"""
-        val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
-        val newEditorPage = (resultsPage.getElementById("menu-item-emulator") as HtmlAnchor).click<HtmlPage>()
-        editor = newEditorPage.getElementById("editor") as HtmlTextArea
-        assertEquals("", editor.text)
-    }
-
-    @Test
-    fun `when code is run and html page is returned with the results`() {
-        val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
-        val editor = editorPage.getElementById("editor") as HtmlTextArea
-        editor.text = """PRINT "HELLO WORLD"
-                      HALT
-                      %
-                      *"""
+        editor.text = code
         val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
         val resultsTable = resultsPage.getElementById("table-results") as HtmlTable
         val results = resultsTable.rows.map { row -> row.getCell(0).textContent }
@@ -81,16 +67,19 @@ class CesilServerTest {
         assertEquals("", results[4].trim())
         assertEquals("RESULTS:", results[5].trim())
         assertEquals("HELLO WORLD", results[6].trim())
+        val resultsPageEditor = resultsPage.getElementById("text-editor") as HtmlTextArea
+        assertEquals(code, resultsPageEditor.text)
     }
 
     @Test
-    fun `when code is run and html page is returned with the results and all blank lines having a space`() {
+    fun `when code is run the emulator page is returned with the blank results lines containing spaces and the editor containing the code`() {
         val editorPage = webClient.getPage<HtmlPage>("http://localhost:8080/")
-        val editor = editorPage.getElementById("editor") as HtmlTextArea
-        editor.text = buildProgram(
+        val editor = editorPage.getElementById("text-editor") as HtmlTextArea
+        val code = buildProgram(
             "     PRINT \"HELLO WORLD\"",
             "     HALT", " ", "%", "*"
         )
+        editor.text = code
         val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
         val resultsTable = resultsPage.getElementById("table-results") as HtmlTable
         val results = resultsTable.rows.map { row -> row.getCell(0).textContent }
@@ -102,9 +91,10 @@ class CesilServerTest {
         assertEquals(" ", results[5])
         assertEquals("RESULTS:", results[6].trim())
         assertEquals("HELLO WORLD", results[7].trim())
+        val resultsPageEditor = resultsPage.getElementById("text-editor") as HtmlTextArea
+        assertEquals(code, resultsPageEditor.text)
     }
 
-    private fun buildProgram(vararg lines : String) : String = lines.joinToString(separator = System.lineSeparator())
-
+    private fun buildProgram(vararg lines : String) : String = lines.joinToString(separator = "\n")
 
 }
