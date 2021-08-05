@@ -8,21 +8,20 @@
         .navbar {
             margin-bottom: 20px;
         }
-        #editor { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
-                #table-results { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
+        .row {
+            display: flex;
+        }
+        .col {
+            flex: 1;
+            margin: 1em;
+            padding: 1em;
+        }
+        .text-editor { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
+        #table-results { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
         .table-striped>tbody>tr:nth-child(odd)>td,
         .table-striped>tbody>tr:nth-child(odd)>th {
-           background-color: #ccffcc;
-         }
-                  .row {
-  display: flex; /* equal height of the children */
-}
-
-.col {
-  flex: 1; /* additionally, equal width */
-  margin: 1em;
-  padding: 1em;
-}
+            background-color: #ccffcc;
+        }
     </style>
 </head>
 <body>
@@ -48,37 +47,16 @@
                     <h6>Source code</h6>
                     <form action="/emulator-run" method="post" name="program">
                         <div class="mb-3">
-                            <textarea class="form-control" id="editor" rows="20" name="sourcecode"></textarea>
+                            <textarea class="form-control editor" rows="20" name="sourcecode"></textarea>
                         </div>
                         <button type="submit" id="button-run" class="btn btn-primary">&gt; RUN</button>
                     </form>
                 </div>
                 <div class="col border border-secondary rounded">
                     <h6>Output</h6>
-                    <table class="table table-striped" id="table-results">
-                        <tr>
-                            <td>      PRINT     "HELLO WORLD"</td>
-                        </tr>
-                        <tr>
-                            <td>      HALT</td>
-                        </tr>
-                        <tr>
-                            <td>%</td>
-                        </tr>
-                        <tr>
-                            <td>*</td>
-                        </tr>
-                        <tr>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>RESULTS:</td>
-                        </tr>
-                        <tr>
-                            <td>HELLO WORLD</td>
-                        </tr>
+                    <textarea readonly class="form-control editor" rows="20" name="output" style="background-color:#eeeeee">
 
-                    </table>
+                    </textarea>
                 </div>
 
 

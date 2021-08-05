@@ -29,7 +29,7 @@ data class EmulatorViewModel(val emulatorModel: EmulatorModel) : ViewModel {
     }
 }
 
-data class EmulatorModel(val sourceCode: String = "", val results: List<String> = listOf())
+data class EmulatorModel(val sourceCode: String = "", val results: String = "")
 
 fun cesilServer(): Http4kServer {
     val serverPort = config[portKey]
@@ -63,12 +63,7 @@ fun cesilServerHandler(): HttpHandler {
                         EmulatorViewModel(
                             EmulatorModel(
                                 sourceCode,
-                                results.map {
-                                    when {
-                                        it.isBlank() -> " "
-                                        else -> it
-                                    }
-                                }
+                                results.joinToString(separator = "\n")
                             )
                         )
                     )

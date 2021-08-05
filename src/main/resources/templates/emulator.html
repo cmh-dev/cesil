@@ -16,7 +16,7 @@
             margin: 1em;
             padding: 1em;
         }
-        #text-editor { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
+        .text-editor { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
         #table-results { font-family: Courier New; font-weight: bold; font-size: 1.2em; white-space: pre; }
         .table-striped>tbody>tr:nth-child(odd)>td,
         .table-striped>tbody>tr:nth-child(odd)>th {
@@ -46,18 +46,14 @@
                     <h6>Source code</h6>
                     <form action="/" method="post" name="program">
                         <div class="mb-3">
-                            <textarea class="form-control" id="text-editor" rows="20" name="sourcecode" th:text="${model.emulatorModel.sourceCode}"></textarea>
+                            <textarea class="form-control text-editor" rows="20" id="text-editor" name="sourcecode" th:text="${model.emulatorModel.sourceCode}"></textarea>
                         </div>
                         <button type="submit" id="button-run" class="btn btn-primary">&gt; RUN</button>
                     </form>
                 </div>
                 <div class="col border border-secondary rounded">
                     <h6>Output</h6>
-                    <table class="table table-striped" id="table-results">
-                        <tr th:each="result : ${model.emulatorModel.results}">
-                            <td th:text="${result}"></td>
-                        </tr>
-                    </table>
+                    <textarea class="form-control text-editor"  style="background-color:#eeeeee" readonly id="text-results" rows="20" name="sourcecode" th:text="${model.emulatorModel.results}"></textarea>
                 </div>
            </div>
         </div>
