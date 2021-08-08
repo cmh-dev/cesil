@@ -60,13 +60,7 @@ class CesilServerTest {
         val resultsPage = (editorPage.getElementById("button-run") as HtmlButton).click<HtmlPage>()
         val resultsText = resultsPage.getElementById("text-results") as HtmlTextArea
         val results = resultsText.text.lines()
-        assertEquals("PRINT \"HELLO WORLD\"", results[0].trim())
-        assertEquals("HALT", results[1].trim())
-        assertEquals("%", results[2].trim())
-        assertEquals("*", results[3].trim())
-        assertEquals("", results[4].trim())
-        assertEquals("RESULTS:", results[5].trim())
-        assertEquals("HELLO WORLD", results[6].trim())
+        assertEquals("HELLO WORLD", results[0].trim())
         val resultsPageEditor = resultsPage.getElementById("text-editor") as HtmlTextArea
         assertEquals(code, resultsPageEditor.text)
     }

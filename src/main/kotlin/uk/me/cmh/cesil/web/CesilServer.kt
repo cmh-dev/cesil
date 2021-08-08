@@ -29,7 +29,7 @@ data class EmulatorViewModel(val emulatorModel: EmulatorModel) : ViewModel {
     }
 }
 
-data class EmulatorModel(val sourceCode: String = "", val results: String = "")
+data class EmulatorModel(val sourceCode: String = "", val output: String = "")
 
 fun cesilServer(): Http4kServer {
     val serverPort = config[portKey]
@@ -55,15 +55,14 @@ fun cesilServerHandler(): HttpHandler {
             val interpreter = Interpreter()
             val parameters: Map<String, List<String?>> = request.formAsMap()
             val sourceCode = parameters["sourcecode"]?.get(0) ?: ""
-            val executionResult = interpreter.executeProgram(sourceCode)
-            val results = sourceCode.lines() + listOf("", "RESULTS:") + executionResult.output
+            val output = interpreter.executeProgram(sourceCode).output.joinToString(separator = "\n")
             Response(Status.OK)
                 .body(
                     renderer.invoke(
                         EmulatorViewModel(
                             EmulatorModel(
                                 sourceCode,
-                                results.joinToString(separator = "\n")
+                                output
                             )
                         )
                     )
