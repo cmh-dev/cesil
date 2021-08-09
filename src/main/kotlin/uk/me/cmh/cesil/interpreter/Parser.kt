@@ -45,7 +45,7 @@ class Parser {
         if (!dataTermination) {
             parseErrors.add("MISSING DATA SET TERMINATOR")
         }
-        if (instructions.filter { it.operator == Operator.HALT }.count() == 0) {
+        if (instructions.none { it.operator == Operator.HALT }) {
             parseErrors.add("MISSING HALT INSTRUCTION")
         }
 

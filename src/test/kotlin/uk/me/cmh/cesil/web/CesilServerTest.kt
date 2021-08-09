@@ -65,6 +65,4 @@ class CesilServerTest {
         assertEquals(code, resultsPageEditor.text)
     }
 
-    private fun buildProgram(vararg lines : String) : String = lines.joinToString(separator = "\n")
-
 }
