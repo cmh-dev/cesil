@@ -365,19 +365,36 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program with not enough data is executed the an error will be returned`() =
+    fun `when a program with not enough data is executed an error will be returned`() =
         assertThatAnInvalidProgramWillReturnTheCorrectError(
             Program(
                 listOf(
                     Instruction("", Operator.IN,""),
                     Instruction("", Operator.IN,""),
                     Instruction("", Operator.IN,""),
-                    Instruction("EXIT", Operator.HALT,"" )
+                    Instruction("", Operator.HALT,"" )
                 ),
-                mapOf("LOOP" to 0, "EXIT" to 5),
+                mapOf(),
                 listOf(1, 0)
             ), listOf("PROGRAM REQUIRES MORE DATA")
         )
+
+    @Test
+    fun `when a program is run that results in more than 100 instructions executions an error will be returned`() {
+        assertThatAnInvalidProgramWillReturnTheCorrectError(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD,"100"),
+                    Instruction("LOOP", Operator.SUBTRACT,"1"),
+                    Instruction("", Operator.JIZERO,"EXIT"),
+                    Instruction("", Operator.JUMP, "LOOP"),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                mapOf("LOOP" to 1, "EXIT" to 4),
+                listOf()
+            ), listOf("MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
+        )
+    }
 
     private fun assertThatAnInvalidProgramWillReturnTheCorrectError(program: Program, expectedErrors: List<String>) =
         assertEquals(expectedErrors, (executor.execute(program) as ExecutionFailure).output)

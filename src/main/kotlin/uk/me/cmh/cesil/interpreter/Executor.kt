@@ -2,6 +2,10 @@ package uk.me.cmh.cesil.interpreter
 
 class Executor {
 
+    companion object {
+        val MAXIMUM_EXECUTED_INSTRUCTIONS = 100
+    }
+
     private data class ProgramState(
         val output: String = "",
         val error: String = "",
@@ -14,8 +18,9 @@ class Executor {
     fun execute(program: Program): ExecutionResult {
 
         var programState = ProgramState(data = program.data)
+        var executedInstructionCount = 0
 
-        while (programState.currentInstructionIndex <= program.instructions.lastIndex && programState.error.isBlank()) {
+        while (programState.currentInstructionIndex <= program.instructions.lastIndex && programState.error.isBlank() && executedInstructionCount <= MAXIMUM_EXECUTED_INSTRUCTIONS) {
             val instruction = program.instructions[programState.currentInstructionIndex]
             programState = when (instruction.operator) {
                 Operator.PRINT -> getNextProgramStateWithOutputAddition(instruction.operand, programState)
@@ -48,14 +53,25 @@ class Executor {
                     programState.copy(currentInstructionIndex = programState.currentInstructionIndex + 1)
                 }
                 Operator.IN -> if (programState.data.isNotEmpty()) {
-                    programState.copy(accumulator = programState.data.first(), data = programState.data.drop(1), currentInstructionIndex = programState.currentInstructionIndex + 1)
+                    programState.copy(
+                        accumulator = programState.data.first(),
+                        data = programState.data.drop(1),
+                        currentInstructionIndex = programState.currentInstructionIndex + 1
+                    )
                 } else {
                     getNextProgramStateWithError("PROGRAM REQUIRES MORE DATA", programState)
                 }
                 Operator.HALT -> break
                 Operator.INVALID_OPERATOR -> programState
             }
+            executedInstructionCount++
             if (programState.error.isNotBlank()) break
+        }
+
+        if (executedInstructionCount > MAXIMUM_EXECUTED_INSTRUCTIONS) {
+            programState = programState.copy(error = "MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
+
+
         }
 
         return when {
@@ -65,7 +81,10 @@ class Executor {
 
     }
 
-    private fun executeInstructionUsingValue(instruction: Instruction, currentProgramState: ProgramState): ProgramState {
+    private fun executeInstructionUsingValue(
+        instruction: Instruction,
+        currentProgramState: ProgramState
+    ): ProgramState {
         val value = when {
             instruction.operand.matches(Regex("^[+-]*\\d*\$")) -> instruction.operand.toInt()
             else -> currentProgramState.variables[instruction.operand]
@@ -88,7 +107,10 @@ class Executor {
                     if (value == 0) {
                         getNextProgramStateWithError("DIVISION BY ZERO", currentProgramState)
                     } else {
-                        getNextProgramStateWithNewAccumulatorValue(currentProgramState.accumulator / value, currentProgramState)
+                        getNextProgramStateWithNewAccumulatorValue(
+                            currentProgramState.accumulator / value,
+                            currentProgramState
+                        )
                     }
                 }
                 Operator.LOAD -> getNextProgramStateWithNewAccumulatorValue(value, currentProgramState)
@@ -129,7 +151,10 @@ class Executor {
         )
 
     private fun getNextProgramStateWithError(errorValue: String, currentProgramState: ProgramState): ProgramState =
-        currentProgramState.copy(error = errorValue, currentInstructionIndex = currentProgramState.currentInstructionIndex + 1)
+        currentProgramState.copy(
+            error = errorValue,
+            currentInstructionIndex = currentProgramState.currentInstructionIndex + 1
+        )
 
 
     private fun buildNonExistentVariableMessage(variableName: String) = "NON EXISTENT VARIABLE ($variableName)"

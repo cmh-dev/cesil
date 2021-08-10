@@ -33,11 +33,11 @@
         A CESIL program is split into two parts, instructions and data.
     </p>
     <p>
-        Instruction lines are split into three columns, a label (optional), the operator and the operand (dependent on the operator).
+        Instruction lines are split into three columns, a label (optional), the operator and an operand (dependent on the operator).
         Each column is separated by white space.  Comment lines can be added to the instruction set and are started with a <span class="code">(</span>.
     </p>
     <p>
-        The instructions section is terminated with a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
+        The data section consists of a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
         The data section is terminated with a <span class="code">*</span> character.
     </p>
     <p>
@@ -136,6 +136,16 @@
             <td>Stop execution</td>
         </tr>
     </table>
+    <h4>Notes</h4>
+    <p>
+        This version of CESIL has the following differences to the original:
+    </p>
+    <ul>
+        <li>The maximum number of instructions that can be executed in a single run is 100. If this is exceeded an error will be returned.</li>
+        <li>Positive integers and zero do not need to be signed.</li>
+        <li>Labels are not limited to six characters.</li>
+        <li>Program header comments are not supported.</li>
+    </ul>
 </main>
 <script src="static/js/bootstrap.bundle.min.js"></script>
 </body>
