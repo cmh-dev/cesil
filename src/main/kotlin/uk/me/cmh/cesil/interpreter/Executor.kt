@@ -3,7 +3,7 @@ package uk.me.cmh.cesil.interpreter
 class Executor {
 
     companion object {
-        val MAXIMUM_EXECUTED_INSTRUCTIONS = 100
+        const val MAXIMUM_EXECUTED_INSTRUCTIONS = 100
     }
 
     private data class ProgramState(
