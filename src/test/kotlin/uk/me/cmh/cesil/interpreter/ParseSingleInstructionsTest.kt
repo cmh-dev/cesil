@@ -233,13 +233,19 @@ class ParseSingleInstructionsTest {
         assertThatOneInvalidStatementCannotBeParsed("PRINT HELLO\"",
             "INSTRUCTION LINE OPERAND INVALID [PRINT HELLO\"]")
 
-    private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) =
-        assertEquals(expectedInstruction, parser.parseInstructionLine(instructionLine))
+
+    // TODO: Return a Parser.ParsedLine that can be a InstructionLine, DataLine, ErrorLine
+
+
+    private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) {
+        val parsedInstructionLine = parser.parseInstructionLine(instructionLine) as Parser.InstructionLine
+        assertEquals(expectedInstruction, parsedInstructionLine.instruction)
+    }
+
 
     private fun assertThatOneInvalidStatementCannotBeParsed(instructionLine: String, expectedErrorMessage: String) {
-        val exception =
-            assertThrows(Parser.ParserException::class.java) { parser.parseInstructionLine(instructionLine) }
-        assertEquals(expectedErrorMessage, exception.message)
+        val parsedErrorLine = parser.parseInstructionLine(instructionLine) as Parser.ErrorLine
+        assertEquals(expectedErrorMessage, parsedErrorLine.error)
     }
 
 }
