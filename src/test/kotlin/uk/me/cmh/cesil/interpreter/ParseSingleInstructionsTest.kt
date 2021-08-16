@@ -212,29 +212,38 @@ class ParseSingleInstructionsTest {
             Instruction("LABEL", Operator.JIZERO, "LABEL2")
         )
 
+    @Test
+    fun `when a valid data line is parsed the data items are returned`() {
+        val parsedDataLine = parser.parseDataLine("42 2 260000 199 1") as Parser.DataLine
+        assertEquals(listOf(42, 2, 260000, 199, 1), parsedDataLine.dataItems)
+    }
+
     // ERROR SITUATIONS
 
     @Test
-    fun `when a single numeric instruction line is parsed an exception is thrown`() =
+    fun `when a single numeric instruction line is parsed an error is returned`() =
         assertThatOneInvalidStatementCannotBeParsed("3", "INSTRUCTION LINE INVALID [3]")
 
     @Test
-    fun `when a print instruction line operand with no quotes is parsed an exception is thrown`() =
+    fun `when a print instruction line operand with no quotes is parsed an error is returned`() =
         assertThatOneInvalidStatementCannotBeParsed("PRINT HELLO",
             "INSTRUCTION LINE OPERAND INVALID [PRINT HELLO]")
 
     @Test
-    fun `when a print instruction line operand with no ending quote is parsed an exception is thrown`() =
+    fun `when a print instruction line operand with no ending quote is parsed an error is returned`() =
         assertThatOneInvalidStatementCannotBeParsed("PRINT \"HELLO",
             "INSTRUCTION LINE OPERAND INVALID [PRINT \"HELLO]")
 
     @Test
-    fun `when a print instruction line operand with no starting quote is parsed an exception is thrown`() =
+    fun `when a print instruction line operand with no starting quote is parsed an error is returned`() =
         assertThatOneInvalidStatementCannotBeParsed("PRINT HELLO\"",
             "INSTRUCTION LINE OPERAND INVALID [PRINT HELLO\"]")
 
-
-    // TODO: Return a Parser.ParsedLine that can be a InstructionLine, DataLine, ErrorLine
+    @Test
+    fun `when an invalid data lome is parsed am error is returned`() {
+        val parsedErrorLine = parser.parseDataLine("42 LIFE") as Parser.ErrorLine
+        assertEquals("DATA LINE INVALID [42 LIFE]", parsedErrorLine.error)
+    }
 
 
     private fun assertThatOneStatementCanBeCorrectlyParsed(instructionLine: String, expectedInstruction: Instruction) {
