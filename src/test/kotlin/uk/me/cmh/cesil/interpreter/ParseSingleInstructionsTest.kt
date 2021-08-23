@@ -1,7 +1,6 @@
 package uk.me.cmh.cesil.interpreter
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 class ParseSingleInstructionsTest {
