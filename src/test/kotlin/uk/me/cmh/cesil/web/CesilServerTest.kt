@@ -2,7 +2,7 @@ package uk.me.cmh.cesil.web
 
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
-import org.http4k.server.Http4kServer
+import io.ktor.server.engine.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Test
 class CesilServerTest {
 
     private lateinit var webClient: WebClient
-    private lateinit var cesilServer: Http4kServer
+    private lateinit var cesilServer: ApplicationEngine
+
 
     @BeforeEach
     fun setUp() {
@@ -24,7 +25,7 @@ class CesilServerTest {
     @AfterEach
     fun tearDown() {
         webClient.close()
-        cesilServer.stop()
+        cesilServer.stop(0, 0)
     }
 
     @Test

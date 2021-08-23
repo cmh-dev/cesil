@@ -46,14 +46,14 @@
                     <h6>Source code</h6>
                     <form action="/" method="post" name="program">
                         <div class="mb-3">
-                            <textarea class="form-control text-editor" rows="20" id="text-editor" name="sourcecode" th:text="${model.emulatorModel.sourceCode}"></textarea>
+                            <textarea class="form-control text-editor" rows="20" id="text-editor" name="sourcecode" th:text="${emulator.sourceCode}"></textarea>
                         </div>
                         <button type="submit" id="button-run" class="btn btn-primary">&gt; RUN</button>
                     </form>
                 </div>
                 <div class="col border border-secondary rounded">
                     <h6>Output</h6>
-                    <textarea class="form-control text-editor"  style="background-color:#eeeeee" readonly id="text-results" rows="20" name="sourcecode" th:text="${model.emulatorModel.output}"></textarea>
+                    <textarea class="form-control text-editor"  style="background-color:#eeeeee" readonly id="text-results" rows="20" name="sourcecode" th:text="${emulator.output}"></textarea>
                 </div>
            </div>
         </div>
