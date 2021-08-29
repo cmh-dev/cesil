@@ -5,7 +5,7 @@ on:
       - 'README.md'
       - 'html-prototyping/**'
 jobs:
-  build:
+  build-web:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,12 +18,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build
-        run: ./gradlew clean build shadowJar
+        run: ./gradlew clean build :cesil-web:shadowJar
       - name: Store JAR
         uses: actions/upload-artifact@v2
         with:
           name: cesil-emulator
-          path: build/libs/cesil-emulator.jar
+          path: cesil-web/build/libs/cesil-web.jar
           if-no-files-found: error
   deploy:
     needs: build
@@ -38,5 +38,5 @@ jobs:
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku deploy:jar /home/runner/work/cesil/cesil/cesil-emulator.jar --app cesil-emulator --jdk 11
+        run: heroku deploy:jar /home/runner/work/cesil/cesil/cesil-web.jar --app cesil-emulator --jdk 11
 

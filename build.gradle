@@ -1,33 +1,23 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "org.jetbrains.kotlin.jvm" version "1.5.10" apply false
 }
 
-group 'uk.me.cmh'
-version '1.0-SNAPSHOT'
+subprojects {
 
-repositories {
-    mavenCentral()
-}
+    apply plugin: 'org.jetbrains.kotlin.jvm'
 
-test {
-    useJUnitPlatform()
-}
-
-shadowJar {
-    archiveFileName = "cesil-emulator.jar"
-    manifest {
-        attributes 'Main-Class': "uk.me.cmh.cesil.web.CesilServerKt"
+    repositories {
+        mavenCentral()
     }
-}
 
-dependencies {
-    implementation "io.ktor:ktor-server-core:1.6.2"
-    implementation "io.ktor:ktor-server-netty:1.6.2"
-    implementation "io.ktor:ktor-thymeleaf:1.6.2"
-    implementation "org.slf4j:slf4j-simple:2.0.0-alpha0"
-    implementation "com.natpryce:konfig:1.6.10.0"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.7.2"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
-    testImplementation 'net.sourceforge.htmlunit:htmlunit:2.52.0'
+    test {
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        implementation "org.slf4j:slf4j-simple:2.0.0-alpha0"
+        testImplementation "org.junit.jupiter:junit-jupiter:5.7.2"
+        testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
+    }
+
 }
