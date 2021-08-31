@@ -87,7 +87,7 @@ class ParseFullProgramsTest {
                 3
                 *
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "INSTRUCTION LINE INVALID [FIRST INVALID LINE]",
@@ -108,7 +108,7 @@ class ParseFullProgramsTest {
                 3
                 *
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "DATA LINE INVALID [1 2a]",
@@ -131,7 +131,7 @@ class ParseFullProgramsTest {
                 3
                 *
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "INSTRUCTION LINE INVALID [FIRST INVALID LINE]",
@@ -152,7 +152,7 @@ class ParseFullProgramsTest {
                 1 2
                 3
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "MISSING DATA SET TERMINATOR"
@@ -170,7 +170,7 @@ class ParseFullProgramsTest {
                 3
                 *
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "INSTRUCTION LINE INVALID [1 2]",
@@ -187,7 +187,7 @@ class ParseFullProgramsTest {
                           JUMP     LABEL
                 LABEL     HALT
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "MISSING INSTRUCTION SET TERMINATOR",
@@ -203,7 +203,7 @@ class ParseFullProgramsTest {
                 %
                 *
         """
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "MISSING HALT INSTRUCTION"
@@ -214,7 +214,7 @@ class ParseFullProgramsTest {
     @Test
     fun `when empty source codeis parsed errors are returned`() {
         val sourceCode = ""
-        val errorMessages = (parser.parse(sourceCode) as ParserErrors).errorMessages
+        val errorMessages = (parser.parse(sourceCode) as ParsingErrors).errorMessages
         assertEquals(
             listOf(
                 "NO SOURCE CODE"

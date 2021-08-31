@@ -16,7 +16,7 @@ class InterpreterTest {
         val sourceCode = """
             BAD PRORGAM LINE 1
         """.trimIndent()
-        whenever(mockParser.parse(sourceCode)).thenReturn(ParserErrors(listOf("INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]")))
+        whenever(mockParser.parse(sourceCode)).thenReturn(ParsingErrors(listOf("INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]")))
 
         val executionResult = interpreter.executeProgram(sourceCode) as ExecutionFailure
 
@@ -34,7 +34,7 @@ class InterpreterTest {
             BAD PROGRAM LINE 2
         """.trimIndent()
         whenever(mockParser.parse(sourceCode)).thenReturn(
-            ParserErrors(
+            ParsingErrors(
                 listOf(
                     "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 1]",
                     "INSTRUCTION LINE INVALID [BAD PROGRAM LINE 2]"

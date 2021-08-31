@@ -4,30 +4,30 @@ import java.lang.NumberFormatException
 
 class Parser {
 
-    fun parse(sourceCode: String): ParserResult {
+    fun parse(sourceCode: String): ParsingResult {
 
         val instructions = mutableListOf<Instruction>()
         val labeledInstructionIndexes = mutableMapOf<String, Int>()
         val data = mutableListOf<Int>()
-        var inData = false
-        val parseErrors = mutableListOf<String>()
-        var dataTerminated = false
+        var isInstructionSetTerminated = false
+        val parsingErrors = mutableListOf<String>()
+        var isDataTerminated = false
 
-        if (sourceCode.isBlank()) return ParserErrors(listOf("NO SOURCE CODE"))
+        if (sourceCode.isBlank()) return ParsingErrors(listOf("NO SOURCE CODE"))
 
         sourceCode.lines()
             .map { line -> line.trim() }
             .filterNot { line -> line.startsWith("(") || line.isBlank() }
             .forEach { line ->
                 when {
-                    line.startsWith("%") -> inData = true
+                    line.startsWith("%") -> isInstructionSetTerminated = true
                     line.startsWith("*") -> {
-                        dataTerminated = true
+                        isDataTerminated = true
                         return@forEach
                     }
                     else -> {
                         val parsedLine =
-                            when(inData) {
+                            when(isInstructionSetTerminated) {
                                 true -> parseDataLine(line)
                                 false -> parseInstructionLine(line)
                             }
@@ -40,25 +40,25 @@ class Parser {
                                     labeledInstructionIndexes[instruction.label] = instructions.lastIndex
                                 }
                             }
-                            is ErrorLine -> parseErrors.add(parsedLine.error)
+                            is ErrorLine -> parsingErrors.add(parsedLine.error)
                         }
                     }
                 }
             }
 
-        if (!inData) {
-            parseErrors.add("MISSING INSTRUCTION SET TERMINATOR")
+        if (!isInstructionSetTerminated) {
+            parsingErrors.add("MISSING INSTRUCTION SET TERMINATOR")
         }
-        if (!dataTerminated) {
-            parseErrors.add("MISSING DATA SET TERMINATOR")
+        if (!isDataTerminated) {
+            parsingErrors.add("MISSING DATA SET TERMINATOR")
         }
         if (instructions.none { it.operator == Operator.HALT }) {
-            parseErrors.add("MISSING HALT INSTRUCTION")
+            parsingErrors.add("MISSING HALT INSTRUCTION")
         }
 
         return when {
-            parseErrors.isEmpty() -> ParsedProgram(Program(instructions, labeledInstructionIndexes, data))
-            else -> ParserErrors(parseErrors)
+            parsingErrors.isEmpty() -> ParsedProgram(Program(instructions, labeledInstructionIndexes, data))
+            else -> ParsingErrors(parsingErrors)
         }
 
     }
@@ -110,8 +110,3 @@ class Parser {
     class DataLine(val dataItems: List<Int>) : ParsedLine()
 
 }
-
-
-sealed class ParserResult
-class ParserErrors(val errorMessages: List<String>) : ParserResult()
-class ParsedProgram(val program: Program) : ParserResult()
