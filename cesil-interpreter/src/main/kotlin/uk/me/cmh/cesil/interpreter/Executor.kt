@@ -13,7 +13,9 @@ class Executor {
         while (programState.instructionIndex <= program.instructions.lastIndex
             && programState.numberOfExecutedInstructions <= MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED
             && programState.isRunning
-        ) programState = executeNextInstruction(programState, program)
+        ) {
+            programState = executeNextInstruction(programState, program)
+        }
 
         if (programState.numberOfExecutedInstructions > MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED)
             programState = programState.nextWithError(error = "MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
@@ -28,35 +30,58 @@ class Executor {
     private fun executeNextInstruction(programState: ProgramState, program: Program): ProgramState {
         val instruction = program.instructions[programState.instructionIndex]
         return when (instruction.operator) {
-            Operator.PRINT -> programState.nextWithNewOutputValue(newOutputValue = programState.output + instruction.operand)
-            Operator.LINE -> programState.nextWithNewOutputValue(newOutputValue = programState.output + System.lineSeparator())
-            Operator.OUT -> programState.nextWithNewOutputValue(newOutputValue = programState.output + programState.accumulator.toString())
+            Operator.PRINT -> executeOutputInstruction(instruction.operand, programState)
+            Operator.LINE -> executeOutputInstruction(System.lineSeparator(), programState)
+            Operator.OUT -> executeOutputInstruction(programState.accumulator.toString(), programState)
+            Operator.IN -> executeDataItemReadInstruction(programState)
+            Operator.STORE -> executeStoreInstruction(programState, instruction)
+            Operator.LOAD -> executeInstructionUsingValue(instruction, programState)
             Operator.ADD -> executeInstructionUsingValue(instruction, programState)
             Operator.SUBTRACT -> executeInstructionUsingValue(instruction, programState)
             Operator.MULTIPLY -> executeInstructionUsingValue(instruction, programState)
             Operator.DIVIDE -> executeInstructionUsingValue(instruction, programState)
-            Operator.STORE -> programState.nextWithNewVariableList(
-                newVariableList = mapOf(
-                    *programState.variables.entries.map { it.key to it.value }.toTypedArray(),
-                    instruction.operand to programState.accumulator
-                )
-            )
-            Operator.LOAD -> executeInstructionUsingValue(instruction, programState)
             Operator.JUMP -> executeJumpInstruction(instruction, programState, program)
             Operator.JIZERO -> executeJumpInstruction(instruction, programState, program)
             Operator.JINEG -> executeJumpInstruction(instruction, programState, program)
-            Operator.IN -> if (programState.data.isNotEmpty()) {
-                programState.nextNewAccumulatorValueAndData(
-                    newAccumulatorValue = programState.data.first(),
-                    newData = programState.data.drop(1),
-                )
-            } else {
-                programState.nextWithError(error = "PROGRAM REQUIRES MORE DATA")
-            }
             Operator.HALT -> programState.terminate()
             Operator.INVALID_OPERATOR -> programState
         }
     }
+
+    private fun executeOutputInstruction(valueToAppend: String, programState: ProgramState) =
+        programState.nextWithNewOutputValue(newOutputValue = programState.output + valueToAppend)
+
+    private fun executeStoreInstruction(programState: ProgramState, instruction: Instruction) =
+        programState.nextWithNewVariableList(
+            newVariableList = mapOf(
+                *programState.variables.entries.map { it.key to it.value }.toTypedArray(),
+                instruction.operand to programState.accumulator
+            )
+        )
+
+    private fun executeDataItemReadInstruction(programState: ProgramState) =
+        if (programState.data.isNotEmpty())
+            programState.nextNewAccumulatorValueAndData(
+                newAccumulatorValue = programState.data.first(),
+                newData = programState.data.drop(1)
+            )
+        else
+            programState.nextWithError(error = "PROGRAM REQUIRES MORE DATA")
+
+    private fun executeJumpInstruction(instruction: Instruction, programState: ProgramState, program: Program) =
+        if (instruction.operator == Operator.JUMP ||
+            (instruction.operator == Operator.JIZERO && programState.accumulator == 0) ||
+            (instruction.operator == Operator.JINEG && programState.accumulator < 0)
+        )
+            executeJumpToLabel(instruction.operand, program.labeledInstructionIndexes, programState)
+        else
+            programState.next()
+
+    private fun executeJumpToLabel(label: String, labeledInstructionIndexes: Map<String, Int>, programState: ProgramState) =
+        when (val instructionIndex = labeledInstructionIndexes[label] ?: -1) {
+            -1 -> programState.nextWithError(error = "JUMP TO NON EXISTENT LABEL ($label)")
+            else -> programState.nextWithNewInstructionIndex(newInstructionIndex = instructionIndex)
+        }
 
     private fun executeInstructionUsingValue(
         instruction: Instruction,
@@ -84,32 +109,6 @@ class Executor {
         } else {
             currentProgramState.nextWithError(error = "NON EXISTENT VARIABLE (${instruction.operand})")
         }
-    }
-
-    private fun executeJumpInstruction(
-        instruction: Instruction,
-        programState: ProgramState,
-        program: Program
-    ) = if (instruction.operator == Operator.JUMP ||
-        (instruction.operator == Operator.JIZERO && programState.accumulator == 0) ||
-        (instruction.operator == Operator.JINEG && programState.accumulator < 0)
-    )
-        executeJump(
-            instruction.operand,
-            program.labeledInstructionIndexes,
-            programState
-        )
-    else
-        programState.next()
-
-
-    private fun executeJump(
-        label: String,
-        labeledInstructionIndexes: Map<String, Int>,
-        programState: ProgramState
-    ) = when (val instructionIndex = labeledInstructionIndexes[label] ?: -1) {
-        -1 -> programState.nextWithError(error = "JUMP TO NON EXISTENT LABEL ($label)")
-        else -> programState.nextWithNewInstructionIndex(newInstructionIndex = instructionIndex)
     }
 
 
