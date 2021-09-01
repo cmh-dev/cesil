@@ -14,28 +14,28 @@ class ProgramStateTest {
     }
 
     @Test
-    fun `when the next program state is created with a new accumulator value old value is overwritten and instruction values are correct`() =
+    fun `when the next program state is created with a new accumulator value the old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(programState.nextProgramState(accumulator = 42),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedAccumulator = 42)
 
     @Test
-    fun `when the next program state is created with a new output value old value is overwritten and instruction values are correct`() =
+    fun `when the next program state is created with a new output value the old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(programState.nextProgramState(output = "42"),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedOutput = "42")
 
     @Test
-    fun `when the next program state is created with a new error value old value is overwritten and instruction values are correct`() =
+    fun `when the next program state is created with a new error value the old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(programState.nextProgramState(error = "Error"),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedError = "Error")
 
     @Test
-    fun `when the next program state is created with a new halted value old value is overwritten and instruction values are correct`() =
+    fun `when the next program state is created with a new halted the value old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(programState.nextProgramState(isHalted = true),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedIsHalted = true)
 
     @Test
     fun `when the next program state is created with a new current instruction index the instruction values are correct`() =
-        assertThatProgramStateIsAsExpected(programState.nextProgramState(currentInstructionIndex = 42),
+        assertThatProgramStateIsAsExpected(programState.nextProgramState(instructionIndex = 42),
             expectedCurrentInstructionIndex = 42, expectedNumberOfExecutedInstruction = 1)
 
     @Test
@@ -51,8 +51,7 @@ class ProgramStateTest {
                                                    expectedAccumulator: Int = 0,
                                                    expectedVariables: Map<String, Int> = mapOf(),
                                                    expectedData: List<Int> = listOf(),
-                                                   expectedIsHalted: Boolean = false,
-
+                                                   expectedIsHalted: Boolean = false
                             ) {
         val expectedProgramState = ProgramState(output = expectedOutput,
                                                 error = expectedError,
@@ -61,7 +60,7 @@ class ProgramStateTest {
                                                 data = expectedData,
                                                 isHalted = expectedIsHalted,
                                                 numberOfExecutedInstructions = expectedNumberOfExecutedInstruction,
-                                                currentInstructionIndex = expectedCurrentInstructionIndex)
+                                                instructionIndex = expectedCurrentInstructionIndex)
         assertEquals(expectedProgramState, programState)
     }
 
