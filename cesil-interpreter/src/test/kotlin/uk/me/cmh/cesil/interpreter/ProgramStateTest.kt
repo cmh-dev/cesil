@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class ProgramStateTest {
 
-    lateinit var programState: ProgramState
+    private lateinit var programState: ProgramState
 
     @BeforeEach
     fun setUp() {
@@ -41,10 +41,10 @@ class ProgramStateTest {
     @Test
     fun `when the next program state is created with a new variable list the old list is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithNewVariableList(newVariableList = mapOf<String, Int>("The Answer" to 42)),
+            programState.nextWithNewVariableList(newVariableList = mapOf("The Answer" to 42)),
             expectedCurrentInstructionIndex = 1,
             expectedNumberOfExecutedInstruction = 1,
-            expectedVariables = mapOf<String, Int>("The Answer" to 42)
+            expectedVariables = mapOf("The Answer" to 42)
         )
 
     @Test

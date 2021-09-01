@@ -42,21 +42,9 @@ class Executor {
                 )
             )
             Operator.LOAD -> executeInstructionUsingValue(instruction, programState)
-            Operator.JUMP -> executeJumpInstruction(
-                instruction.operand,
-                program.labeledInstructionIndexes,
-                programState
-            )
-            Operator.JIZERO -> if (programState.accumulator == 0) executeJumpInstruction(
-                instruction.operand,
-                program.labeledInstructionIndexes,
-                programState
-            ) else programState.next()
-            Operator.JINEG -> if (programState.accumulator < 0) executeJumpInstruction(
-                instruction.operand,
-                program.labeledInstructionIndexes,
-                programState
-            ) else programState.next()
+            Operator.JUMP -> executeJumpInstruction(instruction, programState, program)
+            Operator.JIZERO -> executeJumpInstruction(instruction, programState, program)
+            Operator.JINEG -> executeJumpInstruction(instruction, programState, program)
             Operator.IN -> if (programState.data.isNotEmpty()) {
                 programState.nextNewAccumulatorValueAndData(
                     newAccumulatorValue = programState.data.first(),
@@ -99,6 +87,23 @@ class Executor {
     }
 
     private fun executeJumpInstruction(
+        instruction: Instruction,
+        programState: ProgramState,
+        program: Program
+    ) = if (instruction.operator == Operator.JUMP ||
+        (instruction.operator == Operator.JIZERO && programState.accumulator == 0) ||
+        (instruction.operator == Operator.JINEG && programState.accumulator < 0)
+    )
+        executeJump(
+            instruction.operand,
+            program.labeledInstructionIndexes,
+            programState
+        )
+    else
+        programState.next()
+
+
+    private fun executeJump(
         label: String,
         labeledInstructionIndexes: Map<String, Int>,
         programState: ProgramState
