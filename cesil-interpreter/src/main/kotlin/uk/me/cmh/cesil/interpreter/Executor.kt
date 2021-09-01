@@ -3,24 +3,22 @@ package uk.me.cmh.cesil.interpreter
 class Executor {
 
     companion object {
-        const val MAXIMUM_EXECUTED_INSTRUCTIONS = 100
+        const val MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED = 100
     }
 
     fun execute(program: Program): ExecutionResult {
 
         var programState = ProgramState(data = program.data)
-        var executedInstructionCount = 0
 
         while (programState.instructionIndex <= program.instructions.lastIndex
             && programState.error.isBlank()
-            && executedInstructionCount <= MAXIMUM_EXECUTED_INSTRUCTIONS
+            && programState.numberOfExecutedInstructions <= MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED
             && !programState.isHalted
         ) {
             programState = executeNextInstruction(programState, program)
-            executedInstructionCount++
         }
 
-        if (executedInstructionCount > MAXIMUM_EXECUTED_INSTRUCTIONS) {
+        if (programState.numberOfExecutedInstructions > MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED) {
             programState = programState.copy(error = "MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
         }
 
