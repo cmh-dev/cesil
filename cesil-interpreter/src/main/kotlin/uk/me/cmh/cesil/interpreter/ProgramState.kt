@@ -11,7 +11,29 @@ data class ProgramState(
     val numberOfExecutedInstructions: Int = 0
 ) {
 
-    fun nextProgramState(
+    fun nextWithNewAccumulatorValue(newAccumulatorValue: Int): ProgramState =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(accumulator = newAccumulatorValue)
+
+    fun nextWithNewOutputValue(newOutputValue: String): ProgramState =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(output = newOutputValue)
+
+    fun nextWithNewVariableList(newVariableList: Map<String, Int>) =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(variables = newVariableList)
+
+    fun nextWithError(error: String): ProgramState =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(error = error, isRunning = false)
+
+    fun next(): ProgramState = getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet()
+
+    fun nextWithNewInstructionIndex(newInstructionIndex: Int) =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(instructionIndex = newInstructionIndex)
+
+    fun nextNewAccumulatorValueAndData(newAccumulatorValue: Int, newData: List<Int>) =
+        getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(accumulator = newAccumulatorValue, data = newData)
+
+    fun terminate() = getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(isRunning = false)
+
+    private fun getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(
         accumulator: Int = this.accumulator,
         output: String = this.output,
         variables: Map<String, Int> = this.variables,
