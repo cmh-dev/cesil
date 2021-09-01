@@ -7,7 +7,7 @@ data class ProgramState(
     val variables: Map<String, Int> = mapOf(),
     val data: List<Int> = listOf(),
     val instructionIndex: Int = 0,
-    val isHalted: Boolean = false,
+    val isRunning: Boolean = true,
     val numberOfExecutedInstructions: Int = 0
 ) {
 
@@ -17,7 +17,7 @@ data class ProgramState(
         variables: Map<String, Int> = this.variables,
         data: List<Int> = this.data,
         error: String = this.error,
-        isHalted: Boolean = this.isHalted,
+        isRunning: Boolean = this.isRunning,
         instructionIndex: Int = this.instructionIndex + 1
     ): ProgramState = this.copy(
         accumulator = accumulator,
@@ -25,7 +25,7 @@ data class ProgramState(
         variables = variables,
         data = data,
         error = error,
-        isHalted = isHalted,
+        isRunning = isRunning,
         instructionIndex = instructionIndex,
         numberOfExecutedInstructions = this.numberOfExecutedInstructions + 1
     )

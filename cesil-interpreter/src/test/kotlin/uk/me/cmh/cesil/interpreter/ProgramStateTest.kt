@@ -29,9 +29,9 @@ class ProgramStateTest {
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedError = "Error")
 
     @Test
-    fun `when the next program state is created with a new halted the value old value is overwritten and instruction values are correct`() =
-        assertThatProgramStateIsAsExpected(programState.nextProgramState(isHalted = true),
-            expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedIsHalted = true)
+    fun `when the next program state is created with a new run state value old value is overwritten and instruction values are correct`() =
+        assertThatProgramStateIsAsExpected(programState.nextProgramState(isRunning = false),
+            expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedIsRunning = false)
 
     @Test
     fun `when the next program state is created with a new current instruction index the instruction values are correct`() =
@@ -51,14 +51,14 @@ class ProgramStateTest {
                                                    expectedAccumulator: Int = 0,
                                                    expectedVariables: Map<String, Int> = mapOf(),
                                                    expectedData: List<Int> = listOf(),
-                                                   expectedIsHalted: Boolean = false
+                                                   expectedIsRunning: Boolean = true
                             ) {
         val expectedProgramState = ProgramState(output = expectedOutput,
                                                 error = expectedError,
                                                 accumulator = expectedAccumulator,
                                                 variables = expectedVariables,
                                                 data = expectedData,
-                                                isHalted = expectedIsHalted,
+                                                isRunning = expectedIsRunning,
                                                 numberOfExecutedInstructions = expectedNumberOfExecutedInstruction,
                                                 instructionIndex = expectedCurrentInstructionIndex)
         assertEquals(expectedProgramState, programState)

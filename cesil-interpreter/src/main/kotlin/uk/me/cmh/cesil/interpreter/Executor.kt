@@ -13,7 +13,7 @@ class Executor {
         while (programState.instructionIndex <= program.instructions.lastIndex
             && programState.error.isBlank()
             && programState.numberOfExecutedInstructions <= MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED
-            && !programState.isHalted
+            && programState.isRunning
         ) {
             programState = executeNextInstruction(programState, program)
         }
@@ -69,7 +69,7 @@ class Executor {
             } else {
                 programState.nextProgramState(error = "PROGRAM REQUIRES MORE DATA")
             }
-            Operator.HALT -> programState.nextProgramState(isHalted = true)
+            Operator.HALT -> programState.nextProgramState(isRunning = false)
             Operator.INVALID_OPERATOR -> programState
         }
     }
