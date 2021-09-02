@@ -1,7 +1,8 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.parser
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import uk.me.cmh.cesil.interpreter.*
 
 class ParseFullProgramsTest {
 

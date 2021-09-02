@@ -3,6 +3,10 @@ package uk.me.cmh.cesil.interpreter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
+import uk.me.cmh.cesil.interpreter.executor.ExecutionFailure
+import uk.me.cmh.cesil.interpreter.executor.ExecutionSuccess
+import uk.me.cmh.cesil.interpreter.executor.Executor
+import uk.me.cmh.cesil.interpreter.parser.Parser
 
 class InterpreterTest {
 

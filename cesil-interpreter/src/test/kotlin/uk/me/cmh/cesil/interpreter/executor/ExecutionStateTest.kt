@@ -1,29 +1,29 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.executor
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ProgramStateTest {
+class ExecutionStateTest {
 
-    private lateinit var programState: ProgramState
+    private lateinit var executionState: ExecutionState
 
     @BeforeEach
     fun setUp() {
-        programState = ProgramState()
+        executionState = ExecutionState()
     }
 
     @Test
     fun `when the next program state is created with a new accumulator value the old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithNewAccumulatorValue(newAccumulatorValue = 42),
+            executionState.nextWithNewAccumulatorValue(newAccumulatorValue = 42),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedAccumulator = 42
         )
 
     @Test
     fun `when the next program state is created with new accumulator and data values the old values are overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextNewAccumulatorValueAndData(newAccumulatorValue = 42, newData = listOf(2, 260199, 1)),
+            executionState.nextNewAccumulatorValueAndData(newAccumulatorValue = 42, newData = listOf(2, 260199, 1)),
             expectedCurrentInstructionIndex = 1,
             expectedNumberOfExecutedInstruction = 1,
             expectedAccumulator = 42,
@@ -34,14 +34,14 @@ class ProgramStateTest {
     @Test
     fun `when the next program state is created with a new output value the old value is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithNewOutputValue(newOutputValue = "42"),
+            executionState.nextWithNewOutputValue(newOutputValue = "42"),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedOutput = "42"
         )
 
     @Test
     fun `when the next program state is created with a new variable list the old list is overwritten and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithNewVariableList(newVariableList = mapOf("The Answer" to 42)),
+            executionState.nextWithNewVariableList(newVariableList = mapOf("The Answer" to 42)),
             expectedCurrentInstructionIndex = 1,
             expectedNumberOfExecutedInstruction = 1,
             expectedVariables = mapOf("The Answer" to 42)
@@ -50,7 +50,7 @@ class ProgramStateTest {
     @Test
     fun `when the next program state is created with an error it is recorded, the running state set off and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithError(error = "Error"),
+            executionState.nextWithError(error = "Error"),
             expectedCurrentInstructionIndex = 1,
             expectedNumberOfExecutedInstruction = 1,
             expectedIsRunning = false,
@@ -60,33 +60,33 @@ class ProgramStateTest {
     @Test
     fun `when the next program state is created with a new current instruction index the instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.nextWithNewInstructionIndex(newInstructionIndex = 42),
+            executionState.nextWithNewInstructionIndex(newInstructionIndex = 42),
             expectedCurrentInstructionIndex = 42, expectedNumberOfExecutedInstruction = 1
         )
 
     @Test
     fun `when a terminated program state is the running flag is set to false and instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.terminate(),
+            executionState.terminate(),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1, expectedIsRunning = false
         )
 
     @Test
     fun `when the second next program state is created with no changes instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.next(),
+            executionState.next(),
             expectedCurrentInstructionIndex = 1, expectedNumberOfExecutedInstruction = 1
         )
 
     @Test
     fun `when the second next program state is created the instruction values are correct`() =
         assertThatProgramStateIsAsExpected(
-            programState.next().next(),
+            executionState.next().next(),
             expectedCurrentInstructionIndex = 2, expectedNumberOfExecutedInstruction = 2
         )
 
     private fun assertThatProgramStateIsAsExpected(
-        programState: ProgramState,
+        executionState: ExecutionState,
         expectedCurrentInstructionIndex: Int,
         expectedNumberOfExecutedInstruction: Int,
         expectedOutput: String = "",
@@ -96,7 +96,7 @@ class ProgramStateTest {
         expectedData: List<Int> = listOf(),
         expectedIsRunning: Boolean = true
     ) {
-        val expectedProgramState = ProgramState(
+        val expectedExecutionState = ExecutionState(
             output = expectedOutput,
             error = expectedError,
             accumulator = expectedAccumulator,
@@ -106,7 +106,7 @@ class ProgramStateTest {
             numberOfExecutedInstructions = expectedNumberOfExecutedInstruction,
             instructionIndex = expectedCurrentInstructionIndex
         )
-        assertEquals(expectedProgramState, programState)
+        assertEquals(expectedExecutionState, executionState)
     }
 
 }

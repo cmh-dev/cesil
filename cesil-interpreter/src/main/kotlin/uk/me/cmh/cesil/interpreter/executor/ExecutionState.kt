@@ -1,6 +1,6 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.executor
 
-data class ProgramState(
+data class ExecutionState(
     val output: String = "",
     val error: String = "",
     val accumulator: Int = 0,
@@ -11,19 +11,19 @@ data class ProgramState(
     val numberOfExecutedInstructions: Int = 0
 ) {
 
-    fun nextWithNewAccumulatorValue(newAccumulatorValue: Int): ProgramState =
+    fun nextWithNewAccumulatorValue(newAccumulatorValue: Int): ExecutionState =
         getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(accumulator = newAccumulatorValue)
 
-    fun nextWithNewOutputValue(newOutputValue: String): ProgramState =
+    fun nextWithNewOutputValue(newOutputValue: String): ExecutionState =
         getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(output = newOutputValue)
 
     fun nextWithNewVariableList(newVariableList: Map<String, Int>) =
         getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(variables = newVariableList)
 
-    fun nextWithError(error: String): ProgramState =
+    fun nextWithError(error: String): ExecutionState =
         getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(error = error, isRunning = false)
 
-    fun next(): ProgramState = getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet()
+    fun next(): ExecutionState = getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet()
 
     fun nextWithNewInstructionIndex(newInstructionIndex: Int) =
         getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(instructionIndex = newInstructionIndex)
@@ -41,7 +41,7 @@ data class ProgramState(
         error: String = this.error,
         isRunning: Boolean = this.isRunning,
         instructionIndex: Int = this.instructionIndex + 1
-    ): ProgramState = this.copy(
+    ): ExecutionState = this.copy(
         accumulator = accumulator,
         output = output,
         variables = variables,

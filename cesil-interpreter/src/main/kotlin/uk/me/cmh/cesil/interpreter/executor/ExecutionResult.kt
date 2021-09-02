@@ -1,4 +1,4 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.executor
 
 sealed class ExecutionResult(val output: List<String>)
 class ExecutionFailure(output: List<String>) : ExecutionResult(output)

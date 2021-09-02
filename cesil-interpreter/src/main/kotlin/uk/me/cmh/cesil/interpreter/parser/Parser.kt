@@ -1,5 +1,6 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.parser
 
+import uk.me.cmh.cesil.interpreter.*
 import java.lang.NumberFormatException
 
 class Parser {

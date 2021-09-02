@@ -1,8 +1,9 @@
-package uk.me.cmh.cesil.interpreter
+package uk.me.cmh.cesil.interpreter.executor
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
+import uk.me.cmh.cesil.interpreter.*
 
 class ExecutorTest {
 
