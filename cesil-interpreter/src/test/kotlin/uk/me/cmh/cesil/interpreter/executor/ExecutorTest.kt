@@ -19,7 +19,6 @@ class ExecutorTest {
                     Instruction("", Operator.PRINT, "HELLO WORLD"),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("HELLO WORLD")
         )
@@ -35,7 +34,6 @@ class ExecutorTest {
                     Instruction("", Operator.PRINT, "GOOD BYE"),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("HELLO WORLD", "GOOD BYE")
         )
@@ -53,7 +51,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE: 42")
         )
@@ -68,7 +65,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE: 42")
         )
@@ -83,7 +79,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE: 1")
         )
@@ -98,7 +93,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE: -1")
         )
@@ -120,7 +114,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE AFTER SECOND ADD: 4", "ACCUMULATOR VALUE AFTER LOAD: 2")
         )
@@ -148,7 +141,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("", Operator.HALT, "")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("ACCUMULATOR VALUE AFTER SET UP: 0", "ACCUMULATOR VALUE AFTER ARITHMETIC: 42")
         )
@@ -164,7 +156,6 @@ class ExecutorTest {
                     Instruction("LABEL", Operator.PRINT, " WORLD"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 3),
                 listOf()
             ), listOf("HELLO WORLD")
         )
@@ -182,7 +173,6 @@ class ExecutorTest {
                     Instruction("", Operator.JUMP, "LOOP"),
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
-                mapOf("LOOP" to 1, "EXIT" to 6),
                 listOf()
             ), listOf("2 1 ")
         )
@@ -200,7 +190,6 @@ class ExecutorTest {
                     Instruction("", Operator.JUMP, "LOOP"),
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
-                mapOf("LOOP" to 1, "EXIT" to 6),
                 listOf()
             ), listOf("2 1 0 ")
         )
@@ -214,7 +203,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.HALT),
                     Instruction("", Operator.PRINT, " WORLD")
                 ),
-                mapOf(),
                 listOf()
             ), listOf("HELLO")
         )
@@ -231,7 +219,6 @@ class ExecutorTest {
                     Instruction("", Operator.JUMP, "LOOP"),
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
-                mapOf("LOOP" to 0, "EXIT" to 5),
                 listOf(3, 2, 1, 0, -1)
             ), listOf("3 2 1 0 ")
         )
@@ -255,7 +242,6 @@ class ExecutorTest {
                     Instruction(operator = Operator.OUT),
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
-                mapOf(),
                 listOf(1)
             ), listOf("DIVISION BY ZERO")
         )
@@ -268,8 +254,7 @@ class ExecutorTest {
                     Instruction("", Operator.JUMP, "ELABEL"),
                     Instruction("LABEL", Operator.HALT,"" )
                 ),
-                mapOf("LABEL" to 1),
-                listOf(1)
+               listOf(1)
             ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
         )
 
@@ -281,7 +266,6 @@ class ExecutorTest {
                     Instruction("", Operator.JIZERO, "ELABEL"),
                     Instruction("LABEL", Operator.HALT,"" )
                 ),
-                mapOf("LABEL" to 1),
                 listOf(1)
             ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
         )
@@ -295,7 +279,6 @@ class ExecutorTest {
                     Instruction("", Operator.JINEG, "ELABEL"),
                     Instruction("LABEL", Operator.HALT,"" )
                 ),
-                mapOf("LABEL" to 1),
                 listOf(1)
             ), listOf("JUMP TO NON EXISTENT LABEL (ELABEL)")
         )
@@ -308,8 +291,7 @@ class ExecutorTest {
                     Instruction("", Operator.LOAD, "EVAR"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 1),
-                listOf(1)
+               listOf(1)
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
 
@@ -321,7 +303,6 @@ class ExecutorTest {
                     Instruction("", Operator.ADD, "EVAR"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 1),
                 listOf(1)
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
@@ -334,7 +315,6 @@ class ExecutorTest {
                     Instruction("", Operator.SUBTRACT, "EVAR"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 1),
                 listOf(1)
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
@@ -347,8 +327,7 @@ class ExecutorTest {
                     Instruction("", Operator.MULTIPLY, "EVAR"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 1),
-                listOf(1)
+               listOf(1)
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
 
@@ -360,7 +339,6 @@ class ExecutorTest {
                     Instruction("", Operator.DIVIDE, "EVAR"),
                     Instruction(operator = Operator.HALT)
                 ),
-                mapOf("LABEL" to 1),
                 listOf(1)
             ), listOf("NON EXISTENT VARIABLE (EVAR)")
         )
@@ -375,7 +353,6 @@ class ExecutorTest {
                     Instruction("", Operator.IN,""),
                     Instruction("", Operator.HALT,"" )
                 ),
-                mapOf(),
                 listOf(1, 0)
             ), listOf("PROGRAM REQUIRES MORE DATA")
         )
@@ -391,7 +368,6 @@ class ExecutorTest {
                     Instruction("", Operator.JUMP, "LOOP"),
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
-                mapOf("LOOP" to 1, "EXIT" to 4),
                 listOf()
             ), listOf("MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
         )

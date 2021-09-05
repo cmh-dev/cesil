@@ -5,49 +5,28 @@ import org.junit.jupiter.api.Test
 
 class ProgramTest {
 
-    private val program = Program(
-        listOf(Instruction("", Operator.JUMP, "EXIT"),
-            Instruction("EXIT", Operator.PRINT, "THE ANSWER IS ")),
-        mapOf("EXIT" to 0),
-        listOf(42)
-    )
-
     @Test
-    fun `an instruction without a label can be correctly added to a program`() {
-        val expectedProgram = Program(
-            listOf(Instruction("", Operator.JUMP, "EXIT"),
-                Instruction("EXIT", Operator.PRINT, "THE ANSWER IS "),
-                Instruction("", Operator.IN, "")
+    fun `when a program is created with instructions and data the resulting program is correct`() {
+        val program = Program(
+            listOf(
+                Instruction("", Operator.PRINT, "OUTPUT 1"),
+                Instruction("", Operator.JUMP, "NEXT"),
+                Instruction("NEXT", Operator.PRINT, "OUTPUT 2"),
+                Instruction("", Operator.JUMP, "END"),
+                Instruction("END", Operator.HALT, ""),
             ),
-            mapOf("EXIT" to 0),
-            listOf(42)
+            listOf(1, 2, 3, 4)
         )
-        assertEquals(expectedProgram, program.addInstruction(Instruction("", Operator.IN, "")))
-    }
-
-    @Test
-    fun `an instruction with a label can be correctly added to a program`() {
-        val expectedProgram = Program(
-            listOf(Instruction("", Operator.JUMP, "EXIT"),
-                Instruction("EXIT", Operator.PRINT, "THE ANSWER IS "),
-                Instruction("LOAD", Operator.IN, "")
-            ),
-            mapOf("EXIT" to 0, "LOAD" to 2),
-            listOf(42)
-        )
-        assertEquals(expectedProgram, program.addInstruction(Instruction("LOAD", Operator.IN, "")))
-    }
-
-    @Test
-    fun `data items can be correctly added to a program`() {
-        val expectedProgram = Program(
-            listOf(Instruction("", Operator.JUMP, "EXIT"),
-                Instruction("EXIT", Operator.PRINT, "THE ANSWER IS "),
-            ),
-            mapOf("EXIT" to 0),
-            listOf(42, 2, 260000, 199)
-        )
-        assertEquals(expectedProgram, program.addData(listOf(2, 260000, 199)))
+        assertEquals(
+            listOf(
+                Instruction("", Operator.PRINT, "OUTPUT 1"),
+                Instruction("", Operator.JUMP, "NEXT"),
+                Instruction("NEXT", Operator.PRINT, "OUTPUT 2"),
+                Instruction("", Operator.JUMP, "END"),
+                Instruction("END", Operator.HALT, ""),
+            ), program.instructions)
+        assertEquals(mapOf("NEXT" to 2, "END" to 4), program.labeledInstructionIndexes)
+        assertEquals(listOf(1, 2, 3, 4), program.data)
     }
 
 

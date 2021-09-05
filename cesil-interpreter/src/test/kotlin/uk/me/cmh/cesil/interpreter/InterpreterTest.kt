@@ -79,7 +79,7 @@ class InterpreterTest {
                 Instruction("", Operator.PRINT, "HELLO"),
                 Instruction("", Operator.PRINT, "WORLD"),
                 Instruction("", Operator.HALT, "")
-            ), mapOf(), listOf(1, 2)
+            ), listOf(1, 2)
         )
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
         whenever(mockExecutor.execute(program)).thenReturn(ExecutionSuccess(listOf("HELLO", "WORLD")))
@@ -110,7 +110,7 @@ class InterpreterTest {
                 Instruction("", Operator.DIVIDE, "0"),
                 Instruction("", Operator.OUT, ""),
                 Instruction("", Operator.HALT, "")
-            ), mapOf(), listOf(0)
+            ), listOf(0)
         )
         whenever(mockParser.parse(sourceCode)).thenReturn(ParsedProgram(program))
         whenever(mockExecutor.execute(program)).thenReturn(ExecutionFailure(listOf("ERROR - DIVIDE BY ZERO")))
