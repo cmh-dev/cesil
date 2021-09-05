@@ -6,7 +6,9 @@ import org.mockito.kotlin.*
 import uk.me.cmh.cesil.interpreter.executor.ExecutionFailure
 import uk.me.cmh.cesil.interpreter.executor.ExecutionSuccess
 import uk.me.cmh.cesil.interpreter.executor.Executor
+import uk.me.cmh.cesil.interpreter.parser.ParsedProgram
 import uk.me.cmh.cesil.interpreter.parser.Parser
+import uk.me.cmh.cesil.interpreter.parser.ParsingErrors
 
 class InterpreterTest {
 

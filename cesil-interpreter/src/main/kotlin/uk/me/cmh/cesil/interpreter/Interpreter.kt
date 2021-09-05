@@ -4,7 +4,9 @@ import uk.me.cmh.cesil.interpreter.executor.ExecutionFailure
 import uk.me.cmh.cesil.interpreter.executor.ExecutionResult
 import uk.me.cmh.cesil.interpreter.executor.ExecutionSuccess
 import uk.me.cmh.cesil.interpreter.executor.Executor
+import uk.me.cmh.cesil.interpreter.parser.ParsedProgram
 import uk.me.cmh.cesil.interpreter.parser.Parser
+import uk.me.cmh.cesil.interpreter.parser.ParsingErrors
 
 class Interpreter(private val parser: Parser = Parser(), private val executor: Executor = Executor()) {
 
