@@ -47,24 +47,26 @@ class Parser {
                 }
             }
 
-        if (!isInstructionSetTerminated) {
-            parsingErrors.add("MISSING INSTRUCTION SET TERMINATOR")
-        }
-        if (!isDataTerminated) {
-            parsingErrors.add("MISSING DATA SET TERMINATOR")
-        }
-        if (instructions.none { it.operator == Operator.HALT }) {
-            parsingErrors.add("MISSING HALT INSTRUCTION")
-        }
+        if (!isInstructionSetTerminated) parsingErrors.add("MISSING INSTRUCTION SET TERMINATOR")
+        if (!isDataTerminated) parsingErrors.add("MISSING DATA SET TERMINATOR")
+        if (instructions.none { it.operator == Operator.HALT }) parsingErrors.add("MISSING HALT INSTRUCTION")
 
         return when {
-            parsingErrors.isEmpty() -> ParsedProgram(Program(instructions, labeledInstructionIndexes, data))
+            parsingErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
             else -> ParsingErrors(parsingErrors)
         }
 
     }
 
-    fun parseInstructionLine(line: String): ParsedLine {
+   /* private fun addParsedLineToProgram(program: Program, parsedLine: ParsedLine): Program {
+       if (parsedLine is InstructionLine)
+            program.addInstruction(parsedLine.instruction)
+        else if (parsedLine is DataLine)
+            program.addData(parsedLine.dataItems)
+        else  Program()
+    }
+*/
+    internal fun parseInstructionLine(line: String): ParsedLine {
 
         val elements = line.split(Regex("\\s")).filterNot { it == "" }
 
@@ -97,7 +99,7 @@ class Parser {
 
     }
 
-    fun parseDataLine(line: String): ParsedLine = try {
+    internal fun parseDataLine(line: String): ParsedLine = try {
         DataLine(line.split(Regex("\\s")).filterNot { it == "" }.map { it.toInt() })
     } catch (e: NumberFormatException) {
         ErrorLine("DATA LINE INVALID [$line]")
