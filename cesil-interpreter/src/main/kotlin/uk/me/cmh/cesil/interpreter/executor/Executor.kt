@@ -5,24 +5,19 @@ import uk.me.cmh.cesil.interpreter.*
 class Executor {
 
     fun execute(program: Program): ExecutionResult {
-
         var executionState = ExecutionState(data = program.data)
-
         while (executionState.instructionIndex <= program.instructions.lastIndex
             && executionState.numberOfExecutedInstructions <= MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED
             && executionState.isRunning
         ) {
             executionState = executeNextInstruction(executionState, program)
         }
-
         if (executionState.numberOfExecutedInstructions > MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED)
             executionState = executionState.nextWithError(error = "MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
-
         return when {
             executionState.error.isEmpty() -> ExecutionSuccess(executionState.output.lines())
             else -> ExecutionFailure(listOf(executionState.error))
         }
-
     }
 
     private fun executeNextInstruction(executionState: ExecutionState, program: Program): ExecutionState {
@@ -85,14 +80,9 @@ class Executor {
             else -> executionState.nextWithNewInstructionIndex(newInstructionIndex = instructionIndex)
         }
 
-    private fun executeInstructionUsingValue(
-        instruction: Instruction,
-        executionState: ExecutionState
-    ): ExecutionState {
-
+    private fun executeInstructionUsingValue(instruction: Instruction, executionState: ExecutionState): ExecutionState {
         val value = extractValueFromOperand(instruction.operand, executionState)
             ?: return executionState.nextWithError(error = "NON EXISTENT VARIABLE (${instruction.operand})")
-
         return when (instruction.operator) {
             Operator.ADD -> executionState.nextWithNewAccumulatorValue(newAccumulatorValue = executionState.accumulator + value)
             Operator.SUBTRACT -> executionState.nextWithNewAccumulatorValue(newAccumulatorValue = executionState.accumulator - value)
@@ -105,7 +95,6 @@ class Executor {
             Operator.LOAD -> executionState.nextWithNewAccumulatorValue(newAccumulatorValue = value)
             else -> executionState
         }
-
     }
 
     private fun extractValueFromOperand(operand: String, currentExecutionState: ExecutionState) =
