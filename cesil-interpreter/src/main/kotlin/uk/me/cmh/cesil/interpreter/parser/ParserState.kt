@@ -8,7 +8,7 @@ data class ParserState(
     val data: List<Int> = listOf(),
     val isInstructionSetTerminated: Boolean = false,
     val isDataSetTerminated: Boolean = false,
-    val isHaltStatementPresent: Boolean,
+    val isHaltStatementPresent: Boolean = false,
     val errors: List<String> = listOf()
 ) {
 

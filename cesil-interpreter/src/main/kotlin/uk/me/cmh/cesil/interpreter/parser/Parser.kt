@@ -7,12 +7,7 @@ class Parser {
 
     fun parse(sourceCode: String): ParsingResult {
 
-        val instructions = mutableListOf<Instruction>()
-        val labeledInstructionIndexes = mutableMapOf<String, Int>()
-        val data = mutableListOf<Int>()
-        var isInstructionSetTerminated = false
-        val parsingErrors = mutableListOf<String>()
-        var isDataTerminated = false
+       var parserState = ParserState()
 
         if (sourceCode.isBlank()) return ParsingErrors(listOf("NO SOURCE CODE"))
 
@@ -20,52 +15,41 @@ class Parser {
             .map { line -> line.trim() }
             .filterNot { line -> line.startsWith("(") || line.isBlank() }
             .forEach { line ->
-                when {
-                    line.startsWith("%") -> isInstructionSetTerminated = true
+                parserState = when {
+                    line.startsWith("%") -> parserState.terminateInstructionSet()
                     line.startsWith("*") -> {
-                        isDataTerminated = true
+                        parserState = parserState.terminateDataSet()
                         return@forEach
                     }
                     else -> {
                         val parsedLine =
-                            when(isInstructionSetTerminated) {
+                            when(parserState.isInstructionSetTerminated) {
                                 true -> parseDataLine(line)
                                 false -> parseInstructionLine(line)
                             }
                         when (parsedLine) {
-                            is DataLine -> data.addAll(parsedLine.dataItems)
+                            is DataLine -> parserState.addData(parsedLine.dataItems)
                             is InstructionLine -> {
                                 val instruction = parsedLine.instruction
-                                instructions.add(instruction)
-                                if (instruction.label != "") {
-                                    labeledInstructionIndexes[instruction.label] = instructions.lastIndex
-                                }
+                                parserState.addInstruction(instruction)
                             }
-                            is ErrorLine -> parsingErrors.add(parsedLine.error)
+                            is ErrorLine -> parserState.addError(parsedLine.error)
                         }
                     }
                 }
             }
 
-        if (!isInstructionSetTerminated) parsingErrors.add("MISSING INSTRUCTION SET TERMINATOR")
-        if (!isDataTerminated) parsingErrors.add("MISSING DATA SET TERMINATOR")
-        if (instructions.none { it.operator == Operator.HALT }) parsingErrors.add("MISSING HALT INSTRUCTION")
+        if (!parserState.isInstructionSetTerminated) parserState = parserState.addError("MISSING INSTRUCTION SET TERMINATOR")
+        if (!parserState.isDataSetTerminated) parserState = parserState.addError("MISSING DATA SET TERMINATOR")
+        if (parserState.instructions.none { it.operator == Operator.HALT }) parserState = parserState.addError("MISSING HALT INSTRUCTION")
 
         return when {
-            parsingErrors.isEmpty() -> ParsedProgram(Program(instructions, data))
-            else -> ParsingErrors(parsingErrors)
+            parserState.errors.isEmpty() -> ParsedProgram(Program(parserState.instructions, parserState.data))
+            else -> ParsingErrors(parserState.errors)
         }
 
     }
 
-   /* private fun addParsedLineToProgram(program: Program, parsedLine: ParsedLine): Program {
-       if (parsedLine is InstructionLine)
-            program.addInstruction(parsedLine.instruction)
-        else if (parsedLine is DataLine)
-            program.addData(parsedLine.dataItems)
-        else  Program()
-    }
-*/
     internal fun parseInstructionLine(line: String): ParsedLine {
 
         val elements = line.split(Regex("\\s")).filterNot { it == "" }
