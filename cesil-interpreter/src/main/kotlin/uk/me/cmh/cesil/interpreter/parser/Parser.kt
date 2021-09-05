@@ -6,48 +6,54 @@ import java.lang.NumberFormatException
 class Parser {
 
     fun parse(sourceCode: String): ParsingResult {
-
-       var parserState = ParserState()
-
         if (sourceCode.isBlank()) return ParsingErrors(listOf("NO SOURCE CODE"))
-
-        sourceCode.lines()
-            .map { line -> line.trim() }
-            .filterNot { line -> line.startsWith("(") || line.isBlank() }
-            .forEach { line ->
-                parserState = when {
-                    line.startsWith("%") -> parserState.terminateInstructionSet()
-                    line.startsWith("*") -> {
-                        parserState = parserState.terminateDataSet()
-                        return@forEach
-                    }
-                    else -> {
-                        val parsedLine =
-                            when(parserState.isInstructionSetTerminated) {
-                                true -> parseDataLine(line)
-                                false -> parseInstructionLine(line)
-                            }
-                        when (parsedLine) {
-                            is DataLine -> parserState.addData(parsedLine.dataItems)
-                            is InstructionLine -> {
-                                val instruction = parsedLine.instruction
-                                parserState.addInstruction(instruction)
-                            }
-                            is ErrorLine -> parserState.addError(parsedLine.error)
-                        }
-                    }
-                }
-            }
-
-        if (!parserState.isInstructionSetTerminated) parserState = parserState.addError("MISSING INSTRUCTION SET TERMINATOR")
-        if (!parserState.isDataSetTerminated) parserState = parserState.addError("MISSING DATA SET TERMINATOR")
-        if (parserState.instructions.none { it.operator == Operator.HALT }) parserState = parserState.addError("MISSING HALT INSTRUCTION")
-
+        val parserState = parseSourceCode(sourceCode)
         return when {
             parserState.errors.isEmpty() -> ParsedProgram(Program(parserState.instructions, parserState.data))
             else -> ParsingErrors(parserState.errors)
         }
+    }
 
+    private fun parseSourceCode(sourceCode: String): ParsingState {
+        var parsingState = ParsingState()
+        extractNonBlankAndCommentLines(sourceCode).forEach { line ->
+                parsingState = parseLine(parsingState, line)
+                if (parsingState.isDataSetTerminated) return@forEach
+            }
+        if (!parsingState.isInstructionSetTerminated) parsingState =
+            parsingState.addError("MISSING INSTRUCTION SET TERMINATOR")
+        if (!parsingState.isDataSetTerminated) parsingState = parsingState.addError("MISSING DATA SET TERMINATOR")
+        if (parsingState.instructions.none { it.operator == Operator.HALT }) parsingState =
+            parsingState.addError("MISSING HALT INSTRUCTION")
+        return parsingState
+    }
+
+    private fun extractNonBlankAndCommentLines(sourceCode: String): List<String> = sourceCode.lines()
+        .map { line -> line.trim() }
+        .filterNot { line -> line.startsWith("(") || line.isBlank() }
+
+    private fun parseLine(parsingState: ParsingState, line: String): ParsingState {
+        return when {
+            line.startsWith("%") -> parsingState.terminateInstructionSet()
+            line.startsWith("*") -> {
+                parsingState.terminateDataSet()
+            }
+            else -> {
+                val parsedLine =
+                    when (parsingState.isInstructionSetTerminated) {
+                        true -> parseDataLine(line)
+                        false -> parseInstructionLine(line)
+                    }
+                when (parsedLine) {
+                    is DataLine -> parsingState.addData(parsedLine.dataItems)
+                    is InstructionLine -> {
+                        val instruction = parsedLine.instruction
+                        parsingState.addInstruction(instruction)
+                    }
+                    is ErrorLine -> parsingState.addError(parsedLine.error)
+                }
+            }
+        }
     }
 
     internal fun parseInstructionLine(line: String): ParsedLine {

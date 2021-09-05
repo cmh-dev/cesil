@@ -3,7 +3,7 @@ package uk.me.cmh.cesil.interpreter.parser
 import uk.me.cmh.cesil.interpreter.Instruction
 import uk.me.cmh.cesil.interpreter.Operator
 
-data class ParserState(
+data class ParsingState(
     val instructions: List<Instruction> = listOf(),
     val data: List<Int> = listOf(),
     val isInstructionSetTerminated: Boolean = false,
