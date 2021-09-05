@@ -19,5 +19,4 @@ dependencies {
     implementation "com.natpryce:konfig:1.6.10.0"
     implementation project(":cesil-interpreter")
     testImplementation 'net.sourceforge.htmlunit:htmlunit:2.52.0'
-
 }
