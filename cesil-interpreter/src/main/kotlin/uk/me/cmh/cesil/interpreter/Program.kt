@@ -6,7 +6,22 @@ data class Program(
     val instructions: List<Instruction>,
     val labeledInstructionIndexes: Map<String, Int>,
     val data: List<Int>
-)
+) {
+
+    fun addInstruction(instruction: Instruction): Program {
+        val newInstructions = this.instructions + instruction
+        return this.copy(
+            instructions = this.instructions + instruction,
+            labeledInstructionIndexes = if (instruction.label.isBlank())
+                labeledInstructionIndexes
+            else
+                labeledInstructionIndexes + (instruction.label to newInstructions.lastIndex)
+        )
+    }
+
+    fun addData(data: List<Int>): Program = this.copy(data = this.data + data)
+
+}
 
 data class Instruction(val label: String = "", val operator: Operator, val operand: String = "")
 
