@@ -2,9 +2,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-group 'uk.me.cmh'
-version '1.0-SNAPSHOT'
-
 shadowJar {
     archiveFileName = "cesil-web.jar"
     manifest {
@@ -13,10 +10,10 @@ shadowJar {
 }
 
 dependencies {
-    implementation "io.ktor:ktor-server-core:1.6.2"
-    implementation "io.ktor:ktor-server-netty:1.6.2"
-    implementation "io.ktor:ktor-thymeleaf:1.6.2"
-    implementation "com.natpryce:konfig:1.6.10.0"
+    implementation "io.ktor:ktor-server-core:$ktorVersion"
+    implementation "io.ktor:ktor-server-netty:$ktorVersion"
+    implementation "io.ktor:ktor-thymeleaf:$ktorVersion"
+    implementation "com.natpryce:konfig:$konfigVersion"
     implementation project(":cesil-interpreter")
-    testImplementation 'net.sourceforge.htmlunit:htmlunit:2.52.0'
+    testImplementation "net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion"
 }

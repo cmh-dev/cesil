@@ -1,5 +1,10 @@
+
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.5.10" apply false
+    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+}
+
+repositories {
+    mavenCentral()
 }
 
 subprojects {
@@ -10,6 +15,19 @@ subprojects {
         mavenCentral()
     }
 
+    group 'uk.me.cmh'
+    version '1.0-SNAPSHOT'
+
+    java {
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+
     test {
         useJUnitPlatform()
         testLogging {
@@ -18,9 +36,10 @@ subprojects {
     }
 
     dependencies {
-        implementation "org.slf4j:slf4j-simple:2.0.0-alpha0"
-        testImplementation "org.junit.jupiter:junit-jupiter:5.7.2"
-        testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib"
+        implementation "org.slf4j:slf4j-simple:$slf4jVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+        testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoVersion"
     }
 
 }
