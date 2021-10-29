@@ -36,12 +36,22 @@ fun cesilServer() = embeddedServer(Netty, port = config[portKey]) {
             resources("static")
         }
         get("/") {
-            call.respond(ThymeleafContent(INTERPRETER_MODEL_AND_TEMPLATE, mapOf(INTERPRETER_MODEL_AND_TEMPLATE to InterpreterModel())))
+            call.respond(
+                ThymeleafContent(
+                    INTERPRETER_MODEL_AND_TEMPLATE,
+                    mapOf(INTERPRETER_MODEL_AND_TEMPLATE to InterpreterModel())
+                )
+            )
         }
         post("/") {
             val sourceCode = call.receiveParameters()["sourceCode"] ?: ""
             val output = Interpreter().executeProgram(sourceCode).output.joinToString(separator = "\n")
-            call.respond(ThymeleafContent(INTERPRETER_MODEL_AND_TEMPLATE, mapOf(INTERPRETER_MODEL_AND_TEMPLATE to InterpreterModel(sourceCode, output))))
+            call.respond(
+                ThymeleafContent(
+                    INTERPRETER_MODEL_AND_TEMPLATE,
+                    mapOf(INTERPRETER_MODEL_AND_TEMPLATE to InterpreterModel(sourceCode, output))
+                )
+            )
 
         }
         get("/docs") {

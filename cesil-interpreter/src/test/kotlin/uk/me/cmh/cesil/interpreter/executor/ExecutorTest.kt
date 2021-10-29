@@ -376,5 +376,4 @@ class ExecutorTest {
     private fun assertThatAnInvalidProgramWillReturnTheCorrectError(program: Program, expectedErrors: List<String>) =
         assertEquals(expectedErrors, (executor.execute(program) as ExecutionFailure).output)
 
-
 }

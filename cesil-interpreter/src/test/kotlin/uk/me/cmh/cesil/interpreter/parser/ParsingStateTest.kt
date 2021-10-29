@@ -22,7 +22,8 @@ class ParsingStateTest {
             instructions = listOf(
                 Instruction("", Operator.PRINT, "OUTPUT 1"),
                 Instruction("", Operator.PRINT, "OUTPUT 2")
-            ))
+            )
+        )
         assertEquals(expectedParserState, parsingState.addInstruction(Instruction("", Operator.PRINT, "OUTPUT 2")))
     }
 
@@ -33,7 +34,8 @@ class ParsingStateTest {
                 Instruction("", Operator.PRINT, "OUTPUT 1"),
                 Instruction("", Operator.HALT, ""),
             ),
-            isHaltStatementPresent = true)
+            isHaltStatementPresent = true
+        )
         assertEquals(expectedParserState, parsingState.addInstruction(Instruction("", Operator.HALT, "")))
     }
 
@@ -60,6 +62,5 @@ class ParsingStateTest {
         val expectedParserState = parsingState.copy(errors = listOf("ERROR 1", "ERROR 2"))
         assertEquals(expectedParserState, parsingState.addError("ERROR 2"))
     }
-
 
 }

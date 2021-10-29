@@ -22,4 +22,3 @@ class Interpreter(private val parser: Parser = Parser(), private val executor: E
     private fun List<String>.formatErrorMessages() = this.map { "*** $it ***" }
 
 }
-

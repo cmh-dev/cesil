@@ -17,7 +17,7 @@ class InterpreterTest {
     private val interpreter = Interpreter(mockParser, mockExecutor)
 
     @Test
-    fun `when a program is executed with one parsing error it is returned`() {
+    fun `when a program is interpreted with one parsing error it is returned`() {
 
         val sourceCode = """
             BAD PRORGAM LINE 1
@@ -33,7 +33,7 @@ class InterpreterTest {
     }
 
     @Test
-    fun `when a program is executed with multiple parsing errors they should be returned`() {
+    fun `when a program is interpreted with multiple parsing errors they are returned`() {
 
         val sourceCode = """
             BAD PROGRAM LINE 1
@@ -62,7 +62,7 @@ class InterpreterTest {
     }
 
     @Test
-    fun `when a program is executed without parsing errors results are returned`() {
+    fun `when a program is interpreted without parsing errors results are returned`() {
 
         val sourceCode = """
                PRINT "HELLO"
@@ -93,7 +93,7 @@ class InterpreterTest {
     }
 
     @Test
-    fun `when a program is executed with execution errors then they are returned`() {
+    fun `when a program is interpreted with execution errors then they are returned`() {
 
         val sourceCode = """
                IN
@@ -122,6 +122,5 @@ class InterpreterTest {
         assertEquals(listOf("*** ERROR - DIVIDE BY ZERO ***"), executionResult.output)
 
     }
-
 
 }

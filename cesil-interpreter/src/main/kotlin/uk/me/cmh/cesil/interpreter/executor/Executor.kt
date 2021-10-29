@@ -4,6 +4,10 @@ import uk.me.cmh.cesil.interpreter.*
 
 class Executor {
 
+    companion object {
+        const val MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED = 100
+    }
+
     fun execute(program: Program): ExecutionResult {
         var executionState = ExecutionState(data = program.data)
         while (executionState.instructionIndex <= program.instructions.lastIndex
@@ -102,10 +106,6 @@ class Executor {
             operand.matches(Regex("^[+-]*\\d*\$")) -> operand.toInt()
             else -> currentExecutionState.variables[operand]
         }
-
-    companion object {
-        const val MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED = 100
-    }
 
 }
 

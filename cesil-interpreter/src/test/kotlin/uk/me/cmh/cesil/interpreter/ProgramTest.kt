@@ -29,5 +29,4 @@ class ProgramTest {
         assertEquals(listOf(1, 2, 3, 4), program.data)
     }
 
-
 }
