@@ -9,7 +9,7 @@
             margin-bottom: 20px;
         }
         .code {
-            font-family: Courier New; font-weight: bold;
+            font-family: Courier New; font-weight: bold; color: #006400;
         }
     </style>
 </head>
@@ -30,19 +30,31 @@
 <main class="container" style="padding-top: 80px;">
     <h4>Program structure</h4>
     <p>
-        A CESIL program is split into two parts, instructions and data.
+        A CESIL program is made up of two sections, instructions and data.
     </p>
+    <h6>Instructions</h6>
     <p>
         Instruction lines are split into three columns, a label (optional), the operator and an operand (dependent on the operator).
-        Each column is separated by white space.  Comment lines can be added to the instruction set and are started with a <span class="code">(</span>.
+        Each column is separated by white space.
     </p>
     <p>
-        The data section consists of a <span class="code">%</span> symbol on a new line followed by data items on the next line(s).  Data items can be split on multiple lines or by whitespace.
-        The data section is terminated with a <span class="code">*</span> character.
+        Comment lines can be added to the instruction set and are started with a <span class="code">(</span>.
     </p>
     <p>
-        An example program is as follows:
+        The instructions section is terminated with <span class="code">%</span> character on a new line.
     </p>
+    <h6>Data</h6>
+    <p>
+        The data section starts on a new line after the instruction section terminator.
+    </p>
+    <p>
+        Data items can be split on multiple lines or by whitespace.
+    </p>
+    <p>
+        The data section is terminated with a <span class="code">*</span> character on a new line.
+    </p>
+    <h6>Example program</h6>
+    <p></p>
     <pre class="code" style="font-size: 1.1em">
         ( EXAMPLE PROGRAM
                  LOAD     0
