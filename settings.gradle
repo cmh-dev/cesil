@@ -1,6 +1,4 @@
 rootProject.name = 'cesil'
 include 'cesil-interpreter'
 include 'cesil-web'
-
-
-
+include 'cesil-cli'
