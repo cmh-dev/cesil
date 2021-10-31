@@ -36,4 +36,10 @@ class CliAppTest {
         assertEquals("*** SOURCE CODE FILE NOT FOUND ***", outputStreamCaptor.toString().trim())
     }
 
+    @Test
+    fun `when no source code file is passed an error is returned`() {
+        main(arrayOf())
+        assertEquals("*** MISSING SOURCE CODE FILE ARGUMENT ***", outputStreamCaptor.toString().trim())
+    }
+
 }
