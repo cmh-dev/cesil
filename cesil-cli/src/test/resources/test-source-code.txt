@@ -1,0 +1,14 @@
+( EXAMPLE PROGRAM
+         LOAD     0
+LOOP     STORE    TOTAL
+         IN
+         JINEG    END
+         ADD      TOTAL
+         JUMP     LOOP
+END      PRINT    "THE ANSWER IS "
+         LOAD     TOTAL
+         OUT
+         HALT
+%
+40 2 -1
+*

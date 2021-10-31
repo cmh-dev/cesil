@@ -24,9 +24,10 @@ class CliAppTest {
     }
 
     @Test
-    fun `when the app is run output is produced`() {
-        main()
-        assertEquals("Hello World!", outputStreamCaptor.toString().trim())
+    fun `when a valid source code file is executed the expected output is returned`() {
+        val testSourceCodeFilePath = CliAppTest::class.java.getResource("/test-source-code.txt").path
+        main(arrayOf(testSourceCodeFilePath))
+        assertEquals("THE ANSWER IS 42", outputStreamCaptor.toString().trim())
     }
 
 }

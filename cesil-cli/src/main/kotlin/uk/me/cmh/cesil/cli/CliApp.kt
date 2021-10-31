@@ -1,5 +1,5 @@
 package uk.me.cmh.cesil.cli
 
-fun main() {
-    println("Hello World!")
+fun main(args: Array<String>) {
+    println("THE ANSWER IS 42")
 }
