@@ -23,23 +23,31 @@ class CliAppTest {
     }
 
     @Test
-    fun `when a valid source code file is executed the expected output is returned`() {
-        val testSourceCodeFilePath = CliAppTest::class.java.getResource("/test-source-code.txt").path
-        main(arrayOf(testSourceCodeFilePath))
-        assertEquals("THE ANSWER IS 42", outputStreamCaptor.toString().trim())
-    }
+    fun `when a valid source code file is executed the expected output is returned`() =
+        assertThatOutputIsExpectedWhenAFilePathIsPassed(
+            CliAppTest::class.java.getResource("/test-source-code.txt")!!.path,
+            "THE ANSWER IS 42"
+        )
 
     @Test
-    fun `when an attempt to execute a missing source code file is undertaken an error is returned`() {
-        val testSourceCodeFilePath = "a-missing-file.txt"
-        main(arrayOf(testSourceCodeFilePath))
-        assertEquals("*** SOURCE CODE FILE NOT FOUND ***", outputStreamCaptor.toString().trim())
-    }
+    fun `when an attempt to execute a missing source code file is undertaken an error is returned`() =
+        assertThatOutputIsExpectedWhenAFilePathIsPassed(
+            "missing-source-code.txt",
+            "*** SOURCE CODE FILE NOT FOUND ***"
+        )
 
     @Test
     fun `when no source code file is passed an error is returned`() {
         main(arrayOf())
-        assertEquals("*** MISSING SOURCE CODE FILE ARGUMENT ***", outputStreamCaptor.toString().trim())
+        assertThatOutputIsAsExpected("*** MISSING SOURCE CODE FILE ARGUMENT ***")
     }
+
+    private fun assertThatOutputIsExpectedWhenAFilePathIsPassed(sourceCodeFilePath: String, expectedOutput: String) {
+        main(arrayOf(sourceCodeFilePath))
+        assertThatOutputIsAsExpected(expectedOutput)
+    }
+
+    private fun assertThatOutputIsAsExpected(expectedOutput: String) =
+        assertEquals(expectedOutput, outputStreamCaptor.toString().trim())
 
 }
