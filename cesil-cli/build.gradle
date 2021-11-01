@@ -1,3 +1,14 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+shadowJar {
+    archiveFileName = "cesil-cli.jar"
+    manifest {
+        attributes 'Main-Class': "uk.me.cmh.cesil.cli.CesilCliAppKt"
+    }
+}
+
 dependencies {
     implementation project(":cesil-interpreter")
 }
