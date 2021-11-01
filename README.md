@@ -1,3 +1,4 @@
 # CESIL Interpreter
 
-![Build and deploy](https://github.com/cmh-dev/cesil/actions/workflows/build-and-deploy.yml/badge.svg)
+[![Tests](https://github.com/cmh-dev/cesil/actions/workflows/tests.yml/badge.svg)](https://github.com/cmh-dev/cesil/actions/workflows/tests.yml)
+
