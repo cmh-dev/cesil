@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
-class CliAppTest {
+class CesilCliAppTest {
 
     private val standardOut = System.out
     private val outputStreamCaptor = ByteArrayOutputStream()
@@ -25,7 +25,7 @@ class CliAppTest {
     @Test
     fun `when a valid source code file is executed the expected output is returned`() =
         assertThatOutputIsExpectedWhenAFilePathIsPassed(
-            CliAppTest::class.java.getResource("/test-source-code.txt")!!.path,
+            CesilCliAppTest::class.java.getResource("/test-source-code.txt")!!.path,
             "THE ANSWER IS 42"
         )
 
