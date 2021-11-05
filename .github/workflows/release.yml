@@ -28,7 +28,7 @@ jobs:
       - name: Release CLI app
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "cesiL.zip"
+          artifacts: "cesil.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy web app
         env:
