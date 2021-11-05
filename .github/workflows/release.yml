@@ -1,10 +1,10 @@
-name: Build and release
+name: Release
 on:
   push:
     tags:
       - '*'
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir cesil
           cp cesil-cli/build/libs/cesil-cli.jar cesil/
-          cp cesil-cli/scripts/cesil.sh cesil/
+          cp cesil-cli/scripts/cesil cesil/
           cp cesil-cli/scripts/cesil.bat cesil/
           zip -r cesil.zip cesil/
       - name: Deploy web app
@@ -35,5 +35,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "cesi.zip"
-          bodyFile: "body.md"
           token: ${{ secrets.GITHUB_TOKEN }}
