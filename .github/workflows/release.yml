@@ -25,14 +25,14 @@ jobs:
           cp cesil-cli/scripts/cesil cesil/
           cp cesil-cli/scripts/cesil.bat cesil/
           zip -r cesil.zip cesil/
+      - name: Release CLI app
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "cesiL.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy web app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           heroku plugins:install java
           heroku deploy:jar cesil-web/build/libs/cesil-web.jar --app ${{ secrets.HEROKU_APP_NAME }} --jdk 11
-      - name: Release CLI app
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "cesi.zip"
-          token: ${{ secrets.GITHUB_TOKEN }}
