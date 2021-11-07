@@ -5,7 +5,7 @@ import uk.me.cmh.cesil.interpreter.*
 class Executor {
 
     companion object {
-        const val MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED = 100
+        const val MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED = 5000
     }
 
     fun execute(program: Program): ExecutionResult {

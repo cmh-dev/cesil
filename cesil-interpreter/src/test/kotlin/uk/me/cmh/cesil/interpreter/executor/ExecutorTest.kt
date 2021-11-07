@@ -223,6 +223,21 @@ class ExecutorTest {
             ), listOf("3 2 1 0 ")
         )
 
+    @Test
+    fun `when a program is run which results in close to 5000 executions the correct result will be returned`() =
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.LOAD,"1666"),
+                    Instruction("LOOP", Operator.SUBTRACT,"1"),
+                    Instruction("", Operator.JIZERO,"EXIT"),
+                    Instruction("", Operator.JUMP, "LOOP"),
+                    Instruction("EXIT", Operator.HALT,"" )
+                ),
+                listOf()
+            ), listOf("")
+        )
+
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =
         when(val executionResult = executor.execute(program)) {
             is ExecutionSuccess -> assertEquals(expectedOutput, executionResult.output)
@@ -358,11 +373,11 @@ class ExecutorTest {
         )
 
     @Test
-    fun `when a program is run that results in more than 100 instructions executions an error will be returned`() {
+    fun `when a program is run that results in more than 5000 instructions executions an error will be returned`() {
         assertThatAnInvalidProgramWillReturnTheCorrectError(
             Program(
                 listOf(
-                    Instruction("", Operator.LOAD,"100"),
+                    Instruction("", Operator.LOAD,"1668"),
                     Instruction("LOOP", Operator.SUBTRACT,"1"),
                     Instruction("", Operator.JIZERO,"EXIT"),
                     Instruction("", Operator.JUMP, "LOOP"),
