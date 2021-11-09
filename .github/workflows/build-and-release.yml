@@ -23,6 +23,7 @@ jobs:
           mkdir cesil
           cp cesil-cli/build/libs/cesil-cli.jar cesil/
           cp cesil-cli/scripts/cesil cesil/
+          chmod +x cesil/cesil
           cp cesil-cli/scripts/cesil.bat cesil/
           zip -r cesil.zip cesil/
       - name: Release CLI app
