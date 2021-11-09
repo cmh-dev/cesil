@@ -33,6 +33,11 @@ data class ExecutionState(
 
     fun terminate() = getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(isRunning = false)
 
+    fun outputAsList(): List<String> = when (output) {
+        "" -> emptyList()
+        else -> output.lines()
+    }
+
     private fun getNextProgramStateAndUpdateInstructionIndexAndCountIfNotSet(
         accumulator: Int = this.accumulator,
         output: String = this.output,

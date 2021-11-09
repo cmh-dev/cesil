@@ -19,7 +19,7 @@ class Executor {
         if (executionState.numberOfExecutedInstructions > MAXIMUM_NUMBER_OF_EXECUTED_INSTRUCTIONS_ALLOWED)
             executionState = executionState.nextWithError(error = "MAXIMUM NUMBER OF EXECUTED INSTRUCTIONS EXCEEDED")
         return when {
-            executionState.error.isEmpty() -> ExecutionSuccess(executionState.output.lines())
+            executionState.error.isEmpty() -> ExecutionSuccess(executionState.outputAsList())
             else -> ExecutionFailure(listOf(executionState.error))
         }
     }

@@ -12,6 +12,18 @@ class ExecutorTest {
     // SUCCESSFUL EXECUTION
 
     @Test
+    fun `when a program is executed that results in no output none should be returned`() {
+        assertThatAValidProgramCanBeCorrectlyExecuted(
+            Program(
+                listOf(
+                    Instruction("", Operator.HALT, "")
+                ),
+                listOf()
+            ), emptyList()
+        )
+    }
+
+    @Test
     fun `when a simple program is executed the correct output is given`() =
         assertThatAValidProgramCanBeCorrectlyExecuted(
             Program(
@@ -235,7 +247,7 @@ class ExecutorTest {
                     Instruction("EXIT", Operator.HALT,"" )
                 ),
                 listOf()
-            ), listOf("")
+            ), listOf()
         )
 
     private fun assertThatAValidProgramCanBeCorrectlyExecuted(program: Program, expectedOutput: List<String>) =

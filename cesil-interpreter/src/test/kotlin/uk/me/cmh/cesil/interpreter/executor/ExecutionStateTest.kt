@@ -79,6 +79,15 @@ class ExecutionStateTest {
             expectedCurrentInstructionIndex = 2, expectedNumberOfExecutedInstruction = 2
         )
 
+    @Test
+    fun `when the output is requested as a list and it is an empty string an empty list will be returned`() =
+        assertEquals(listOf<String>(), executionState.outputAsList())
+
+    @Test
+    fun `when the output is requested as a list and it is not an empty string a list will be returned`() =
+        assertEquals(listOf("HELLO WORLD"),
+            executionState.nextWithNewOutputValue("HELLO WORLD").outputAsList())
+
     private fun assertThatProgramStateIsAsExpected(
         executionState: ExecutionState,
         expectedCurrentInstructionIndex: Int,
