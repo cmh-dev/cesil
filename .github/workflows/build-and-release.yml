@@ -26,10 +26,11 @@ jobs:
           chmod +x cesil/cesil
           cp cesil-cli/scripts/cesil.bat cesil/
           zip -r cesil.zip cesil/
+          cp cesil-web/build/libs/cesil-web.jar .
       - name: Release CLI app
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "cesil.zip"
+          artifacts: "cesil.zip,cesil-web.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy web app
         env:
