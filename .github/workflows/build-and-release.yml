@@ -25,7 +25,9 @@ jobs:
           cp cesil-cli/scripts/cesil release/cesil-cli/
           chmod +x release/cesil-cli/cesil
           cp cesil-cli/scripts/cesil.bat release/cesil-cli/
-          zip -r cesil-cli.zip release/cesil-cli/
+          cd release
+          zip -r cesil-cli.zip cesil-cli/
+          cd ..
       - name: Package web release
         run: |
           mkdir -p release/cesil-web
@@ -33,11 +35,13 @@ jobs:
           cp cesil-web/scripts/cesilweb release/cesil-web/
           chmod +x release/cesil-web/cesilweb
           cp cesil-web/scripts/cesilweb.bat release/cesil-web/
-          zip -r cesil-web.zip release/cesil-web/
+          cd release
+          zip -r cesil-web.zip cesil-web/
+          cd ..
       - name: Release apps
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "cesil-cli.zip,cesil-web.zip"
+          artifacts: "release/cesil-cli.zip,release/cesil-web.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy web app
         env:
