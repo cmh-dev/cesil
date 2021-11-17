@@ -18,19 +18,26 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew clean build :cesil-web:shadowJar :cesil-cli:shadowJar
-      - name: Package CLI app
+      - name: Package CLI release
         run: |
-          mkdir cesil
-          cp cesil-cli/build/libs/cesil-cli.jar cesil/
-          cp cesil-cli/scripts/cesil cesil/
-          chmod +x cesil/cesil
-          cp cesil-cli/scripts/cesil.bat cesil/
-          zip -r cesil.zip cesil/
-          cp cesil-web/build/libs/cesil-web.jar .
-      - name: Release CLI app
+          mkdir cesil-cli
+          cp cesil-cli/build/libs/cesil-cli.jar cesil-cli/
+          cp cesil-cli/scripts/cesil cesil-cli/
+          chmod +x cesil-cli/cesil
+          cp cesil-cli/scripts/cesil.bat cesil-cli/
+          zip -r cesil-cli.zip cesil-cli/
+      - name: Package web release
+        run: |
+          mkdir cesil-web
+          cp cesil-web/build/libs/cesil-web.jar cesil-web/
+          cp cesil-web/scripts/cesilweb cesil-web/
+          chmod +x cesil-web/cesilweb
+          cp cesil-web/scripts/cesilweb.bat cesil-web/
+          zip -r cesil-web.zip cesil-web/
+      - name: Release apps
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "cesil.zip,cesil-web.jar"
+          artifacts: "cesil-cli.zip,cesil-web.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy web app
         env:
