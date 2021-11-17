@@ -20,20 +20,20 @@ jobs:
           ./gradlew clean build :cesil-web:shadowJar :cesil-cli:shadowJar
       - name: Package CLI release
         run: |
-          mkdir cesil-cli
-          cp cesil-cli/build/libs/cesil-cli.jar cesil-cli/
-          cp cesil-cli/scripts/cesil cesil-cli/
-          chmod +x cesil-cli/cesil
-          cp cesil-cli/scripts/cesil.bat cesil-cli/
-          zip -r cesil-cli.zip cesil-cli/
+          mkdir -p release/cesil-cli
+          cp cesil-cli/build/libs/cesil-cli.jar release/cesil-cli/
+          cp cesil-cli/scripts/cesil release/cesil-cli/
+          chmod +x release/cesil-cli/cesil
+          cp cesil-cli/scripts/cesil.bat release/cesil-cli/
+          zip -r cesil-cli.zip release/cesil-cli/
       - name: Package web release
         run: |
-          mkdir cesil-web
-          cp cesil-web/build/libs/cesil-web.jar cesil-web/
-          cp cesil-web/scripts/cesilweb cesil-web/
-          chmod +x cesil-web/cesilweb
-          cp cesil-web/scripts/cesilweb.bat cesil-web/
-          zip -r cesil-web.zip cesil-web/
+          mkdir -p release/cesil-web
+          cp cesil-web/build/libs/cesil-web.jar release/cesil-web/
+          cp cesil-web/scripts/cesilweb release/cesil-web/
+          chmod +x release/cesil-web/cesilweb
+          cp cesil-web/scripts/cesilweb.bat release/cesil-web/
+          zip -r cesil-web.zip release/cesil-web/
       - name: Release apps
         uses: ncipollo/release-action@v1
         with:
