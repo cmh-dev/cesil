@@ -5,7 +5,11 @@ on:
       - main
     paths-ignore:
       - 'README.md'
-      - 'html-prototyping/**'
+      - 'cesil-web/html-prototyping/**'
+      - 'cesil-web/.dockerignore'
+      - 'cesil-web/Dockerfile'
+      - 'cesil-web/scripts/**'
+      - 'cesil-cli/scripts/**'
     tags-ignore:
       - '**'
 jobs:
