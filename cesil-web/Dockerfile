@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:11-jre-slim
 COPY ./build/libs/cesil-web.jar /usr/app/
 WORKDIR /usr/app
 EXPOSE 8080
