@@ -2,7 +2,7 @@
 
 CESIL (Computer Education in Schools Instruction Language) was developed by ICL to be used to teach computer programming in UK secondary schools.
 
-This is an attempt to create a web based interpreter for the language.
+This is an attempt to create a web based interpreter for the langauge. The web application has been developed in Kotlin and the project can be found on GitHub at [https://github.com/cmh-dev/cesil](https://github.com/cmh-dev/cesil).
 
 ### Usage
 
