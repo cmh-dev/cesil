@@ -7,13 +7,19 @@ CESIL (Computer Education in Schools Instruction Language) was developed by ICL 
 
 This project is an attempt to create, in Kotlin, an interpreter for CESIL providing both a web application and command line application.
 
-Both applications can be downloaded from the latest [release](https://github.com/cmh-dev/cesil/releases).
+Both applications can be downloaded from the latest [release](https://github.com/cmh-dev/cesil/releases) and run locally for which you must hav a JVM version 11+ installed.  Alternatively, for the web application there is also a Docker image available on Docker Hub.
 
 ### Usage
 
-To run both applications you will need a JVM version 11+ installed.
+#### Command Line Application
 
-###### Web Application
+Unzip the release (cesil-cli.zip) into a location of your choice. From the command line navigate to the directory containing the extracted files and run either the UNIX/LINUX shell script or DOS batch file (depending on your platform) passing a file containing your CESIL source code as an argument.
+
+Example:
+
+`./cesil test-cesil-program.cesil`
+
+#### Web Application (release download)
 
 Unzip the release (cesil-web.zip) into a location of your choice. From the command line navigate to the directory containing the extracted files and run either the UNIX/LINUX shell script or DOS batch file (depending on your platform).
 
@@ -23,10 +29,12 @@ Example:
 
 The web application will run on port 8080 and can be accessed from a browser by going to http://localhost:8080
 
-###### Command Line Application
+#### Web Application (Docker)
 
-Unzip the release (cesil-cli.zip) into a location of your choice. From the command line navigate to the directory containing the extracted files and run either the UNIX/LINUX shell script or DOS batch file (depending on your platform) passing a file containing your CESIL source code as an argument.
+The Docker image can be found at [https://hub.docker.com/r/cmhdev/cesil](https://hub.docker.com/r/cmhdev/cesil).
 
-Example:
+To run the web application enter:
 
-`./cesil test-cesil-program.cesil`
+`docker run -d -p 8080:8080 cmhdev/cesil`
+
+It then be available on http://localhost:8080
