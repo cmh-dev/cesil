@@ -8,8 +8,10 @@ on:
       - 'cesil-web/html-prototyping/**'
       - 'cesil-web/.dockerignore'
       - 'cesil-web/Dockerfile'
+      - 'cesil-web/docker-hub-README.md'
       - 'cesil-web/scripts/**'
       - 'cesil-cli/scripts/**'
+      - 'build-docker-release.sh'
     tags-ignore:
       - '**'
 jobs:
