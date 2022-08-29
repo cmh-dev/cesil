@@ -43,9 +43,3 @@ jobs:
         with:
           artifacts: "release/cesil-cli.zip,release/cesil-web.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Deploy web app
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku plugins:install java
-          heroku deploy:jar cesil-web/build/libs/cesil-web.jar --app ${{ secrets.HEROKU_APP_NAME }} --jdk 11
