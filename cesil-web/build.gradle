@@ -15,5 +15,5 @@ dependencies {
     implementation "io.ktor:ktor-server-thymeleaf:$ktorVersion"
     implementation "com.natpryce:konfig:$konfigVersion"
     implementation project(":cesil-interpreter")
-    testImplementation "net.sourceforge.htmlunit:htmlunit:$htmlUnitVersion"
+    testImplementation "org.htmlunit:htmlunit:$htmlUnitVersion"
 }

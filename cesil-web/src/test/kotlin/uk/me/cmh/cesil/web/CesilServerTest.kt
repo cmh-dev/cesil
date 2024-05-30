@@ -1,8 +1,10 @@
 package uk.me.cmh.cesil.web
 
-import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.*
 import io.ktor.server.engine.*
+import org.htmlunit.WebClient
+import org.htmlunit.html.HtmlButton
+import org.htmlunit.html.HtmlPage
+import org.htmlunit.html.HtmlTextArea
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
