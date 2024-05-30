@@ -1,14 +1,14 @@
 package uk.me.cmh.cesil.web
 
 import com.natpryce.konfig.*
-import io.ktor.application.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
 import io.ktor.server.engine.*
+import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
-import io.ktor.thymeleaf.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.server.thymeleaf.*
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import uk.me.cmh.cesil.interpreter.Interpreter
 
@@ -16,7 +16,7 @@ val portKey = Key("port", intType)
 val config = EnvironmentVariables() overriding ConfigurationProperties.fromResource("default.properties")
 
 fun main() {
-    cesilServer().start()
+    cesilServer().start(wait = true)
 }
 
 private const val INTERPRETER_MODEL_AND_TEMPLATE = "interpreter"
@@ -32,9 +32,7 @@ fun cesilServer() = embeddedServer(Netty, port = config[portKey]) {
     }
 
     routing {
-        static("static") {
-            resources("static")
-        }
+        staticResources(remotePath = "static", basePackage = "static")
         get("/") {
             call.respond(
                 ThymeleafContent(

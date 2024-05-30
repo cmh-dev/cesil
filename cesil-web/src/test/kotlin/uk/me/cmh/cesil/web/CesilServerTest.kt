@@ -17,7 +17,7 @@ class CesilServerTest {
 
     @BeforeEach
     fun setUp() {
-        cesilServer = cesilServer().start()
+        cesilServer = cesilServer().start(wait = false)
         webClient = WebClient()
         webClient.options.isThrowExceptionOnScriptError = false
     }
