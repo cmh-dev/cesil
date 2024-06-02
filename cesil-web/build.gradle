@@ -5,7 +5,7 @@ plugins {
 shadowJar {
     archiveFileName = "cesil-web.jar"
     manifest {
-        attributes 'Main-Class': "uk.me.cmh.cesil.web.CesilServerKt"
+        attributes 'Main-Class': "cmh.cesil.web.CesilServerKt"
     }
 }
 
